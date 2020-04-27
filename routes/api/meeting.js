@@ -5,6 +5,8 @@ const router = express.Router();
 const auth = require('../../middleware/auth');
 
 const { check, validationResult } = require('express-validator');
+const mongoose  = require('mongoose');
+const pm = require('../../models/plainMeeting');
 const dMeeting = require('../../models/dynamoMeetings');
 const Meeting = require('../../models/Meeting');
 const User = require('../../models/User');
@@ -247,10 +249,7 @@ router.get('/', async (req, res) => {
         const meetings = await Meeting.find()
             .sort({ meetingDate: 1 })
             .populate('people', ['name']);
-        // const meetings = await dynamicMeetingModel('wbc-meetings')
-        //     .find()
-        //     .sort({ meetingDate: 1 })
-        //     .populate('people', ['name']);
+
         res.json(meetings);
     } catch (err) {
         console.error(err.message);
@@ -264,9 +263,12 @@ router.get('/future', async (req, res) => {
     try {
         var tDay = new Date();
         console.log('tDay:' + tDay);
-        const meetings = await Meeting.find({
-            meetingDate: { $gte: tDay },
-        }).sort({ meetingDate: 0 });
+        // const meetings = await Meeting.find({
+        //     meetingDate: { $gte: tDay },
+        // }).sort({ meetingDate: 0 });
+        console.log("YES WE ARE COMING THROUGH HERE...");
+        var wbcMeetings = mongoose.model('wbc-meetings', pm.meetingPlainSchema);
+        const meetings = await wbcMeetings.find({ meetingDate: { $gte: tDay }, }).sort({ meetingDate: 0 });
         res.json(meetings);
     } catch (err) {
         console.error(err.message);
