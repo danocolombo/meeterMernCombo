@@ -18,8 +18,7 @@ const UserSchema = new mongoose.Schema({
     type: String
   },
   defaultClient: {
-    type: String,
-    default: "cr"
+    type: String
   },
   date: {
     type: Date,

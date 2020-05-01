@@ -5,6 +5,7 @@ const auth = require('../../middleware/auth');
 const jwt = require('jsonwebtoken');
 const config = require('config');
 const { check, validationResult } = require('express-validator');
+const { getCurrentTenantId, setCurrentTenantId } = require("../../lib/storage");
 
 const User = require('../../models/User');
 
@@ -18,7 +19,13 @@ router.get('/', auth, async (req, res) => {
         // need to set the clientID from user profile
         //----------------------------------------------
         console.log('NOW-NOW-NOW');
-        
+        const cid = getCurrentTenantId();
+        console.log(getCurrentTenantId());
+        console.log(user);
+        console.log('defaultClient:' + user.defaultClient);
+        console.log('switching tenant value');
+        setCurrentTenantId(user.defaultClient);
+        console.log('now tenant:' + getCurrentTenantId());
         res.json(user);
     } catch (err) {
         console.error(err.message);
