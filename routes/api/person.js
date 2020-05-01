@@ -65,7 +65,7 @@ router.post(
             personFields.service = '';
         }
         try {
-            let person = await Person.findOneAndUpdate(
+            let person = await Person().findOneAndUpdate(
                 { name: name },
                 { $set: personFields },
                 { new: true, upsert: true }
@@ -83,7 +83,7 @@ router.get('/', async (req, res) => {
     try {
         //this is going to return the persons that are
         // not defined with system
-        const persons = await Person.find({ system: { $ne: true } }).sort({
+        const persons = await Person().find({ system: { $ne: true } }).sort({
             name: 1
         });
         res.json(persons);
@@ -97,7 +97,7 @@ router.get('/servants', async (req, res) => {
     try {
         //this is going to return the persons that are
         // not defined with system
-        const persons = await Person.find({
+        const persons = await Person().find({
             $and: [{ system: { $ne: true } }, { service: { $exists: true } }]
         }).sort({
             name: 1
@@ -114,7 +114,7 @@ router.get('/servants', async (req, res) => {
 // @access   Public
 router.get('/all', async (req, res) => {
     try {
-        const persons = await Person.find().sort({ name: 1 });
+        const persons = await Person().find().sort({ name: 1 });
         res.json(persons);
     } catch (err) {
         console.error(err.message);
@@ -128,7 +128,7 @@ router.get('/all', async (req, res) => {
 // @access   Private
 router.get('/:id', auth, async (req, res) => {
     try {
-        const person = await Person.findById(req.params.id);
+        const person = await Person().findById(req.params.id);
 
         // Check for ObjectId format and post
         if (!req.params.id.match(/^[0-9a-fA-F]{24}$/) || !person) {
@@ -148,7 +148,7 @@ router.get('/:id', auth, async (req, res) => {
 // @access   Private
 router.delete('/:id', auth, async (req, res) => {
     try {
-        await Person.findOneAndRemove({ _id: req.params.id });
+        await Person().findOneAndRemove({ _id: req.params.id });
         return res.status(200).json({ msg: 'person removed' });
     } catch (error) {
         console.error(error);

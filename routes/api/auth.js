@@ -14,6 +14,11 @@ const User = require('../../models/User');
 router.get('/', auth, async (req, res) => {
     try {
         const user = await User.findById(req.user.id).select('-password');
+        //----------------------------------------------
+        // need to set the clientID from user profile
+        //----------------------------------------------
+        console.log('NOW-NOW-NOW');
+        
         res.json(user);
     } catch (err) {
         console.error(err.message);

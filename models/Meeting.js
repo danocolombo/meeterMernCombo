@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-
+const { tenantModel } = require('../lib/multiTenant');
 const MeetingSchema = new mongoose.Schema({
     title: {
         type: String,
@@ -85,5 +85,5 @@ const MeetingSchema = new mongoose.Schema({
         default: Date.now
     }
 });
-
-module.exports = Meeting = mongoose.model('meeting', MeetingSchema);
+module.exports = Meeting = tenantModel('meeting', MeetingSchema);
+//module.exports = Meeting = mongoose.model('meeting', MeetingSchema);

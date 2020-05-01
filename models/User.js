@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-
+const { teanantModel } = require("../lib/multiTenant");
 const UserSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -16,6 +16,10 @@ const UserSchema = new mongoose.Schema({
   },
   avatar: {
     type: String
+  },
+  defaultClient: {
+    type: String,
+    default: "cr"
   },
   date: {
     type: Date,

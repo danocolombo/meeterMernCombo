@@ -213,7 +213,7 @@ router.post(
             console.log('this is going to findOneAndUpdate');
             console.table(meetingFields);
             if (meetingId) {
-                let meeting = await Meeting.findOneAndUpdate(
+                let meeting = await Meeting().findOneAndUpdate(
                     { _id: meetingId },
                     { $set: meetingFields },
                     { new: true, upsert: true }
@@ -221,7 +221,7 @@ router.post(
                 res.json(meeting);
             } else {
                 // we are going to do insert...
-                let meeting2 = await Meeting.findOneAndUpdate(
+                let meeting2 = await Meeting().findOneAndUpdate(
                     { facilitator: 'aBrandNewEntry' },
                     { $set: meetingFields },
                     { new: true, upsert: true, returnNewDocument: true }
@@ -247,7 +247,7 @@ router.post(
 // @access   Public
 router.get('/', async (req, res) => {
     try {
-        const meetings = await Meeting.find()
+        const meetings = await Meeting().find()
             .sort({ meetingDate: 1 })
             .populate('people', ['name']);
         res.json(meetings);
@@ -263,7 +263,7 @@ router.get('/future', async (req, res) => {
     try {
         var tDay = new Date();
         console.log('tDay:' + tDay);
-        const meetings = await Meeting.find({
+        const meetings = await Meeting().find({
             meetingDate: { $gte: tDay }
         }).sort({ meetingDate: 0 });
         res.json(meetings);
@@ -278,7 +278,7 @@ router.get('/future', async (req, res) => {
 router.get('/history', async (req, res) => {
     try {
         var tDay = new Date();
-        const meetings = await Meeting.find({
+        const meetings = await Meeting().find({
             meetingDate: { $lt: tDay }
         }).sort({ meetingDate: -1 });
         res.json(meetings);
@@ -294,7 +294,7 @@ router.get('/history', async (req, res) => {
 // @access   Private
 router.get('/:id', auth, async (req, res) => {
     try {
-        const meeting = await Meeting.findById(req.params.id);
+        const meeting = await Meeting().findById(req.params.id);
 
         // Check for ObjectId format and post
         if (!req.params.id.match(/^[0-9a-fA-F]{24}$/) || !meeting) {
@@ -335,7 +335,7 @@ router.get('/:id', auth, async (req, res) => {
 router.delete('/:id', auth, async (req, res) => {
     try {
         // Remove profile
-        await Meeting.findOneAndRemove({ _id: req.params.id });
+        await Meeting().findOneAndRemove({ _id: req.params.id });
         const feedback = 'Meeting deleted (' + req.params.id + ')';
         res.json({ msg: feedback });
     } catch (err) {
@@ -491,7 +491,7 @@ router.put(
         };
 
         try {
-            const meeting = await Meeting.findOne({ _id: req.meetingId });
+            const meeting = await Meeting().findOne({ _id: req.meetingId });
 
             meeting.groups.unshift(newGroup);
 
