@@ -213,6 +213,8 @@ router.post(
             console.log('this is going to findOneAndUpdate');
             console.table(meetingFields);
             if (meetingId) {
+                //try closing Meeting and recreating on the fly
+                
                 let meeting = await Meeting().findOneAndUpdate(
                     { _id: meetingId },
                     { $set: meetingFields },
