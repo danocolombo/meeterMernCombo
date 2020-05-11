@@ -6,7 +6,7 @@ import Spinner from '../layout/Spinner';
 import DashboardActions from './DashboardActions';
 import DashboardPic from '../../img/Dashboard1-200.png';
 import DashLogo from '../../img/MMeeterLogo.png';
-import nextGathering from '../gatherings/NextGathering';
+import NextGathering from '../gatherings/NextGathering';
 // import DashboardMeeterLogo from '../../img/DashboardMeeterLogo.png';
 import Experience from './Experience';
 import Education from './Education';
@@ -33,7 +33,7 @@ const Dashboard = ({
             </p>
             <p>
                 <h3>Next Meeting</h3>
-                <nextGathering />
+                <NextGathering />
             </p>
 
             {profile !== null ? (

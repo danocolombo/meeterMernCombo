@@ -11,19 +11,38 @@ import { connect } from 'react-redux';
 const NextGathering = ({ gatherings }) => {
     return [
         <>
-            <div>
-                <h2>It is right here</h2>
-            </div>
             <table>
                 {gatherings.map((g) => (
                     <tr>
-                        <td className='gatheringDate'>{g.meetingDate}</td>
+                        <td className='gatheringDate'>Date:{
+                        date = new Date(g.meetingDate);
+                        year = date.getFullYear();
+                        month = date.getMonth()+1;
+                        dt = date.getDate();
+                        // if(dt < 10){
+                        //     dt = '0' + dt;
+                        // }
+
+                        g.meetingDate
+                        
+                        }</td>
                         <td>{g.meetingType}</td>
                     </tr>
                 ))}
             </table>
-        </>,
+        </>
     ];
+};
+function testThis(gatherings){
+    console.log('in the function.');
+    var nDate = "";
+    var nTitle = "";
+    var nFacilitator = "";
+    var nSupportRole = "";
+    //-----------------------------------
+    // sweep through the gatherings
+    //-----------------------------------
+
 };
 NextGathering.propTypes = {
     gatherings: PropTypes.array.isRequired,
