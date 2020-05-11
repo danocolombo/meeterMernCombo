@@ -6,6 +6,7 @@ import Spinner from '../layout/Spinner';
 import DashboardActions from './DashboardActions';
 import DashboardPic from '../../img/Dashboard1-200.png';
 import DashLogo from '../../img/MMeeterLogo.png';
+import nextGathering from '../gatherings/NextGathering';
 // import DashboardMeeterLogo from '../../img/DashboardMeeterLogo.png';
 import Experience from './Experience';
 import Education from './Education';
@@ -15,7 +16,7 @@ const Dashboard = ({
     getCurrentProfile,
     deleteAccount,
     auth: { user },
-    profile: { profile, loading }
+    profile: { profile, loading },
 }) => {
     useEffect(() => {
         getCurrentProfile();
@@ -30,6 +31,11 @@ const Dashboard = ({
             <p className='lead'>
                 <i className='fas fa-user' /> Welcome {user && user.name}
             </p>
+            <p>
+                <h3>Next Meeting</h3>
+                <nextGathering />
+            </p>
+
             {profile !== null ? (
                 <Fragment>
                     <DashboardActions />
@@ -64,12 +70,12 @@ Dashboard.propTypes = {
     getCurrentProfile: PropTypes.func.isRequired,
     deleteAccount: PropTypes.func.isRequired,
     auth: PropTypes.object.isRequired,
-    profile: PropTypes.object.isRequired
+    profile: PropTypes.object.isRequired,
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
     auth: state.auth,
-    profile: state.profile
+    profile: state.profile,
 });
 
 export default connect(mapStateToProps, { getCurrentProfile, deleteAccount })(
