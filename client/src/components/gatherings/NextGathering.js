@@ -11,39 +11,59 @@ import { connect } from 'react-redux';
 const NextGathering = ({ gatherings }) => {
     return [
         <>
+            {showFuture(gatherings)}
             <table>
                 {gatherings.map((g) => (
                     <tr>
-                        <td className='gatheringDate'>Date:{
-                        date = new Date(g.meetingDate);
-                        year = date.getFullYear();
-                        month = date.getMonth()+1;
-                        dt = date.getDate();
-                        // if(dt < 10){
-                        //     dt = '0' + dt;
-                        // }
-
-                        g.meetingDate
-                        
-                        }</td>
+                        <td className='gatheringDate'>
+                            {showDate(g.meetingDate)}
+                        </td>
+                        <td>&nbsp;</td>
                         <td>{g.meetingType}</td>
                     </tr>
                 ))}
             </table>
-        </>
+        </>,
     ];
 };
-function testThis(gatherings){
+function showFuture(g) {
+    // let mCnt = g.map((gath) => (
+    //     //loop through the store
+    // ))
+    // if (g.gatherings)
+    console.log('SIZE:' + g.length);
+    if (g.length > 0) {
+        //=======================================
+        // there are future gatherings in store
+        //=======================================
+        return [
+            <>
+                <h2>WE HAVE A FUTURE</h2>
+            </>,
+        ];
+    } else {
+        return [<h4>We have no future</h4>];
+    }
+}
+function showDate(d) {
+    //return 'mm/dd/yyyy';
+    let date = new Date(d);
+    let year = date.getFullYear();
+    let month = date.getMonth() + 1;
+    let dt = date.getDate() + 1;
+    let nDate = month + '/' + dt + '/' + year;
+    return nDate;
+}
+function testThis(gatherings) {
     console.log('in the function.');
-    var nDate = "";
-    var nTitle = "";
-    var nFacilitator = "";
-    var nSupportRole = "";
+    var nDate = '';
+    var nTitle = '';
+    var nFacilitator = '';
+    var nSupportRole = '';
     //-----------------------------------
     // sweep through the gatherings
     //-----------------------------------
-
-};
+}
 NextGathering.propTypes = {
     gatherings: PropTypes.array.isRequired,
 };
