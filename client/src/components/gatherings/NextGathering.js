@@ -12,7 +12,8 @@ const NextGathering = ({ gatherings }) => {
     return [
         <>
             {showFuture(gatherings)}
-            <table>
+            {allFutureGatherings(gatherings)}
+            {/* <table>
                 {gatherings.map((g) => (
                     <tr>
                         <td className='gatheringDate'>
@@ -22,16 +23,24 @@ const NextGathering = ({ gatherings }) => {
                         <td>{g.meetingType}</td>
                     </tr>
                 ))}
-            </table>
+            </table> */}
         </>,
     ];
 };
+function allFutureGatherings(gatherings) {
+    const theList = gatherings.map((g) => (
+        <li>
+            {g.meetingDate} - {g.meetingType}
+        </li>
+    ));
+    return <ul>{theList}</ul>;
+}
 function showFuture(meetings) {
     console.log('SIZE:' + meetings.length);
-    let mDate = new Date();
-    let mTitle = ''
-    let mPeep = ''
-    let gotIt = false
+    let mDate = null;
+    let mTitle = '';
+    let mPeep = '';
+    let gotIt = false;
 
     if (meetings.length > 0) {
         //=======================================
@@ -41,29 +50,32 @@ function showFuture(meetings) {
         let mCnt = meetings.length;
         for (let index = 0; index < mCnt; index++) {
             // const element = array[index];
-            console.log(index + ' - ' + meetings[index].meetingDate + meetings[index].meetingType);
-            if (meetings[index].meetingType === 'Lesson'){
+            console.log(
+                index +
+                    ' - ' +
+                    meetings[index].meetingDate +
+                    meetings[index].meetingType
+            );
+            if (meetings[index].meetingType === 'Lesson') {
                 mDate = meetings[index].meetingDate;
-                mTitle = meetings[index].title;
+                mTitle = 'Lesson:' + meetings[index].title;
                 mPeep = meetings[index].supportRole;
                 mCnt = index;
             }
-            if (meetings[index].meetingType === 'Testimony'){
+            if (meetings[index].meetingType === 'Testimony') {
                 mDate = meetings[index].meetingDate;
                 mTitle = meetings[index].meetingType;
                 mPeep = meetings[index].title;
                 mCnt = index;
             }
-            
         }
-        console.log('===============================');
-        console.log('our next meeting');
-        console.log(mDate + "  " + " - " + mTitle + "  " + " - " + mPeep);
-        
+        if (mDate != null) {
+            console.log('===============================');
+            console.log('our next meeting');
+            console.log(mDate + '  ' + ' - ' + mTitle + '  ' + ' - ' + mPeep);
+        }
         // we have the next testimony/lesson defined (if available)
-        return [
-                <h2>WE HAVE A FUTURE!!</h2>
-        ];
+        return [<h2>WE HAVE A FUTURE!!</h2>];
     } else {
         return [<h4>We have no future</h4>];
     }
