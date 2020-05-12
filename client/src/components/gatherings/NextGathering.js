@@ -26,20 +26,43 @@ const NextGathering = ({ gatherings }) => {
         </>,
     ];
 };
-function showFuture(g) {
-    // let mCnt = g.map((gath) => (
-    //     //loop through the store
-    // ))
-    // if (g.gatherings)
-    console.log('SIZE:' + g.length);
-    if (g.length > 0) {
+function showFuture(meetings) {
+    console.log('SIZE:' + meetings.length);
+    let mDate = new Date();
+    let mTitle = ''
+    let mPeep = ''
+    let gotIt = false
+
+    if (meetings.length > 0) {
         //=======================================
         // there are future gatherings in store
         //=======================================
+        console.log('meeting[0].meetingDate:' + meetings[0].meetingDate);
+        let mCnt = meetings.length;
+        for (let index = 0; index < mCnt; index++) {
+            // const element = array[index];
+            console.log(index + ' - ' + meetings[index].meetingDate + meetings[index].meetingType);
+            if (meetings[index].meetingType === 'Lesson'){
+                mDate = meetings[index].meetingDate;
+                mTitle = meetings[index].title;
+                mPeep = meetings[index].supportRole;
+                mCnt = index;
+            }
+            if (meetings[index].meetingType === 'Testimony'){
+                mDate = meetings[index].meetingDate;
+                mTitle = meetings[index].meetingType;
+                mPeep = meetings[index].title;
+                mCnt = index;
+            }
+            
+        }
+        console.log('===============================');
+        console.log('our next meeting');
+        console.log(mDate + "  " + " - " + mTitle + "  " + " - " + mPeep);
+        
+        // we have the next testimony/lesson defined (if available)
         return [
-            <>
-                <h2>WE HAVE A FUTURE</h2>
-            </>,
+                <h2>WE HAVE A FUTURE!!</h2>
         ];
     } else {
         return [<h4>We have no future</h4>];
@@ -54,16 +77,7 @@ function showDate(d) {
     let nDate = month + '/' + dt + '/' + year;
     return nDate;
 }
-function testThis(gatherings) {
-    console.log('in the function.');
-    var nDate = '';
-    var nTitle = '';
-    var nFacilitator = '';
-    var nSupportRole = '';
-    //-----------------------------------
-    // sweep through the gatherings
-    //-----------------------------------
-}
+
 NextGathering.propTypes = {
     gatherings: PropTypes.array.isRequired,
 };
