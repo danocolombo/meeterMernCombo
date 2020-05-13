@@ -11,16 +11,19 @@ import NextGathering from '../gatherings/NextGathering';
 import Experience from './Experience';
 import Education from './Education';
 import { getCurrentProfile, deleteAccount } from '../../actions/profile';
+import { getGatherings } from '../../actions/gathering';
 
 const Dashboard = ({
+    getGatherings,
     getCurrentProfile,
     deleteAccount,
     auth: { user },
     profile: { profile, loading },
 }) => {
     useEffect(() => {
+        getGatherings();
         getCurrentProfile();
-    }, [getCurrentProfile]);
+    }, [getGatherings, getCurrentProfile]);
 
     return loading && profile === null ? (
         <Spinner />
@@ -67,6 +70,7 @@ const Dashboard = ({
 };
 
 Dashboard.propTypes = {
+    getGatherings: PropTypes.func.isRequired,
     getCurrentProfile: PropTypes.func.isRequired,
     deleteAccount: PropTypes.func.isRequired,
     auth: PropTypes.object.isRequired,
@@ -78,6 +82,8 @@ const mapStateToProps = (state) => ({
     profile: state.profile,
 });
 
-export default connect(mapStateToProps, { getCurrentProfile, deleteAccount })(
-    Dashboard
-);
+export default connect(mapStateToProps, {
+    getGatherings,
+    getCurrentProfile,
+    deleteAccount,
+})(Dashboard);

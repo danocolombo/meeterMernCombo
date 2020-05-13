@@ -12,7 +12,9 @@ const NextGathering = ({ gatherings }) => {
     return [
         <>
             {showFuture(gatherings)}
-            {allFutureGatherings(gatherings)}
+            <br />
+            <br />
+            {/* {allFutureGatherings(gatherings)} */}
             {/* <table>
                 {gatherings.map((g) => (
                     <tr>
@@ -41,6 +43,11 @@ function showFuture(meetings) {
     let mTitle = '';
     let mPeep = '';
     let gotIt = false;
+    let theNext = (
+        <ul>
+            <li>yep</li>
+        </ul>
+    );
 
     if (meetings.length > 0) {
         //=======================================
@@ -61,12 +68,22 @@ function showFuture(meetings) {
                 mTitle = 'Lesson:' + meetings[index].title;
                 mPeep = meetings[index].supportRole;
                 mCnt = index;
+                theNext = (
+                    <div>
+                        {mDate} {mTitle} {mPeep}{' '}
+                    </div>
+                );
             }
             if (meetings[index].meetingType === 'Testimony') {
                 mDate = meetings[index].meetingDate;
                 mTitle = meetings[index].meetingType;
                 mPeep = meetings[index].title;
                 mCnt = index;
+                theNext = (
+                    <div>
+                        {mDate} {mTitle} {mPeep}{' '}
+                    </div>
+                );
             }
         }
         if (mDate != null) {
@@ -75,7 +92,7 @@ function showFuture(meetings) {
             console.log(mDate + '  ' + ' - ' + mTitle + '  ' + ' - ' + mPeep);
         }
         // we have the next testimony/lesson defined (if available)
-        return [<h2>WE HAVE A FUTURE!!</h2>];
+        return [<>{theNext}</>];
     } else {
         return [<h4>We have no future</h4>];
     }
