@@ -1,45 +1,50 @@
-import React from 'react';
-import axios from 'axios';
+import React, { Component } from 'react';
 import { getGroups } from '../../actions/group';
-
-/* eslint react/prop-types: 0 */
-const GroupList = () => {
-    return [
-        <>
-            <table>
-                <tr>
-                    <td>Yeah</td>
-                    <td>RIGHT</td>
-                </tr>
-            </table>
-            {getOurGroups()}
-        </>,
-    ];
-};
-function getOurGroups() {
-    const mid = '5eb87420c29f0b5ac02ad73d';
-
-    const res = getGroups(mid);
-
-    const response = res();
-
-    // if (res) {
-    //     console.log('we got a res');
-    //     console.log(typeof res);
-    //     console.log(res);
-    // }
-    if (response) {
-        console.log('we got a response');
-        console.log(typeof response);
-        console.log(response);
-        console.log(typeof response[0]);
+import props from 'prop-types';
+export default class ExistingGroups extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            mid: this.props.mid,
+            existingGroups: [],
+        };
     }
-    // const maybe = response.data;
-    // if (maybe) {
-    //     console.log('we got a maybe');
-    //     console.log(typeof maybe);
-    //     console.log(maybe);
-    // }
-    return [<h2>closer</h2>];
+
+    componentDidMount() {
+        // fetch the project name, once it retrieves resolve the promsie and update the state.
+        this.getExistingGroups().then((result) =>
+            this.setState({
+                existingGroups: result,
+            })
+        );
+        console.log('mid:' + this.state.mid);
+    }
+
+    getExistingGroups() {
+        // replace with whatever your api logic is.
+        const mid1 = '5eb87420c29f0b5ac02ad73d';
+        const mid = this.state.mid;
+        const res = getGroups(mid);
+        return res();
+    }
+
+    render() {
+        var smallGroups = [];
+        if (this.state.existingGroups) {
+            smallGroups = this.state.existingGroups.map((grp) => (
+                <tr>
+                    {grp.gender == 'm' ? <td>Men's</td> : <td></td>}
+                    {grp.gender == 'w' ? <td>Women's</td> : <td></td>}
+                    <td>{grp.title}</td>
+                    <td>{grp.facilitator}</td>
+                </tr>
+            ));
+        }
+
+        return [
+            <>
+                <table>{smallGroups}</table>
+            </>,
+        ];
+    }
 }
-export default GroupList;

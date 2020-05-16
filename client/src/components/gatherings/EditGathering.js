@@ -5,13 +5,13 @@ import { connect } from 'react-redux';
 import { createGathering, getGathering } from '../../actions/gathering';
 import ServantSelect from './ServantSelect';
 import GroupList from './GroupList';
-import JunkMe from './junkMe';
+// import GroupList from './GroupList';
 //import GroupList from './GroupList';
 //import GroupItem from './GroupItem';
 //import GroupLine from './GroupLine';
 //import GroupList from './GroupList';
-import GrpGrp from './GroupGroup';
-import { getGroups } from '../../actions/group';
+// import GrpGrp from './GroupGroup';
+// import { getGroups } from '../../actions/group';
 const initialState = {
     _id: '',
     meetingId: '',
@@ -39,7 +39,6 @@ const EditGathering = ({
     group: { groups },
     createGathering,
     getGathering,
-    getGroups,
     match,
     history,
 }) => {
@@ -54,9 +53,9 @@ const EditGathering = ({
         if (!gathering) {
             getGathering(match.params.id);
         }
-        if (!groups) {
-            getGroups(match.params.id);
-        }
+        // if (!groups) {
+        //     getGroups(match.params.id);
+        // }
         // console.log('gathering2:' + gathering);
         if (!loading) {
             const gatheringData = { ...initialState };
@@ -359,7 +358,7 @@ const EditGathering = ({
                         </a>
                     </Link>
                 </h2>
-                <JunkMe mid={match.params.id} />
+                <GroupList mid={match.params.id} />
             </form>
         </Fragment>
     );
@@ -450,7 +449,6 @@ EditGathering.propTypes = {
     getGathering: PropTypes.func.isRequired,
     gathering: PropTypes.object.isRequired,
     group: PropTypes.object.isRequired,
-    getGroups: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -462,5 +460,4 @@ const mapStateToProps = (state) => ({
 export default connect(mapStateToProps, {
     createGathering,
     getGathering,
-    getGroups,
 })(withRouter(EditGathering));
