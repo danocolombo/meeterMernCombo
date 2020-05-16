@@ -5,7 +5,7 @@ const auth = require('../../middleware/auth');
 const jwt = require('jsonwebtoken');
 const config = require('config');
 const { check, validationResult } = require('express-validator');
-const { getCurrentTenantId, setCurrentTenantId } = require("../../lib/storage");
+const { getCurrentTenantId, setCurrentTenantId } = require('../../lib/storage');
 
 const User = require('../../models/User');
 
@@ -40,7 +40,7 @@ router.post(
     '/',
     [
         check('email', 'Please include a valid email').isEmail(),
-        check('password', 'Password is required').exists()
+        check('password', 'Password is required').exists(),
     ],
     async (req, res) => {
         const errors = validationResult(req);
@@ -69,14 +69,14 @@ router.post(
 
             const payload = {
                 user: {
-                    id: user.id
-                }
+                    id: user.id,
+                },
             };
-
+            //expires is in seconds (3600 = 1 hour)
             jwt.sign(
                 payload,
                 config.get('jwtSecret'),
-                { expiresIn: 360000 },
+                { expiresIn: 3600 },
                 (err, token) => {
                     if (err) throw err;
                     res.json({ token });
