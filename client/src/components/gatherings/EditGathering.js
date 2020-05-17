@@ -5,13 +5,7 @@ import { connect } from 'react-redux';
 import { createGathering, getGathering } from '../../actions/gathering';
 import ServantSelect from './ServantSelect';
 import GroupList from './GroupList';
-// import GroupList from './GroupList';
-//import GroupList from './GroupList';
-//import GroupItem from './GroupItem';
-//import GroupLine from './GroupLine';
-//import GroupList from './GroupList';
-// import GrpGrp from './GroupGroup';
-// import { getGroups } from '../../actions/group';
+
 const initialState = {
     _id: '',
     meetingId: '',
@@ -340,10 +334,8 @@ const EditGathering = ({
                     ></textarea>
                     <small className='form-text'>Things to remember</small>
                 </div>
-                <input type='submit' className='btn btn-primary my-1' />
-                <Link className='btn btn-light my-1' to='/gatherings'>
-                    Go Back
-                </Link>
+                {FormButtons()}
+                
                 <hr />
                 <h2>
                     Open-Share Groups
@@ -399,6 +391,40 @@ const EditGathering = ({
             default:
                 return 'Please provide a description of the event';
         }
+    }
+    function FormButtons() {
+        var returnValue = [];
+        var today = new Date();
+        today.setHours(0,0,0,0);
+        var mDate = new Date(meetingDate.slice(0, 10));
+        console.log('mDate:' + mDate);
+        console.log('today:' + today);
+        if(mDate >= today){
+            console.log('greater than or equal');
+            returnValue = [
+                <>
+                <input type='submit' className='btn btn-primary my-1' />
+                <Link className='btn btn-light my-1' to='/gatherings'>
+                    Go Back
+                </Link>
+                </>
+            ]
+        }else{
+            console.log('less than today');
+            returnValue = [
+                <>
+                <input type='submit' className='btn btn-primary my-1' />
+                <Link className='btn btn-light my-1' to='/gatherings/historyView'>
+                    Go Back
+                </Link>
+                </>
+            ]
+        }
+        return [
+            <>
+                <table>{returnValue}</table>
+            </>,
+        ];
     }
     function checkForTeacher() {}
     function displayTeacher() {
