@@ -67,19 +67,16 @@ const EditGroup = ({
                 <div className='group-container'>
                     <header className='grpHeader'>
                         <h2>Open Share Group</h2>
-                    </header>
-                    <div>Meeting:{MID}<br/>Group: {GID}</div>
-                    {/* <div>Group: {GID}</div> */}
-                    <div className='input-field'>
-                        <div className='grpTitle'>
-                            <TextField
-                                id='title'
-                                value=''
-                                label='Group title'
-                                variant='outlined'
-                                fullWidth='true'
-                            />
-                        </div>
+                        <div>Meeting:{MID}<br/>Group: {GID}</div>
+                    </header>   
+                    <div className='grpTitle'>
+                        <TextField
+                            id='title'
+                            value=''
+                            label='Group title'
+                            variant='outlined'
+                            fullWidth='true'
+                        />
                     </div>
                     <div className='navButtons'>
                         <Button
@@ -105,7 +102,6 @@ const EditGroup = ({
                             Go Back
                         </Button> */}
                     </div>
-
                     <div className='grpAttendance'>
                         <div class='input-field inline'>
                             {/* <Slider
@@ -163,7 +159,6 @@ const EditGroup = ({
                             fullWidth='true'
                         />
                     </div>
-                    <div className='grpSpace' />
                     <div className='grpFacilitator'>
                         <TextField
                             id='facilitator'
@@ -172,7 +167,6 @@ const EditGroup = ({
                             fullWidth='true'
                         />
                     </div>
-                    <div className='grpSpace'></div>
                     <div className='grpCoFacilitator'>
                         <TextField
                             id='cofacilitator'
@@ -181,7 +175,6 @@ const EditGroup = ({
                             fullWidth='true'
                         />
                     </div>
-                    <div className='grpSpace'></div>
                     <div className='grpNotes'>
                         <TextField
                             id='notes'

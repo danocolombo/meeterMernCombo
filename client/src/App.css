@@ -726,29 +726,13 @@ button {
     display: grid;
     grid-template-areas:
         'grpHeader grpHeader'
-        'grpTitle navButtons'
-        'grpAttendance grpAttendance'
-        'grpRadios grpRadios'
-        'grpLocation grpSpace'
-        'grpFacilitator grpSpace'
-        'grpCoFacilitator grpSpace'
+        'grpTitle grpButtons'
+        'grpAttendGen grpAttendGen'
+        'grpLocation grpLSpace'
+        'grpFacilitator grpFSpace'
+        'grpCoFacilitator grpCSpace'
         'grpNotes grpNotes';
     grid-gap: 1rem;
-}
-.grpHeader,
-.grpTitle,
-.navButtons,
-.grpAttendance,
-.grpRadios,
-.grpLocation,
-.grpSpace,
-.grpFacilitator,
-.grpFacSpace,
-.grpCoFacilitator,
-.grpCoFacSpace,
-.grpNotes {
-    border: 1px #ccc solid;
-    padding: 0.5rem;
 }
 .grpHeader {
     grid-area: grpHeader;
@@ -758,41 +742,35 @@ button {
     grid-area: grpTitle;
     border: none;
 }
-.navButtons {
-    grid-area: navButtons;
+.grpButtons {
+    grid-area: grpButtons;
     border: none;
 }
-.grpAttendance {
-    grid-area: grpAttendance;
-    border: none;
-}
-.grpRadios {
-    grid-area: grpRadios;
+.grpAttendGen {
+    grid-area: grpAttendGen;
     border: none;
 }
 .grpLocation {
     grid-area: grpLocation;
     border: none;
 }
-.grpSpace {
+.grpLSpace {
+    grid-area: grpLSpace;
     border: none;
-}
-.grpLocSpace {
-    grid-area: grpLocSpace;
 }
 .grpFacilitator {
     grid-area: grpFacilitator;
     border: none;
 }
-.grpFacSpace {
-    grid-area: grpFacSpace;
+.grpFSpace {
+    grid-area: grpFSpace;
 }
 .grpCoFacilitator {
     grid-area: grpCoFacilitator;
     border: none;
 }
-.grpCoFacSpace {
-    grid-area: grpCoFacSpace;
+.grpCSpace {
+    grid-area: grpCSpace;
 }
 .grpNotes {
     grid-area: grpNotes;
