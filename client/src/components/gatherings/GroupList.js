@@ -27,16 +27,36 @@ export default class ExistingGroups extends Component {
         const res = getGroups(mid);
         return res();
     }
-
+    showGender(g){
+        var returnValue = [];
+        switch (g) {
+            case 'm':
+                returnValue = [
+                    <div>Men's</div>
+                ]
+                break;
+            case 'f':
+                returnValue = [
+                    <div>Women's</div>
+                ]
+                break;
+            default:
+                returnValue = [
+                    <td className='GGL-Gender'></td>
+                ]
+                break;
+        }
+        return returnValue;
+    }
     render() {
         var smallGroups = [];
         if (this.state.existingGroups) {
             smallGroups = this.state.existingGroups.map((grp) => (
                 <tr>
-                    {grp.gender == 'm' ? <td>Men's</td> : <td></td>}
-                    {grp.gender == 'w' ? <td>Women's</td> : <td></td>}
-                    <td>{grp.title}</td>
-                    <td>{grp.facilitator}</td>
+                    <td className='GGL-Gender'>{this.showGender(grp.gender)}</td>
+                    <td className='GGL-Title'>{grp.title}</td>
+                    <td className='GGL'>{grp.location}</td>
+                    <td className='GGL-Facilitator'>{grp.facilitator}</td>
                 </tr>
             ));
         }
@@ -47,4 +67,5 @@ export default class ExistingGroups extends Component {
             </>,
         ];
     }
+    
 }
