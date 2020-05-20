@@ -609,29 +609,28 @@ button {
 /* GroupList component of gathering page */
 /* --------------------------------------*/
 .GGL {
-    font-size: 1.0rem;
+    font-size: 1rem;
     margin-bottom: 1rem;
     padding-left: 5px;
     padding-right: 5px;
 }
 .GGL-Gender {
-    font-size: 1.0rem;
+    font-size: 1rem;
     text-align: right;
     margin-bottom: 1rem;
     padding-right: 10px;
 }
 .GGL-Title {
-    font-size: 1.0rem;
+    font-size: 1rem;
     text-align: left;
     margin-bottom: 1rem;
     padding-right: 15px;
 }
 .GGL-Facilitator {
-    font-size: 1.0rem;
+    font-size: 1rem;
     font-style: italic;
     margin-bottom: 1rem;
     padding-left: 10px;
-
 }
 
 /* Meetings Page
@@ -725,56 +724,59 @@ button {
 .group-container {
     display: grid;
     grid-template-areas:
-        'grpHeader grpHeader'
-        'grpTitle grpButtons'
-        'grpAttendGen grpAttendGen'
-        'grpLocation grpLSpace'
-        'grpFacilitator grpFSpace'
-        'grpCoFacilitator grpCSpace'
-        'grpNotes grpNotes';
+        'grpHeader grpHeader grpHeader'
+        'grpTitle . grpButtons'
+        'grpAttendance . grpGender'
+        'grpLocation . grpGender'
+        'grpFacilitator . .'
+        'grpCoFacilitator . .'
+        'grpNotes grpNotes grpNotes';
     grid-gap: 1rem;
 }
 .grpHeader {
     grid-area: grpHeader;
-    border: none;
+    border: black;
+    /* border-style: solid; */
 }
 .grpTitle {
     grid-area: grpTitle;
-    border: none;
+    border: black;
+    /* border-style: solid; */
 }
 .grpButtons {
     grid-area: grpButtons;
-    border: none;
+    border: black;
+    /* border-style: solid; */
 }
-.grpAttendGen {
-    grid-area: grpAttendGen;
-    border: none;
+.grpGender {
+    grid-area: grpGender;
+    border: black;
+    /* border-style: solid; */
+}
+.grpAttendance {
+    grid-area: grpAttendance;
+    border: black;
+    /* border-style: solid; */
 }
 .grpLocation {
     grid-area: grpLocation;
-    border: none;
-}
-.grpLSpace {
-    grid-area: grpLSpace;
-    border: none;
+    border: black;
+    /* border-style: solid; */
 }
 .grpFacilitator {
     grid-area: grpFacilitator;
-    border: none;
-}
-.grpFSpace {
-    grid-area: grpFSpace;
+    /* border: black; */
+    /* border-style: solid; */
 }
 .grpCoFacilitator {
     grid-area: grpCoFacilitator;
     border: none;
-}
-.grpCSpace {
-    grid-area: grpCSpace;
+    /* border-style: solid; */
 }
 .grpNotes {
     grid-area: grpNotes;
-    border: none;
+    border: black;
+    /* border-style: solid; */
 }
 
 .group {
@@ -825,4 +827,7 @@ button {
 }
 .groupsOpenShareListTable {
     padding-right: 10px;
+}
+.formLabellLeft {
+    padding-right: 20px;
 }

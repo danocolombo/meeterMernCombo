@@ -27,25 +27,27 @@ export default class ExistingGroups extends Component {
         const res = getGroups(mid);
         return res();
     }
-    showGender(g){
+    showGender(g, i) {
         var returnValue = [];
+        var hl = '/EditGroup/' + this.props.mid + '/' + i;
         switch (g) {
             case 'm':
-                returnValue = [
-                    <div>Men's</div>
-                ]
+                returnValue = [<div>Men's</div>];
                 break;
             case 'f':
-                returnValue = [
-                    <div>Women's</div>
-                ]
+                returnValue = [<div>Women's</div>];
                 break;
             default:
-                returnValue = [
-                    <td className='GGL-Gender'></td>
-                ]
+                returnValue = [<td className='GGL-Gender'></td>];
                 break;
         }
+        console.log('hl:' + hl);
+        return returnValue;
+    }
+    generateGroupLink(gid) {
+        var returnValue = [];
+        var theLink = '/EditGroup/' + this.props.mid + '/' + gid;
+        returnValue = theLink;
         return returnValue;
     }
     render() {
@@ -53,7 +55,11 @@ export default class ExistingGroups extends Component {
         if (this.state.existingGroups) {
             smallGroups = this.state.existingGroups.map((grp) => (
                 <tr>
-                    <td className='GGL-Gender'>{this.showGender(grp.gender)}</td>
+                    <td className='GGL-Gender'>
+                        <a href={this.generateGroupLink(grp._id)}>
+                            {this.showGender(grp.gender, grp._id)}
+                        </a>
+                    </td>
                     <td className='GGL-Title'>{grp.title}</td>
                     <td className='GGL'>{grp.location}</td>
                     <td className='GGL-Facilitator'>{grp.facilitator}</td>
@@ -67,5 +73,4 @@ export default class ExistingGroups extends Component {
             </>,
         ];
     }
-    
 }

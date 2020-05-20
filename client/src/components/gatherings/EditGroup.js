@@ -1,207 +1,213 @@
-import React, { Fragment, useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import React, { Fragment, useState } from 'react';
+import { Link, withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import Moment from 'react-moment';
-import moment from 'moment';
 import { FormLabel } from '@material-ui/core';
+import { FormControlLabel } from '@material-ui/core';
 import { TextField } from '@material-ui/core';
 import { Button } from '@material-ui/core';
-import { Slider } from '@material-ui/core';
 import { Input } from '@material-ui/core';
+import { RadioGroup } from '@material-ui/core';
 import { Radio } from '@material-ui/core';
-import { InputLabel } from '@material-ui/core';
 import { connect } from 'react-redux';
-import { deleteGroup, createGroup, getGroup } from '../../actions/group';
+import { createGroup } from '../../actions/group';
 
-const initialState = {
-    id: '',
-    title: '',
-    attendance: '0',
-    gender: '',
-    location: '',
-    facilitator: '',
-    cofacilitator: '',
-    notes: ''
-};
+const EditGroup = ({ gathering, createGroup }, match, history) => {
+    const [formData, setFormData] = useState({
+        title: '',
+        groupId: 0,
+        meetingId: gathering._id,
+        gender: '',
+        location: '',
+        facilitator: '',
+        cofacilitator: '',
+        attenance: 0,
+        notes: '',
+    });
 
-const EditGroup = ({
-    gathering: { gathering, servants, loading },
-    match,
-    createGroup,
-    deleteGroup,
-    getGroup
-}) => {
-    // (match.params.MID)?console.log(match.params.MID):console.log('no MID');
-    var MID = '';
-    var GID = '';
-    const [formData, setFormData] = useState(initialState);
-    // const [selectedValue, setSelectedValue] = React.useState('a');
-    // const handleRadioChange = event => {
-    //     setSelectedValue(event.target.value);
-    // };
-    const handleSlide = (event, newValue) => {
-        //setValue(newValue);
+    const {
+        title,
+        groupId,
+        meetingId,
+        gender,
+        location,
+        facilitator,
+        cofacilitator,
+        attendance,
+        notes,
+    } = formData;
+
+    const handleChange = (event) => {
+        console.log('event:' + event);
+        setFormData(event.target.value);
     };
-    useEffect(() => {
-        MID = match.params.mid;
-        GID = match.params.gid;
-        // console.log('meeting id: ' + match.params.mid);
-        // if (!group) {
-        //     //call getGroup;
-        // }
-        // if (!loading) {
-        //     const gatheringData = { ...initialState };
-        //     for (const key in gathering) {
-        //         if (key in gatheringData) gatheringData[key] = gathering[key];
-        //     }
-        //     setFormData(gatheringData);
-        // }
-        gathering ? console.log('gathered') : console.log('ungathered');
-        MID ? console.log('MID ' + MID) : console.log('MID not set');
-        GID ? console.log('GID ' + GID) : console.log('GID not set');
-    }, [gathering, loading]);
-
+    const onChange = (e) =>
+        setFormData({ ...formData, [e.target.name]: e.target.value });
+    const onSubmit = (e) => {
+        e.preventDefault();
+        let edit = false;
+        groupId != 0 ? (edit = true) : (edit = false);
+        createGroup(formData, history, edit);
+    };
     return (
-        <>
-            <Fragment>
+        <Fragment>
+            <form className='form' onSubmit={(e) => onSubmit(e)}>
                 <div className='group-container'>
                     <header className='grpHeader'>
                         <h2>Open Share Group</h2>
-                        <div>Meeting:{MID}<br/>Group: {GID}</div>
-                    </header>   
+                    </header>
+                    <div>
+                        <input
+                            type='hidden'
+                            name='meetingId'
+                            value={meetingId}
+                        />
+                    </div>
                     <div className='grpTitle'>
                         <TextField
                             id='title'
-                            value=''
+                            name='title'
                             label='Group title'
                             variant='outlined'
                             fullWidth='true'
+                            value={title}
+                            onChange={(e) => onChange(e)}
                         />
                     </div>
-                    <div className='navButtons'>
-                        <Button
+                    <div className='grpButtons'>
+                        {/* <Button
                             variant='contained'
                             color='primary'
                             size='small'
                             className='pl10 py-2'
                         >
                             Save
-                        </Button>
+                        </Button> */}
+                        <input type='submit' className='btn btn-primary my-1' />
                         {'      '}
-                        {/* ================== */}
-                        <Link className='btn btn-light my-1' to={`/editGatherings/${MID}`}>
-                            Go Back
-                        </Link>
-                        {/* ================== */}
-                        {/* <Button
-                            variant='contained'
-                            color='secondary'
-                            size='small'
-                            className='py-2'
+                        <Link
+                            className='btn btn-light my-1'
+                            to={`/editGathering/${gathering._id}`}
                         >
                             Go Back
-                        </Button> */}
+                        </Link>
                     </div>
                     <div className='grpAttendance'>
                         <div class='input-field inline'>
-                            {/* <Slider
-                                value={attendance}
-                                onChange={handleSlide}
-                                aria-labelledby='continuous-slider'
-                            /> */}
-                            {/* <Input
+                            <label
+                                className='formLabellLeft'
+                                for='grpAttendance'
+                            >
+                                Attendance
+                            </label>
+                            <Input
                                 id='attendance'
                                 label='attendance'
+                                name='attendance'
+                                value={attendance}
                                 type='number'
                                 text-align='right'
-                                defaultValue='0'
                                 className='attendance'
+                                onChange={(e) => onChange(e)}
                             />
-                            <label for='grpAttendance'>Attendance</label> */}
                         </div>
-                    </div>
-                    <div className='grpRadios'>
-                        <Radio
-                            id='gender'
-                            // checked={selectedValue === 'f'}
-                            // onChange={handleRadioChange}
-                            value='f'
-                            label='Women'
-                            name='radio-button-demo'
-                            inputProps={{ 'aria-label': 'f' }}
-                        />{' '}
-                        Women
-                        <Radio
-                            id='gender'
-                            // checked={selectedValue === 'm'}
-                            // onChange={handleRadioChange}
-                            value='m'
-                            name='radio-button-demo'
-                            inputProps={{ 'aria-label': 'm' }}
-                        />{' '}
-                        Men
-                        <Radio
-                            id='gender'
-                            // checked={selectedValue === 'x'}
-                            // onChange={handleRadioChange}
-                            value='x'
-                            label='Mixed'
-                            name='radio-button-demo'
-                            inputProps={{ 'aria-label': 'x' }}
-                        />{' '}
-                        Mixed
                     </div>
                     <div className='grpLocation'>
                         <TextField
                             id='location'
                             label='Location'
+                            name='location'
+                            value={location}
                             variant='outlined'
                             fullWidth='true'
+                            onChange={(e) => onChange(e)}
                         />
+                    </div>
+                    <div className='grpGender'>
+                        <FormLabel component='legend'>Gender</FormLabel>
+                        <RadioGroup
+                            aria-label='gender'
+                            name='gender'
+                            onChange={handleChange}
+                        >
+                            <FormControlLabel
+                                value='f'
+                                control={<Radio />}
+                                label='Female'
+                            />
+                            <FormControlLabel
+                                value='m'
+                                control={<Radio />}
+                                label='Male'
+                            />
+                            <FormControlLabel
+                                value='x'
+                                control={<Radio />}
+                                label='Mixed'
+                            />
+                        </RadioGroup>
                     </div>
                     <div className='grpFacilitator'>
                         <TextField
                             id='facilitator'
                             label='Facilitator'
+                            name='facilitator'
+                            value={facilitator}
                             variant='outlined'
                             fullWidth='true'
+                            onChange={(e) => onChange(e)}
                         />
                     </div>
                     <div className='grpCoFacilitator'>
                         <TextField
                             id='cofacilitator'
+                            name='cofacilitator'
+                            value={cofacilitator}
                             label='Co-Facilitator'
                             variant='outlined'
                             fullWidth='true'
+                            onChange={(e) => onChange(e)}
                         />
                     </div>
                     <div className='grpNotes'>
                         <TextField
                             id='notes'
+                            name='notes'
+                            value={notes}
                             label='Notes'
                             multiline
                             rows='2'
-                            defaultValue=''
                             fullWidth='true'
                             variant='outlined'
+                            onChange={(e) => onChange(e)}
                         />
                     </div>
                 </div>
-            </Fragment>
-        </>
+            </form>
+        </Fragment>
     );
+    function getGroups() {
+        // return [<div>GROUP:{match.params.gid}</div>];
+        return 'T';
+    }
+    function giveRequestDetails() {
+        return [
+            <div>
+                BURP
+                {/* Meeting:{match.params.mid}
+                <br />
+                Group: {match.params.gid} */}
+            </div>,
+        ];
+    }
 };
 
 EditGroup.propTypes = {
-    // groups: PropTypes.array.isRequired,
-    deleteGroup: PropTypes.func.isRequired,
-    createGroup: PropTypes.func.isRequired
+    gathering: PropTypes.object.isRequired,
+    createGroup: PropTypes.func.isRequired,
 };
-const mapStateToProps = state => ({
-    gathering: state.gathering,
-    servants: state.servants
+
+const mapStateToProps = (state) => ({
+    gathering: state.gathering.gathering,
 });
 
-export default connect(mapStateToProps, { deleteGroup, createGroup })(
-    EditGroup
-);
+export default connect(mapStateToProps, { createGroup })(withRouter(EditGroup));
