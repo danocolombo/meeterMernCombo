@@ -25,6 +25,26 @@ export const getGroups = (mid) => async () => {
         return resMsg;
     }
 };
+// Get group associated with groupID
+export const getGroupNoRedux = (gid) => async () => {
+    console.log('actions/group: getGroup: gid:' + gid);
+    try {
+        // dispatch({ type: CLEAR_GROUPS });
+        const res = await axios.get(`/api/groups/group/${gid}`);
+        return await axios.get(`/api/groups/group/${gid}`).then((response) => {
+            return response.data;
+        });
+        return res.data;
+        // return;
+    } catch (err) {
+        const resMsg = {
+            msg: err.response.statusText,
+            status: err.response.status,
+        };
+
+        return resMsg;
+    }
+};
 // export const getGroups2 = mid => async dispatch => {
 //     try {
 //         // dispatch({ type: CLEAR_GROUPS });
@@ -109,9 +129,10 @@ export const createGroup = (formData, history, edit = false) => async (
 
 // Delete group
 export const deleteGroup = (groupId) => async (dispatch) => {
+    console.log('actions/group.js: (' + groupId + ')');
     try {
-        const res = await axios.delete(`/api/groups/group/${groupId}`);
-
+        //const res = await axios.delete(`/api/groups/group/${groupId}`);
+        const res = await axios.delete(`/api/groups/${groupId}`);
         dispatch({
             type: DELETE_GROUP,
             payload: res.data,

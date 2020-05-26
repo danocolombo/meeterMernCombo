@@ -3,6 +3,7 @@ import { Link, withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createGathering, getGathering } from '../../actions/gathering';
+// import { deleteGroup } from '../../actions/group';
 import ServantSelect from './ServantSelect';
 import GroupList from './GroupList';
 
@@ -33,6 +34,7 @@ const EditGathering = ({
     group: { groups },
     createGathering,
     getGathering,
+    deleteGroup,
     match,
     history,
 }) => {
@@ -335,7 +337,7 @@ const EditGathering = ({
                     <small className='form-text'>Things to remember</small>
                 </div>
                 {FormButtons()}
-                
+
                 <hr />
                 <h2>
                     Open-Share Groups
@@ -395,30 +397,33 @@ const EditGathering = ({
     function FormButtons() {
         var returnValue = [];
         var today = new Date();
-        today.setHours(0,0,0,0);
+        today.setHours(0, 0, 0, 0);
         var mDate = new Date(meetingDate.slice(0, 10));
         console.log('mDate:' + mDate);
         console.log('today:' + today);
-        if(mDate >= today){
+        if (mDate >= today) {
             console.log('greater than or equal');
             returnValue = [
                 <>
-                <input type='submit' className='btn btn-primary my-1' />
-                <Link className='btn btn-light my-1' to='/gatherings'>
-                    Go Back
-                </Link>
-                </>
-            ]
-        }else{
+                    <input type='submit' className='btn btn-primary my-1' />
+                    <Link className='btn btn-light my-1' to='/gatherings'>
+                        Go Back
+                    </Link>
+                </>,
+            ];
+        } else {
             console.log('less than today');
             returnValue = [
                 <>
-                <input type='submit' className='btn btn-primary my-1' />
-                <Link className='btn btn-light my-1' to='/gatherings/historyView'>
-                    Go Back
-                </Link>
-                </>
-            ]
+                    <input type='submit' className='btn btn-primary my-1' />
+                    <Link
+                        className='btn btn-light my-1'
+                        to='/gatherings/historyView'
+                    >
+                        Go Back
+                    </Link>
+                </>,
+            ];
         }
         return [
             <>

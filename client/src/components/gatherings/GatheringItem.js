@@ -15,8 +15,8 @@ const GatheringItem = ({
         facilitator,
         attendance,
         newcomers,
-        meetingType
-    }
+        meetingType,
+    },
 }) => (
     <Fragment>
         <div className={meetingType !== 'Other' ? 'PersonBox' : 'OtherBox'}>
@@ -72,7 +72,7 @@ function displayNewcomers(newcomers) {
 }
 GatheringItem.propTypes = {
     gathering: PropTypes.object.isRequired,
-    deleteGathering: PropTypes.func.isRequired
+    deleteGathering: PropTypes.func.isRequired,
 };
 
 export default connect(null, { deleteGathering })(GatheringItem);

@@ -29,11 +29,9 @@ router.get('/meeting/:mid', auth, async (req, res) => {
 router.get('/group/:gid', auth, async (req, res) => {
     try {
         const groups = await Groups.findById(req.params.gid);
-
-        res.json(groups);
+        res.jsonp(groups);
     } catch (err) {
         console.error(err.message);
-
         res.status(500).send('Server Error');
     }
 });
@@ -245,7 +243,8 @@ router.post(
 // @route    DELETE api/groups/group/:gid
 // @desc     Delete group by ID
 // @access   Private
-router.delete('/group/:gid', auth, async (req, res) => {
+router.delete('/:gid', auth, async (req, res) => {
+    console.log('DELETING GROUP: ' + req.params.gid);
     try {
         await Groups.findOneAndRemove({ _id: req.params.gid });
         return res.status(200).json({ msg: 'group removed' });

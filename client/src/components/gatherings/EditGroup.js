@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useState, useEffect } from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { FormLabel } from '@material-ui/core';
@@ -9,20 +9,63 @@ import { Input } from '@material-ui/core';
 import { RadioGroup } from '@material-ui/core';
 import { Radio } from '@material-ui/core';
 import { connect } from 'react-redux';
-import { createGroup } from '../../actions/group';
+import { createGroup, getGroup } from '../../actions/group';
 
-const EditGroup = ({ gathering, createGroup }, match, history) => {
+const storedGroup = {
+    title: '',
+    groupId: 0,
+    meetingId: 0,
+    gender: 'x',
+    location: '',
+    facilitator: '',
+    cofacilitator: '',
+    attenance: 0,
+    notes: '',
+};
+const EditGroup = ({
+    gathering: { gathering, loading },
+    createGroup,
+    match,
+    history,
+}) => {
     const [formData, setFormData] = useState({
         title: '',
         groupId: 0,
-        meetingId: gathering._id,
-        gender: '',
+        meetingId: 0,
+        gender: 'x',
         location: '',
         facilitator: '',
         cofacilitator: '',
         attenance: 0,
         notes: '',
     });
+    useEffect(() => {
+        // effect
+        // return () => {
+        //     cleanup
+        // }
+        //-------------------------------------
+        // if length of gid > 1 (we have gid)
+        // get the group info
+        //-------------------------------------
+        const g_id = match.params.gid;
+        // g_id != '0'
+        //     ? console.log('EVAL: EXISTING GROUP')
+        //     : console.log('EVAL: NEW GROUP');
+        if (match.params.gid != '0') {
+            console.log('going to get group' + match.params.gid);
+            const sg = getGroup(match.params.gid);
+            console.log('back from getGroup');
+            // const sg = getExistingGroup(match.params.gid);
+            // const groupInfo = { ...storedGroup };
+            // for (const key in sg) {
+            //     if (key in groupInfo) groupInfo[key] = sg[key];
+            // }
+            // // const cg = getGroup(match.params.gid);
+            // if (sg) console.table(sg);
+        }
+        // console.log(storedGroup);
+    }, [match, getGroup]);
 
     const {
         title,
@@ -36,9 +79,20 @@ const EditGroup = ({ gathering, createGroup }, match, history) => {
         notes,
     } = formData;
 
+    const getExistingGroup = (gid) => {
+        // console.log('getExistingGroup: gid:' + gid);
+        // const res = getGroup(gid);
+        // // console.log('the response back was...');
+        // // console.log('response:' + response.json);
+        // return res();
+    };
+    const handleGenderChange = (e) => {
+        console.log('btnValue:' + e.target.value);
+        setFormData({ ...formData, gender: e.target.value });
+    };
     const handleChange = (event) => {
         console.log('event:' + event);
-        setFormData(event.target.value);
+        setFormData({ ...formData, [event.target.name]: event.target.value });
     };
     const onChange = (e) =>
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -68,7 +122,7 @@ const EditGroup = ({ gathering, createGroup }, match, history) => {
                             name='title'
                             label='Group title'
                             variant='outlined'
-                            fullWidth='true'
+                            fullWidth
                             value={title}
                             onChange={(e) => onChange(e)}
                         />
@@ -86,16 +140,16 @@ const EditGroup = ({ gathering, createGroup }, match, history) => {
                         {'      '}
                         <Link
                             className='btn btn-light my-1'
-                            to={`/editGathering/${gathering._id}`}
+                            to={`/editGathering/${match.params.mid}`}
                         >
                             Go Back
                         </Link>
                     </div>
                     <div className='grpAttendance'>
-                        <div class='input-field inline'>
+                        <div className='input-field inline'>
                             <label
                                 className='formLabellLeft'
-                                for='grpAttendance'
+                                htmlFor='grpAttendance'
                             >
                                 Attendance
                             </label>
@@ -116,9 +170,9 @@ const EditGroup = ({ gathering, createGroup }, match, history) => {
                             id='location'
                             label='Location'
                             name='location'
+                            fullWidth
                             value={location}
                             variant='outlined'
-                            fullWidth='true'
                             onChange={(e) => onChange(e)}
                         />
                     </div>
@@ -132,17 +186,23 @@ const EditGroup = ({ gathering, createGroup }, match, history) => {
                             <FormControlLabel
                                 value='f'
                                 control={<Radio />}
+                                checked={gender === 'f'}
                                 label='Female'
+                                onChange={handleGenderChange}
                             />
                             <FormControlLabel
                                 value='m'
                                 control={<Radio />}
+                                checked={gender === 'm'}
                                 label='Male'
+                                onChange={handleGenderChange}
                             />
                             <FormControlLabel
                                 value='x'
                                 control={<Radio />}
+                                checked={gender === 'x'}
                                 label='Mixed'
+                                onChange={handleGenderChange}
                             />
                         </RadioGroup>
                     </div>
@@ -152,8 +212,8 @@ const EditGroup = ({ gathering, createGroup }, match, history) => {
                             label='Facilitator'
                             name='facilitator'
                             value={facilitator}
+                            fullWidth
                             variant='outlined'
-                            fullWidth='true'
                             onChange={(e) => onChange(e)}
                         />
                     </div>
@@ -162,9 +222,9 @@ const EditGroup = ({ gathering, createGroup }, match, history) => {
                             id='cofacilitator'
                             name='cofacilitator'
                             value={cofacilitator}
+                            fullWidth
                             label='Co-Facilitator'
                             variant='outlined'
-                            fullWidth='true'
                             onChange={(e) => onChange(e)}
                         />
                     </div>
@@ -174,9 +234,9 @@ const EditGroup = ({ gathering, createGroup }, match, history) => {
                             name='notes'
                             value={notes}
                             label='Notes'
+                            fullWidth
                             multiline
                             rows='2'
-                            fullWidth='true'
                             variant='outlined'
                             onChange={(e) => onChange(e)}
                         />
@@ -204,10 +264,13 @@ const EditGroup = ({ gathering, createGroup }, match, history) => {
 EditGroup.propTypes = {
     gathering: PropTypes.object.isRequired,
     createGroup: PropTypes.func.isRequired,
+    getGroup: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
-    gathering: state.gathering.gathering,
+    gathering: state.gathering,
 });
 
-export default connect(mapStateToProps, { createGroup })(withRouter(EditGroup));
+export default connect(mapStateToProps, { createGroup, getGroup })(
+    withRouter(EditGroup)
+);
