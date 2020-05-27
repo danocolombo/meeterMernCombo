@@ -1,6 +1,7 @@
 import React, { Fragment, useState, useEffect } from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import { FormLabel } from '@material-ui/core';
 import { FormControlLabel } from '@material-ui/core';
 import { TextField } from '@material-ui/core';
@@ -8,10 +9,9 @@ import { Button } from '@material-ui/core';
 import { Input } from '@material-ui/core';
 import { RadioGroup } from '@material-ui/core';
 import { Radio } from '@material-ui/core';
-import { connect } from 'react-redux';
-import { createGroup, getGroup } from '../../actions/group';
-
-const storedGroup = {
+import { createGroup, getGroup, deleteGroup } from '../../actions/group';
+const initialState = {
+    _id: '',    
     title: '',
     groupId: 0,
     meetingId: 0,
@@ -22,50 +22,42 @@ const storedGroup = {
     attenance: 0,
     notes: '',
 };
+// const storedGroup = {
+//     _id: '',
+//     title: '',
+//     groupId: 0,
+//     meetingId: 0,
+//     gender: 'x',
+//     location: '',
+//     facilitator: '',
+//     cofacilitator: '',
+//     attenance: 0,
+//     notes: '',
+// };
 const EditGroup = ({
-    gathering: { gathering, loading },
+    group: { group, loading, newGroup},
     createGroup,
+    getGroup,
+    deleteGroup,
     match,
     history,
 }) => {
-    const [formData, setFormData] = useState({
-        title: '',
-        groupId: 0,
-        meetingId: 0,
-        gender: 'x',
-        location: '',
-        facilitator: '',
-        cofacilitator: '',
-        attenance: 0,
-        notes: '',
-    });
+    const [formData, setFormData] = useState(initialState);
+        
     useEffect(() => {
-        // effect
-        // return () => {
-        //     cleanup
-        // }
-        //-------------------------------------
-        // if length of gid > 1 (we have gid)
-        // get the group info
-        //-------------------------------------
-        const g_id = match.params.gid;
-        // g_id != '0'
-        //     ? console.log('EVAL: EXISTING GROUP')
-        //     : console.log('EVAL: NEW GROUP');
-        if (match.params.gid != '0') {
-            console.log('going to get group' + match.params.gid);
-            const sg = getGroup(match.params.gid);
-            console.log('back from getGroup');
-            // const sg = getExistingGroup(match.params.gid);
-            // const groupInfo = { ...storedGroup };
-            // for (const key in sg) {
-            //     if (key in groupInfo) groupInfo[key] = sg[key];
-            // }
-            // // const cg = getGroup(match.params.gid);
-            // if (sg) console.table(sg);
+        if (!group) {
+            getGroup(match.params.gid);
         }
-        // console.log(storedGroup);
-    }, [match, getGroup]);
+        if(!loading){
+            const groupData = { ...initialState};
+            for (const key in group){
+                if (key in groupData) groupData[key] = group[key];
+            }
+            setFormData(groupData);
+        }
+        if (match.params.ig > 0) setFormData({...formData, groupId: match.params.gid});
+        
+    }, [ loading, getGroup, group]);
 
     const {
         title,
@@ -79,13 +71,13 @@ const EditGroup = ({
         notes,
     } = formData;
 
-    const getExistingGroup = (gid) => {
-        // console.log('getExistingGroup: gid:' + gid);
-        // const res = getGroup(gid);
-        // // console.log('the response back was...');
-        // // console.log('response:' + response.json);
-        // return res();
-    };
+    // const getExistingGroup = (gid) => {
+    //     // console.log('getExistingGroup: gid:' + gid);
+    //     // const res = getGroup(gid);
+    //     // // console.log('the response back was...');
+    //     // // console.log('response:' + response.json);
+    //     // return res();
+    // };
     const handleGenderChange = (e) => {
         console.log('btnValue:' + e.target.value);
         setFormData({ ...formData, gender: e.target.value });
@@ -94,13 +86,20 @@ const EditGroup = ({
         console.log('event:' + event);
         setFormData({ ...formData, [event.target.name]: event.target.value });
     };
-    const onChange = (e) =>
-        setFormData({ ...formData, [e.target.name]: e.target.value });
+    const onChange = (e) => {
+        setFormData({ 
+            ...formData, 
+            [e.target.name]: e.target.value });
+
+    };
+        
     const onSubmit = (e) => {
         e.preventDefault();
-        let edit = false;
-        groupId != 0 ? (edit = true) : (edit = false);
-        createGroup(formData, history, edit);
+
+        // let edit = false;
+        // groupId != 0 ? (edit = true) : (edit = false);
+        createGroup(formData, history, true);
+        window.scrollTo(0, 0);
     };
     return (
         <Fragment>
@@ -262,15 +261,16 @@ const EditGroup = ({
 };
 
 EditGroup.propTypes = {
-    gathering: PropTypes.object.isRequired,
+    group: PropTypes.object.isRequired,
     createGroup: PropTypes.func.isRequired,
     getGroup: PropTypes.func.isRequired,
+    deleteGroup: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
-    gathering: state.gathering,
+    group: state.group,
 });
 
-export default connect(mapStateToProps, { createGroup, getGroup })(
+export default connect(mapStateToProps, { createGroup, getGroup, deleteGroup })(
     withRouter(EditGroup)
 );

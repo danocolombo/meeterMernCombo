@@ -3,6 +3,7 @@ import { setAlert } from './alert';
 import {
     GET_GROUPS,
     GROUP_ERROR,
+    CLEAR_GROUP,
     DELETE_GROUP,
     GET_GROUP,
     CLEAR_GROUPS,
@@ -67,8 +68,9 @@ export const getGroupNoRedux = (gid) => async () => {
 // Get group by groupId
 export const getGroup = (groupId) => async (dispatch) => {
     try {
+        
+        dispatch({ type: CLEAR_GROUP});
         const res = await axios.get(`/api/groups/group/${groupId}`);
-
         dispatch({
             type: GET_GROUP,
             payload: res.data,
