@@ -2,11 +2,13 @@ import React, { Fragment, useState, useEffect } from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { createPerson, getPerson } from '../../actions/person';
+import { FormControlLabel } from '@material-ui/core';
 import { components } from 'react-select';
-
+import { RadioGroup, Radio, FormLabel } from '@material-ui/core';
+import { createPerson, getPerson } from '../../actions/person';
 const initialState = {
     name: '',
+    gender: '',
     email: '',
     phone: '',
     service: '',
@@ -41,6 +43,7 @@ const EditPeep = ({
     
     const {
         name,
+        gender,
         email,
         phone,
         service,
@@ -51,7 +54,14 @@ const EditPeep = ({
         system,
         notes
     } = formData;
-
+    const handleGenderChange = (e) => {
+        console.log('btnValue:' + e.target.value);
+        setFormData({ ...formData, gender: e.target.value });
+    };
+    const handleChange = (event) => {
+        console.log('event:' + event);
+        setFormData({ ...formData, [event.target.name]: event.target.value });
+    };
     const onChange = e => {
         if (e.target.name === 'phone') {
             const was = e.target.value;
@@ -143,6 +153,29 @@ const EditPeep = ({
                         onChange={onChange}
                     />
                     <small className='form-text'>Name of the person</small>
+                </div>
+                <div>
+                    <FormLabel component='legend'>Gender</FormLabel>
+                    <RadioGroup
+                        area-label='gender'
+                        name='gender'
+                        onChange={handleChange}
+                    >
+                        <FormControlLabel
+                            value='f'
+                            control={<Radio />}
+                            checked={gender === 'f'}
+                            label='Female'
+                            onChange={handleGenderChange}
+                        />
+                        <FormControlLabel
+                            value='m'
+                            control={<Radio />}
+                            checked={gender === 'm'}
+                            label='Male'
+                            onChange={handleGenderChange}
+                        />
+                    </RadioGroup>
                 </div>
                 <div className='form-group'>
                     Email

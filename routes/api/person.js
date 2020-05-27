@@ -29,6 +29,7 @@ router.post(
 
         const {
             name,
+            gender,
             email,
             phone,
             shirtSize,
@@ -45,6 +46,11 @@ router.post(
             personFields.email = email;
         } else {
             personFields.email = '';
+        }
+        if (gender) {
+            personFields.gender = gender;
+        } else {
+            personFields.gender = '';
         }
         if (phone) {
             personFields.phone = phone;
