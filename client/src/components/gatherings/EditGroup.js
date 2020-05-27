@@ -13,27 +13,15 @@ import { createGroup, getGroup, deleteGroup } from '../../actions/group';
 const initialState = {
     _id: '',    
     title: '',
-    groupId: 0,
-    meetingId: 0,
+    mid: 0,
     gender: 'x',
     location: '',
     facilitator: '',
     cofacilitator: '',
-    attenance: 0,
+    attendance: 0,
     notes: '',
 };
-// const storedGroup = {
-//     _id: '',
-//     title: '',
-//     groupId: 0,
-//     meetingId: 0,
-//     gender: 'x',
-//     location: '',
-//     facilitator: '',
-//     cofacilitator: '',
-//     attenance: 0,
-//     notes: '',
-// };
+
 const EditGroup = ({
     group: { group, loading, newGroup},
     createGroup,
@@ -60,9 +48,9 @@ const EditGroup = ({
     }, [ loading, getGroup, group]);
 
     const {
+        _id,
         title,
-        groupId,
-        meetingId,
+        mid,
         gender,
         location,
         facilitator,
@@ -108,13 +96,13 @@ const EditGroup = ({
                     <header className='grpHeader'>
                         <h2>Open Share Group</h2>
                     </header>
-                    <div>
+                    {/* <div>
                         <input
                             type='hidden'
                             name='meetingId'
                             value={meetingId}
                         />
-                    </div>
+                    </div> */}
                     <div className='grpTitle'>
                         <TextField
                             id='title'

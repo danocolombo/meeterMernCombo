@@ -6,6 +6,7 @@ import {
     CLEAR_GROUP,
     DELETE_GROUP,
     GET_GROUP,
+    UPDATE_GROUP,
     CLEAR_GROUPS,
     SET_GROUP,
 } from './types';
@@ -95,36 +96,35 @@ export const createGroup = (formData, history, edit = false) => async (
     dispatch
 ) => {
     try {
+        console.table(formData);
+        console.log('from actions/group :: createGroup');
+        if(formData._id.length < 1){
+            //this is an add
+            delete formData._id;
+        }
         const config = {
             headers: {
                 'Content-Type': 'application/json',
             },
         };
-        // may want to deserialize the formData here to use the meetingID value
-        const {
-            title,
-            groupId,
-            meetingId,
-            gender,
-            location,
-            facilitator,
-            cofacilitator,
-            attendance,
-            notes,
-        } = formData;
-        console.table(formData);
-        console.log('[actions.group.js::createGroup - meetingId:' + meetingId);
-        // post request to /api/group
-        const res = await axios.post('/api/groups', formData, config);
-        // dispatch({
-        //     type: GET_GROUP,
-        //     payload: res.data,
-        // });
-        dispatch(setAlert(edit ? 'Group Updated' : 'Group Created', 'success'));
-        if (!edit) {
-            history.push(`/editGathering/${meetingId}`);
+        const res = await axios.post(`/api/groups/group/${formData._id}`, formData, config);
+
+        dispatch({
+            type: GET_GROUP,
+            payload: res.data
+        });
+        dispatch(
+            setAlert(
+                edit ? 'Group Updates' : 'Group Created',
+                'success'
+            )
+        );
+
+        if(!edit) {
+            const target = "/editGathering/" + formData.mid;
+            history.push(target);
         }
-    } catch (err) {
+    }catch (err) {
         return err;
     }
 };
