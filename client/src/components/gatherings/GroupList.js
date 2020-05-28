@@ -38,6 +38,9 @@ export default class ExistingGroups extends Component {
             case 'f':
                 returnValue = [<div>Women's</div>];
                 break;
+            case 'x':
+                returnValue = [<div>Mixed</div>];
+                break;
             default:
                 returnValue = [<td className='GGL-Gender'></td>];
                 break;

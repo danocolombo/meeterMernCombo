@@ -33,7 +33,7 @@ const EditGroup = ({
     const [formData, setFormData] = useState(initialState);
         
     useEffect(() => {
-        if (!group) {
+        if (!group && match.params.gid!=0) {
             getGroup(match.params.gid);
         }
         if(!loading){
@@ -41,10 +41,14 @@ const EditGroup = ({
             for (const key in group){
                 if (key in groupData) groupData[key] = group[key];
             }
+            groupData['mid'] = match.params.mid;
             setFormData(groupData);
         }
-        if (match.params.ig > 0) setFormData({...formData, groupId: match.params.gid});
-        
+        if (match.params.gid > 0) setFormData({...formData, groupId: match.params.gid});
+        //setFormData({...formData, mid: match.params.mid});
+        // (group)?console.log('GROUP'):console.log('NO_GROUP');
+        // if(!group){setFormData({...formData,mid: match.params.mid});}
+        // console.table(formData);
     }, [ loading, getGroup, group]);
 
     const {
@@ -83,7 +87,12 @@ const EditGroup = ({
         
     const onSubmit = (e) => {
         e.preventDefault();
-
+        
+        // setFormData({...formData, [mid]: match.params.mid});
+        // console.table(formData);
+        // console.log('mid: ' + match.params.mid);
+        // console.log('__BEFORE_ action::createGroup');
+        
         // let edit = false;
         // groupId != 0 ? (edit = true) : (edit = false);
         createGroup(formData, history, true);

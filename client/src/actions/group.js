@@ -100,6 +100,7 @@ export const createGroup = (formData, history, edit = false) => async (
         console.log('from actions/group :: createGroup');
         if(formData._id.length < 1){
             //this is an add
+            // console.log('We acknowledge it is new');
             delete formData._id;
         }
         const config = {
@@ -107,7 +108,12 @@ export const createGroup = (formData, history, edit = false) => async (
                 'Content-Type': 'application/json',
             },
         };
-        const res = await axios.post(`/api/groups/group/${formData._id}`, formData, config);
+        let res = null;
+        if(formData._id){
+            res = await axios.post(`/api/groups/group/${formData._id}`, formData, config);
+        }else{
+            res = await axios.post(`/api/groups/group/0`, formData, config);
+        }
 
         dispatch({
             type: GET_GROUP,
