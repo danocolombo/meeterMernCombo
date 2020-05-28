@@ -1,4 +1,4 @@
 node_modules
-config/db.js
+config/production.json
 config/default.json
 client/node_modules
