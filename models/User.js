@@ -20,6 +20,10 @@ const UserSchema = new mongoose.Schema({
     defaultClient: {
         type: String,
     },
+    activeClient: {
+        type: String,
+        default: 'undefined',
+    },
     date: {
         type: Date,
         default: Date.now,
