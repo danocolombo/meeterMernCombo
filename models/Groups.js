@@ -1,33 +1,33 @@
 const mongoose = require('mongoose');
-
+const { tenantModel } = require('../lib/multiTenant');
 const GroupSchema = new mongoose.Schema({
     mid: {
         type: String,
-        required: true
+        required: true,
     },
     title: {
         type: String,
-        required: true
+        required: true,
     },
     attendance: {
         type: Number,
-        default: 0
+        default: 0,
     },
     gender: {
-        type: String
+        type: String,
     },
     location: {
-        type: String
+        type: String,
     },
     facilitator: {
-        type: String
+        type: String,
     },
     cofacilitator: {
-        type: String
+        type: String,
     },
     notes: {
-        type: String
-    }
+        type: String,
+    },
 });
-
+// module.exports = Groups = tenantModel('groups', GroupSchema);
 module.exports = Groups = mongoose.model('groups', GroupSchema);

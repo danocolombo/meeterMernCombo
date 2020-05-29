@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-
+const { tenantModel } = require("../lib/multiTenant");
 const PersonSchema = new mongoose.Schema({
     name: {
         type: String,
@@ -14,6 +14,9 @@ const PersonSchema = new mongoose.Schema({
     active: {
         type: Boolean,
         default: true
+    },
+    gender: {
+        type: String
     },
     shirtSize: {
         type: String
@@ -41,5 +44,5 @@ const PersonSchema = new mongoose.Schema({
         }
     ]
 });
-
-module.exports = Person = mongoose.model('person', PersonSchema);
+module.exports = Person = tenantModel('people', PersonSchema);
+//module.exports = Person = mongoose.model('person', PersonSchema);

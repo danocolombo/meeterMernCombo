@@ -6,20 +6,24 @@ import Spinner from '../layout/Spinner';
 import DashboardActions from './DashboardActions';
 import DashboardPic from '../../img/Dashboard1-200.png';
 import DashLogo from '../../img/MMeeterLogo.png';
+import NextGathering from '../gatherings/NextGathering';
 // import DashboardMeeterLogo from '../../img/DashboardMeeterLogo.png';
 import Experience from './Experience';
 import Education from './Education';
 import { getCurrentProfile, deleteAccount } from '../../actions/profile';
+import { getGatherings } from '../../actions/gathering';
 
 const Dashboard = ({
+    getGatherings,
     getCurrentProfile,
     deleteAccount,
     auth: { user },
-    profile: { profile, loading }
+    profile: { profile, loading },
 }) => {
     useEffect(() => {
+        getGatherings();
         getCurrentProfile();
-    }, [getCurrentProfile]);
+    }, [getGatherings, getCurrentProfile]);
 
     return loading && profile === null ? (
         <Spinner />
@@ -30,6 +34,11 @@ const Dashboard = ({
             <p className='lead'>
                 <i className='fas fa-user' /> Welcome {user && user.name}
             </p>
+            <p>
+                <h3>Next Meeting</h3>
+                <NextGathering />
+            </p>
+
             {profile !== null ? (
                 <Fragment>
                     <DashboardActions />
@@ -61,17 +70,20 @@ const Dashboard = ({
 };
 
 Dashboard.propTypes = {
+    getGatherings: PropTypes.func.isRequired,
     getCurrentProfile: PropTypes.func.isRequired,
     deleteAccount: PropTypes.func.isRequired,
     auth: PropTypes.object.isRequired,
-    profile: PropTypes.object.isRequired
+    profile: PropTypes.object.isRequired,
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
     auth: state.auth,
-    profile: state.profile
+    profile: state.profile,
 });
 
-export default connect(mapStateToProps, { getCurrentProfile, deleteAccount })(
-    Dashboard
-);
+export default connect(mapStateToProps, {
+    getGatherings,
+    getCurrentProfile,
+    deleteAccount,
+})(Dashboard);

@@ -3,13 +3,20 @@ const connectDB = require('./config/db');
 const path = require('path');
 
 const app = express();
+//================================
+//multi-tenant stuff
+//--------------------------------
+const { bindCurrentNamespace } = require('./lib/storage');
 
+
+//end of multi-tenant stuff
+//=================================
 // Connect Database
 connectDB();
 
 // Init Middleware
 app.use(express.json({ extended: false }));
-
+app.use(bindCurrentNamespace);
 // Define Routes
 app.use('/api/users', require('./routes/api/users'));
 app.use('/api/auth', require('./routes/api/auth'));

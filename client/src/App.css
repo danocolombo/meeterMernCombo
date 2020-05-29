@@ -606,6 +606,34 @@ button {
         padding: 0.3rem 0.4rem;
     }
 }
+/* GroupList component of gathering page */
+/* --------------------------------------*/
+.GGL {
+    font-size: 1rem;
+    margin-bottom: 1rem;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+.GGL-Gender {
+    font-size: 1rem;
+    text-align: right;
+    margin-bottom: 1rem;
+    padding-right: 10px;
+}
+.GGL-Title {
+    font-size: 1rem;
+    text-align: left;
+    margin-bottom: 1rem;
+    padding-right: 15px;
+}
+.GGL-Facilitator {
+    font-size: 1rem;
+    font-style: italic;
+    margin-bottom: 1rem;
+    padding-left: 10px;
+    padding-right: 20px;
+}
+
 /* Meetings Page
 .meeting {
   grid-template-columns: 1fr;
@@ -697,78 +725,59 @@ button {
 .group-container {
     display: grid;
     grid-template-areas:
-        'grpHeader grpHeader'
-        'grpTitle navButtons'
-        'grpAttendance grpAttendance'
-        'grpRadios grpRadios'
-        'grpLocation grpSpace'
-        'grpFacilitator grpSpace'
-        'grpCoFacilitator grpSpace'
-        'grpNotes grpNotes';
+        'grpHeader grpHeader grpHeader'
+        'grpTitle . grpButtons'
+        'grpAttendance . grpGender'
+        'grpLocation . grpGender'
+        'grpFacilitator . .'
+        'grpCoFacilitator . .'
+        'grpNotes grpNotes grpNotes';
     grid-gap: 1rem;
-}
-.grpHeader,
-.grpTitle,
-.navButtons,
-.grpAttendance,
-.grpRadios,
-.grpLocation,
-.grpSpace,
-.grpFacilitator,
-.grpFacSpace,
-.grpCoFacilitator,
-.grpCoFacSpace,
-.grpNotes {
-    border: 1px #ccc solid;
-    padding: 0.5rem;
 }
 .grpHeader {
     grid-area: grpHeader;
-    border: none;
+    border: black;
+    /* border-style: solid; */
 }
 .grpTitle {
     grid-area: grpTitle;
-    border: none;
+    border: black;
+    /* border-style: solid; */
 }
-.navButtons {
-    grid-area: navButtons;
-    border: none;
+.grpButtons {
+    grid-area: grpButtons;
+    border: black;
+    /* border-style: solid; */
+}
+.grpGender {
+    grid-area: grpGender;
+    border: black;
+    /* border-style: solid; */
 }
 .grpAttendance {
     grid-area: grpAttendance;
-    border: none;
-}
-.grpRadios {
-    grid-area: grpRadios;
-    border: none;
+    border: black;
+    /* border-style: solid; */
 }
 .grpLocation {
     grid-area: grpLocation;
-    border: none;
-}
-.grpSpace {
-    border: none;
-}
-.grpLocSpace {
-    grid-area: grpLocSpace;
+    border: black;
+    /* border-style: solid; */
 }
 .grpFacilitator {
     grid-area: grpFacilitator;
-    border: none;
-}
-.grpFacSpace {
-    grid-area: grpFacSpace;
+    /* border: black; */
+    /* border-style: solid; */
 }
 .grpCoFacilitator {
     grid-area: grpCoFacilitator;
     border: none;
-}
-.grpCoFacSpace {
-    grid-area: grpCoFacSpace;
+    /* border-style: solid; */
 }
 .grpNotes {
     grid-area: grpNotes;
-    border: none;
+    border: black;
+    /* border-style: solid; */
 }
 
 .group {
@@ -819,4 +828,7 @@ button {
 }
 .groupsOpenShareListTable {
     padding-right: 10px;
+}
+.formLabellLeft {
+    padding-right: 20px;
 }
