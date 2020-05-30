@@ -1,4 +1,3 @@
-const aws = require('aws-sdk');
 const mongoose = require('mongoose');
 const config = require('config');
 const DEBUG = true;
