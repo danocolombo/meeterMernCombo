@@ -1,11 +1,13 @@
 const aws = require('aws-sdk');
 const mongoose = require('mongoose');
 const config = require('config');
-//const db = config.get('mongoURI');
+const DEBUG = true;
+let db = config.get('mongoURI');
 
 const connectDB = async () => {
+    if (!DEBUG) db = process.env.DB_CONN;
     try {
-        await mongoose.connect(process.env.DB_CONN, {
+        await mongoose.connect(db, {
             useNewUrlParser: true,
             useCreateIndex: true,
             useFindAndModify: false,
