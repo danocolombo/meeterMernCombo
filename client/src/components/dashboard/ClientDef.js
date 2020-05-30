@@ -11,6 +11,7 @@ import { connect } from 'react-redux';
 /* eslint react/prop-types: 0 */
 const ClientDef = ({ user }) => {
     const { _id, name, defaultClient } = user;
+    const activeClient = defaultClient }
 
     return [
         <>
