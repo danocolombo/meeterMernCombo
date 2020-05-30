@@ -4,7 +4,7 @@ const DEBUG = true;
 let db = config.get('mongoURI');
 
 const connectDB = async () => {
-    if (!DEBUG) db = process.env.DB_CONN;
+    db = process.env.DB_CONN;
     try {
         await mongoose.connect(db, {
             useNewUrlParser: true,
