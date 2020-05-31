@@ -10,14 +10,17 @@ import { connect } from 'react-redux';
 
 /* eslint react/prop-types: 0 */
 const ClientDef = ({ user }) => {
-    const { _id, name, defaultClient } = user;
-    const activeClient = defaultClient;
+    // const { _id, name, defaultClient } = user;
+    // const activeClient = defaultClient;
+    // console.log('uid:' + uid);
 
     return [
         <>
+            {showActiveClient(user)}
             {/* {showFuture(gatherings)} */}
-            CLIENT: {defaultClient}
-            {checkForMultiClient(_id, defaultClient)}
+            {/* CLIENT: {defaultClient}
+            {checkForMultiClient(_id, defaultClient)} */}
+            WOW
         </>,
     ];
 };
@@ -35,65 +38,9 @@ function checkForMultiClient(_id, defaultClient) {
     //===================================================
 }
 
-function showFuture(meetings) {
-    console.log('SIZE:' + meetings.length);
-    let mDate = null;
-    let mTitle = '';
-    let mPeep = '';
-    let gotIt = false;
-    let theNext = (
-        <ul>
-            <li>yep</li>
-        </ul>
-    );
-
-    if (meetings.length > 0) {
-        //=======================================
-        // there are future gatherings in store
-        //=======================================
-        console.log('meeting[0].meetingDate:' + meetings[0].meetingDate);
-        let mCnt = meetings.length;
-        for (let index = 0; index < mCnt; index++) {
-            // const element = array[index];
-            console.log(
-                index +
-                    ' - ' +
-                    meetings[index].meetingDate +
-                    meetings[index].meetingType
-            );
-            if (meetings[index].meetingType === 'Lesson') {
-                mDate = meetings[index].meetingDate;
-                mTitle = 'Lesson:' + meetings[index].title;
-                mPeep = meetings[index].supportRole;
-                mCnt = index;
-                theNext = (
-                    <div>
-                        {mDate} {mTitle} {mPeep}{' '}
-                    </div>
-                );
-            }
-            if (meetings[index].meetingType === 'Testimony') {
-                mDate = meetings[index].meetingDate;
-                mTitle = meetings[index].meetingType;
-                mPeep = meetings[index].title;
-                mCnt = index;
-                theNext = (
-                    <div>
-                        {mDate} {mTitle} {mPeep}{' '}
-                    </div>
-                );
-            }
-        }
-        if (mDate != null) {
-            console.log('===============================');
-            console.log('our next meeting');
-            console.log(mDate + '  ' + ' - ' + mTitle + '  ' + ' - ' + mPeep);
-        }
-        // we have the next testimony/lesson defined (if available)
-        return [<>{theNext}</>];
-    } else {
-        return [<h4>We have no future</h4>];
-    }
+function showActiveClient(user) {
+    console.log('user._id: ' + user._id);
+    return [<h4>One step at a time</h4>];
 }
 function showDate(d) {
     //return 'mm/dd/yyyy';
@@ -108,8 +55,8 @@ function showDate(d) {
 ClientDef.propTypes = {
     user: PropTypes.array.isRequired,
 };
-const mapStateToProps = (state) => {
-    return { user: state.auth.user };
-};
+const mapStateToProps = (state) => ({
+    user: state.auth.user,
+});
 
 export default connect(mapStateToProps)(ClientDef);
