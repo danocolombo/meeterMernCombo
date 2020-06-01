@@ -1,6 +1,0 @@
-{
-    "mongoURI": "undefined",
-    "jwtSecret": "meeterSecret",
-    "githubClientId": "",
-    "githubSecret": ""
-}
