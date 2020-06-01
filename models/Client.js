@@ -12,8 +12,9 @@ const ClientSchema = new mongoose.Schema({
     },
     users: [
         {
-            id: {
-                type: String,
+            _id: {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'user',
             },
             role: {
                 type: String,

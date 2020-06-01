@@ -8,7 +8,6 @@ const app = express();
 //--------------------------------
 const { bindCurrentNamespace } = require('./lib/storage');
 
-
 //end of multi-tenant stuff
 //=================================
 // Connect Database
@@ -25,6 +24,7 @@ app.use('/api/posts', require('./routes/api/posts'));
 app.use('/api/meeting', require('./routes/api/meeting'));
 app.use('/api/person', require('./routes/api/person'));
 app.use('/api/groups', require('./routes/api/groups'));
+app.use('/api/client', require('./routes/api/client'));
 
 // Serve static assets in production
 if (process.env.NODE_ENV === 'production') {
