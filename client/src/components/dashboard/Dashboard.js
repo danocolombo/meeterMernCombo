@@ -36,10 +36,10 @@ const Dashboard = ({
             <p className='lead'>
                 <i className='fas fa-user' /> Welcome {user && user.name}
             </p>
-            <p>
+            {/* <p>
                 <h5>PRIVS</h5>
                 <CheckPrivs />
-            </p>
+            </p> */}
             <p>
                 <h3>Next Meeting</h3>
                 <NextGathering />
