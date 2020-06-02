@@ -83,9 +83,31 @@ export const login = (email, password) => async (dispatch) => {
 
     try {
         const res = await axios.post('/api/auth', body, config);
+        // if (res.defaultClient) {
+        //     //-------------------------------------------------
+        //     // now get the users role for the current client
+        //     //-------------------------------------------------
+        //     const clientPermissions = await axios.get(
+        //         `/api/client/code/${res.defaultClient}`
+        //     );
+        //     // if (clientPermissions) {
+        //     //     clientPermissions.users.map((privs) =>
+        //     //         console.log(
+        //     //             '---> ' +
+        //     //                 privs.user +
+        //     //                 ' : ' +
+        //     //                 privs.role +
+        //     //                 ' : ' +
+        //     //                 privs.status
+        //     //         )
+        //     //     );
+        //     // } else {
+        //     //     console.log('no privs');
+        //     // }
+        // }
         // res.activeClient.upshift(res.defaultClient);
-        console.table(res);
-        console.log('that our res');
+        // console.table(res);
+        // console.log('that our res');
         dispatch({
             type: LOGIN_SUCCESS,
             payload: res.data,

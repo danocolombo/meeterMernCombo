@@ -7,6 +7,7 @@ import DashboardActions from './DashboardActions';
 import DashboardPic from '../../img/Dashboard1-200.png';
 import DashLogo from '../../img/MMeeterLogo.png';
 import NextGathering from '../gatherings/NextGathering';
+import CheckPrivs from './CheckPrivs';
 import ClientDef from './ClientDef';
 // import DashboardMeeterLogo from '../../img/DashboardMeeterLogo.png';
 import Experience from './Experience';
@@ -36,7 +37,8 @@ const Dashboard = ({
                 <i className='fas fa-user' /> Welcome {user && user.name}
             </p>
             <p>
-                <ClientDef />
+                <h5>PRIVS</h5>
+                <CheckPrivs />
             </p>
             <p>
                 <h3>Next Meeting</h3>
