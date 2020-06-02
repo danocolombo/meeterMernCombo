@@ -1,6 +1,6 @@
 # meeterMERN-server
 ***
-## BETA RELEASE
+## BETA RELEASE 1.1
 This was the initial release published for beta testing with Village church on Heroku.
 
 
