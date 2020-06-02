@@ -1,8 +1,8 @@
 # meeterMERN-server
 ***
 ## BETA RELEASE
-================================================
 This was the initial release published for beta testing with Village church on Heroku.
+
 
 ## Origin and Background
 This project started out as a modernization effort of the PHP web appliation known as "meeter".  Meeter was and is a client specific php web application integrated with a Mysql database.  
