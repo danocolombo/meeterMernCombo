@@ -11,7 +11,7 @@ import { RadioGroup } from '@material-ui/core';
 import { Radio } from '@material-ui/core';
 import { createGroup, getGroup, deleteGroup } from '../../actions/group';
 const initialState = {
-    _id: '',    
+    _id: '',
     title: '',
     mid: 0,
     gender: 'x',
@@ -23,7 +23,7 @@ const initialState = {
 };
 
 const EditGroup = ({
-    group: { group, loading, newGroup},
+    group: { group, loading, newGroup },
     createGroup,
     getGroup,
     deleteGroup,
@@ -31,25 +31,26 @@ const EditGroup = ({
     history,
 }) => {
     const [formData, setFormData] = useState(initialState);
-        
+
     useEffect(() => {
-        if (!group && match.params.gid!=0) {
+        if (!group && match.params.gid !== 0) {
             getGroup(match.params.gid);
         }
-        if(!loading){
-            const groupData = { ...initialState};
-            for (const key in group){
+        if (!loading) {
+            const groupData = { ...initialState };
+            for (const key in group) {
                 if (key in groupData) groupData[key] = group[key];
             }
             groupData['mid'] = match.params.mid;
             setFormData(groupData);
         }
-        if (match.params.gid > 0) setFormData({...formData, groupId: match.params.gid});
+        if (match.params.gid > 0)
+            setFormData({ ...formData, groupId: match.params.gid });
         //setFormData({...formData, mid: match.params.mid});
         // (group)?console.log('GROUP'):console.log('NO_GROUP');
         // if(!group){setFormData({...formData,mid: match.params.mid});}
         // console.table(formData);
-    }, [ loading, getGroup, group]);
+    }, [loading, getGroup, group]);
 
     const {
         _id,
@@ -79,20 +80,20 @@ const EditGroup = ({
         setFormData({ ...formData, [event.target.name]: event.target.value });
     };
     const onChange = (e) => {
-        setFormData({ 
-            ...formData, 
-            [e.target.name]: e.target.value });
-
+        setFormData({
+            ...formData,
+            [e.target.name]: e.target.value,
+        });
     };
-        
+
     const onSubmit = (e) => {
         e.preventDefault();
-        
+
         // setFormData({...formData, [mid]: match.params.mid});
         // console.table(formData);
         // console.log('mid: ' + match.params.mid);
         // console.log('__BEFORE_ action::createGroup');
-        
+
         // let edit = false;
         // groupId != 0 ? (edit = true) : (edit = false);
         createGroup(formData, history, true);

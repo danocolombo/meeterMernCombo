@@ -16,14 +16,14 @@ const initialState = {
     facebook: '',
     linkedin: '',
     youtube: '',
-    instagram: ''
+    instagram: '',
 };
 
 const EditProfile = ({
     profile: { profile, loading },
     createProfile,
     getCurrentProfile,
-    history
+    history,
 }) => {
     const [formData, setFormData] = useState(initialState);
 
@@ -52,13 +52,13 @@ const EditProfile = ({
         facebook,
         linkedin,
         youtube,
-        instagram
+        instagram,
     } = formData;
 
-    const onChange = e =>
+    const onChange = (e) =>
         setFormData({ ...formData, [e.target.name]: e.target.value });
 
-    const onSubmit = e => {
+    const onSubmit = (e) => {
         e.preventDefault();
         createProfile(formData, history, true);
     };
@@ -73,53 +73,45 @@ const EditProfile = ({
             <form className='form' onSubmit={onSubmit}>
                 <div className='form-group'>
                     <select name='status' value={status} onChange={onChange}>
-                        <option>* Select Professional Status</option>
-                        <option value='Developer'>Developer</option>
-                        <option value='Junior Developer'>
-                            Junior Developer
+                        <option>* Select Your Ministry Role</option>
+                        <option value='Minstry Leader'>Ministry Leader</option>
+                        <option value='Assimilation Coach'>
+                            Assimilation Coach
                         </option>
-                        <option value='Senior Developer'>
-                            Senior Developer
+                        <option value='Encouragement Coach'>
+                            Encouragement Coach
                         </option>
-                        <option value='Manager'>Manager</option>
-                        <option value='Student or Learning'>
-                            Student or Learning
-                        </option>
-                        <option value='Instructor'>
-                            Instructor or Teacher
-                        </option>
-                        <option value='Intern'>Intern</option>
+                        <option value='Training Coach'>Training Coach</option>
+                        <option value='Leader'>Leader</option>
+                        <option value='Volunteer'>Volunteer</option>
+                        <option value='Unknown'>Unknown</option>
                         <option value='Other'>Other</option>
                     </select>
-                    <small className='form-text'>
-                        Give us an idea of where you are at in your career
-                    </small>
+                    <small className='form-text'>What is your role</small>
                 </div>
                 <div className='form-group'>
                     <input
                         type='text'
-                        placeholder='Company'
+                        placeholder='What are your areas of recovery?'
                         name='company'
                         value={company}
                         onChange={onChange}
                     />
-                    <small className='form-text'>
-                        Could be your own company or one you work for
-                    </small>
+                    <small className='form-text'>Recovery Areas</small>
                 </div>
                 <div className='form-group'>
                     <input
                         type='text'
-                        placeholder='Website'
+                        placeholder='How many years'
                         name='website'
                         value={website}
                         onChange={onChange}
                     />
                     <small className='form-text'>
-                        Could be your own or a company website
+                        How long have you been in recovery?
                     </small>
                 </div>
-                <div className='form-group'>
+                {/* <div className='form-group'>
                     <input
                         type='text'
                         placeholder='Location'
@@ -130,21 +122,21 @@ const EditProfile = ({
                     <small className='form-text'>
                         City & state suggested (eg. Boston, MA)
                     </small>
-                </div>
+                </div> */}
                 <div className='form-group'>
                     <input
                         type='text'
-                        placeholder='* Skills'
+                        placeholder='* Skills/Gifts/Passions'
                         name='skills'
                         value={skills}
                         onChange={onChange}
                     />
                     <small className='form-text'>
-                        Please use comma separated values (eg.
-                        HTML,CSS,JavaScript,PHP)
+                        Please use comma separated values (eg. Prayer, Teaching,
+                        Serving, Greeting, etc.)
                     </small>
                 </div>
-                <div className='form-group'>
+                {/* <div className='form-group'>
                     <input
                         type='text'
                         placeholder='Github Username'
@@ -156,10 +148,10 @@ const EditProfile = ({
                         If you want your latest repos and a Github link, include
                         your username
                     </small>
-                </div>
+                </div> */}
                 <div className='form-group'>
                     <textarea
-                        placeholder='A short bio of yourself'
+                        placeholder='Any other details you care to share'
                         name='bio'
                         value={bio}
                         onChange={onChange}
@@ -215,7 +207,7 @@ const EditProfile = ({
                             />
                         </div>
 
-                        <div className='form-group social-input'>
+                        {/* <div className='form-group social-input'>
                             <i className='fab fa-linkedin fa-2x' />
                             <input
                                 type='text'
@@ -224,7 +216,7 @@ const EditProfile = ({
                                 value={linkedin}
                                 onChange={onChange}
                             />
-                        </div>
+                        </div> */}
 
                         <div className='form-group social-input'>
                             <i className='fab fa-instagram fa-2x' />
@@ -251,11 +243,11 @@ const EditProfile = ({
 EditProfile.propTypes = {
     createProfile: PropTypes.func.isRequired,
     getCurrentProfile: PropTypes.func.isRequired,
-    profile: PropTypes.object.isRequired
+    profile: PropTypes.object.isRequired,
 };
 
-const mapStateToProps = state => ({
-    profile: state.profile
+const mapStateToProps = (state) => ({
+    profile: state.profile,
 });
 
 export default connect(mapStateToProps, { createProfile, getCurrentProfile })(

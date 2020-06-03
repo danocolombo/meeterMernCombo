@@ -32,7 +32,7 @@ const Dashboard = ({
     ) : (
         <Fragment>
             {/* <h1 className="large text-primary">Dashboard</h1> */}
-            <img className='dashboardLogo' src={DashLogo} />
+            <img className='dashboardLogo' src={DashLogo} alt='Meeter' />
             <p className='lead'>
                 <i className='fas fa-user' /> Welcome {user && user.name}
             </p>
@@ -45,7 +45,7 @@ const Dashboard = ({
                 <NextGathering />
             </p>
 
-            {profile !== null ? (
+            {/* {profile !== null ? (
                 <Fragment>
                     <DashboardActions />
                     <Experience experience={profile.experience} />
@@ -70,7 +70,7 @@ const Dashboard = ({
                         Create Profile
                     </Link>
                 </Fragment>
-            )}
+            )} */}
         </Fragment>
     );
 };
