@@ -4,43 +4,58 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { logout } from '../../actions/auth';
 
-const Navbar = ({ auth: { isAuthenticated, loading }, logout }) => {
+const Navbar = ({ auth: { isAuthenticated, loading, user }, logout }) => {
+    let testMe = null;
+    // let aRole = user.activeRole;
+    user ? (testMe = true) : (testMe = false);
+    console.log('testMe: ' + testMe);
+    console.table(user);
+    // aRole = getRole(user);
+    // console.log('aRole: ' + aRole);
     const authLinks = (
-        <ul>
-            <li>
-                <Link to='/gatherings'>
-                    <i className='far fa-calendar-alt'></i>{' '}
-                    <span className='hide-sm'>Meetings</span>
-                </Link>
-            </li>
-            <li>
-                <Link to='/people'>
-                    <i className='fas fa-user-shield'></i>{' '}
-                    <span className='hide-sm'>People</span>
-                </Link>
-            </li>
-            <li>
-                <Link to='/#'>
-                    <i className='fas fa-chalkboard-teacher'></i>{' '}
-                    <span className='hide-sm'>Training</span>
-                </Link>
-            </li>
-            <li>
-                <Link to='/posts'>Posts</Link>
-            </li>
-            <li>
-        <Link to="/dashboard">
-          <i className="fas fa-user" />{' '}
-          <span className="hide-sm">Dashboard</span>
-        </Link>
-      </li>
-            <li>
-                <a onClick={logout} href='#!'>
-                    <i className='fas fa-sign-out-alt' />{' '}
-                    <span className='hide-sm'>Logout</span>
-                </a>
-            </li>
-        </ul>
+        <Fragment>
+            <ul>
+                <li>
+                    <Link to='/gatherings'>
+                        <i className='far fa-calendar-alt'></i>{' '}
+                        <span className='hide-sm'>Meetings</span>
+                    </Link>
+                </li>
+                {user && user.activeRole !== 'guest' ? (
+                    <Fragment>
+                        <li>
+                            <Link to='/people'>
+                                <i className='fas fa-user-shield'></i>{' '}
+                                <span className='hide-sm'>People</span>
+                            </Link>
+                        </li>
+                        <li>
+                            <Link to='/#'>
+                                <i className='fas fa-chalkboard-teacher'></i>{' '}
+                                <span className='hide-sm'>Training</span>
+                            </Link>
+                        </li>
+                        <li>
+                            <Link to='/posts'>Posts</Link>
+                        </li>
+                        <li>
+                            <Link to='/dashboard'>
+                                <i className='fas fa-user' />{' '}
+                                <span className='hide-sm'>Dashboard</span>
+                            </Link>
+                        </li>
+                    </Fragment>
+                ) : (
+                    <Fragment>{/* <p>--hmmm---</p> */}</Fragment>
+                )}
+                <li>
+                    <a onClick={logout} href='#!'>
+                        <i className='fas fa-sign-out-alt' />{' '}
+                        <span className='hide-sm'>Logout</span>
+                    </a>
+                </li>
+            </ul>
+        </Fragment>
     );
     //=========================================================
     // following links are displayed to non-logged in visitors
@@ -68,6 +83,59 @@ const Navbar = ({ auth: { isAuthenticated, loading }, logout }) => {
             )}
         </nav>
     );
+    function getRole(user) {
+        return null;
+        // return user.activeRole;
+    }
+    function displayAuthenticatedMenu() {
+        {
+            // console.log(servants.length);
+            // var peeps = '';
+            // servants.forEach((peep) => {
+            //     peeps = peeps + peep;
+            // });
+            // const sample =
+            //     "<option value='Junior Developer'>Junior Developer</option>";
+            // console.log(peeps);
+            return [
+                <ul>
+                    <li>
+                        <Link to='/gatherings'>
+                            <i className='far fa-calendar-alt'></i>{' '}
+                            <span className='hide-sm'>Meetings</span>
+                        </Link>
+                    </li>
+                    <li>
+                        <Link to='/people'>
+                            <i className='fas fa-user-shield'></i>{' '}
+                            <span className='hide-sm'>People</span>
+                        </Link>
+                    </li>
+                    <li>
+                        <Link to='/#'>
+                            <i className='fas fa-chalkboard-teacher'></i>{' '}
+                            <span className='hide-sm'>Training</span>
+                        </Link>
+                    </li>
+                    <li>
+                        <Link to='/posts'>Posts</Link>
+                    </li>
+                    <li>
+                        <Link to='/dashboard'>
+                            <i className='fas fa-user' />{' '}
+                            <span className='hide-sm'>Dashboard</span>
+                        </Link>
+                    </li>
+                    <li>
+                        <a onClick={logout} href='#!'>
+                            <i className='fas fa-sign-out-alt' />{' '}
+                            <span className='hide-sm'>Logout</span>
+                        </a>
+                    </li>
+                </ul>,
+            ];
+        }
+    }
 };
 
 Navbar.propTypes = {

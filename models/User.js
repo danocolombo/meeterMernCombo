@@ -24,6 +24,10 @@ const UserSchema = new mongoose.Schema({
         type: String,
         default: 'undefined',
     },
+    activeRole: {
+        type: String,
+        default: 'owner',
+    },
     date: {
         type: Date,
         default: Date.now,

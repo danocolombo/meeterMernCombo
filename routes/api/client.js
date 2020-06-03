@@ -65,6 +65,24 @@ router.get('/code/:code', auth, async (req, res) => {
         res.status(500).send('Server Error');
     }
 });
+// @route    GET api/client/privledges/:code/:uid
+// @desc     get privledges for user of client code
+// @access   Private
+router.get('/privledges/:code/:uid', auth, async (req, res) => {
+    try {
+        // console.log('API::cid: ' + req.param.cid);
+        // const client = await Client.findOne({ code: req.params.code });
+        const client = null;
+        if (!client) {
+            return res.status(400).json({ msg: 'Cannot process request' });
+        }
+
+        res.json(client);
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Server Error');
+    }
+});
 
 // @route    POST api/client
 // @desc     Create or update client
