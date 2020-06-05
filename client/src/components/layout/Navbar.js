@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { logout } from '../../actions/auth';
 
-const Navbar = ({ auth: { isAuthenticated, loading, user }, logout }) => {
+const Navbar = ({ auth: { isAuthenticated, loading, user }, auth, logout }) => {
     let testMe = null;
     // let aRole = user.activeRole;
     user ? (testMe = true) : (testMe = false);
@@ -15,38 +15,71 @@ const Navbar = ({ auth: { isAuthenticated, loading, user }, logout }) => {
     const authLinks = (
         <Fragment>
             <ul>
-                <li>
+                {/* <li>
                     <Link to='/gatherings'>
                         <i className='far fa-calendar-alt'></i>{' '}
                         <span className='hide-sm'>Meetings</span>
                     </Link>
-                </li>
-                {user && user.activeRole !== 'guest' ? (
+                </li> */}
+                {(auth.activeRole === 'superuser' ||
+                    auth.activeRole === 'owner') &&
+                auth.activeStatus === 'approved' ? (
                     <Fragment>
+                        <li>
+                            <Link to='/gatherings'>
+                                <i className='far fa-calendar-alt'></i>{' '}
+                                <span className='hide-sm'>Meetings</span>
+                            </Link>
+                        </li>
                         <li>
                             <Link to='/people'>
                                 <i className='fas fa-user-shield'></i>{' '}
                                 <span className='hide-sm'>People</span>
                             </Link>
                         </li>
+                    </Fragment>
+                ) : (
+                    <Fragment>
+                        <li></li>
+                    </Fragment>
+                )}
+                {auth.activeRole === 'superuser' &&
+                auth.activeStatus === 'approved' ? (
+                    <Fragment>
                         <li>
-                            <Link to='/#'>
-                                <i className='fas fa-chalkboard-teacher'></i>{' '}
-                                <span className='hide-sm'>Training</span>
+                            <Link to='/admin'>
+                                <i className='fas fa fa-cogs'></i>{' '}
+                                <span className='hide-sm'> Admin</span>
                             </Link>
                         </li>
                         <li>
                             <Link to='/posts'>Posts</Link>
                         </li>
-                        <li>
+                        {/* <li>
                             <Link to='/dashboard'>
                                 <i className='fas fa-user' />{' '}
                                 <span className='hide-sm'>Dashboard</span>
                             </Link>
+                        </li> */}
+                    </Fragment>
+                ) : (
+                    <Fragment>
+                        <li></li>
+                    </Fragment>
+                )}
+                {auth.activeStatus === 'approved' ? (
+                    <Fragment>
+                        <li>
+                            <Link to='/profile'>
+                                <i className='fas fa fa-wrench' />{' '}
+                                <span className='hide-sm'>Profile</span>
+                            </Link>
                         </li>
                     </Fragment>
                 ) : (
-                    <Fragment>{/* <p>--hmmm---</p> */}</Fragment>
+                    <Fragment>
+                        <li></li>
+                    </Fragment>
                 )}
                 <li>
                     <a onClick={logout} href='#!'>

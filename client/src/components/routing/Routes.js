@@ -13,6 +13,7 @@ import Profile from '../profile/Profile';
 import Posts from '../posts/Posts';
 import Post from '../post/Post';
 import People from '../people/People';
+import Admin from '../admin/Admin';
 // import Gathering from '../gatherings/Gathering';
 import Gatherings from '../gatherings/Gatherings';
 import EditGathering from '../gatherings/EditGathering';
@@ -89,6 +90,7 @@ const Routes = () => {
                     path='/EditPerson/:id'
                     component={EditPerson}
                 />
+                <PrivateRoute exact path='/admin' component={Admin} />
                 <Route component={NotFound} />
             </Switch>
         </section>

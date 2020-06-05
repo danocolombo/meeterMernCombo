@@ -18,9 +18,9 @@ function getActiveClient(user) {
     return (
         <div>
             CLIENT:{' '}
-            <strong>
+            {/* <strong>
                 <i>{user.activeClient}</i>
-            </strong>
+            </strong> */}
         </div>
     );
 }

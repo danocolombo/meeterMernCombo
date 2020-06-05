@@ -12,7 +12,7 @@ const Register = ({ setAlert, register, isAuthenticated }) => {
         email: '',
         password: '',
         password2: '',
-        defaultClient: 'cpv',
+        defaultClient: '',
     });
 
     const { name, email, password, password2, defaultClient } = formData;
@@ -58,8 +58,7 @@ const Register = ({ setAlert, register, isAuthenticated }) => {
                         onChange={(e) => onChange(e)}
                     />
                     <small className='form-text'>
-                        This site uses Gravatar so if you want a profile image,
-                        use a Gravatar email
+                        Enter your email, this will also be your login value
                     </small>
                 </div>
                 <div className='form-group'>
@@ -89,7 +88,9 @@ const Register = ({ setAlert, register, isAuthenticated }) => {
                         value={defaultClient}
                         onChange={onChange}
                     />
-                    <small className='form-text'>Client Code</small>
+                    <small className='form-text'>
+                        Get specific code from manager or admin
+                    </small>
                 </div>
                 <input
                     type='submit'
