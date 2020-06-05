@@ -20,6 +20,7 @@ const Dashboard = ({
     getCurrentProfile,
     deleteAccount,
     auth: { user },
+    auth,
     profile: { profile, loading },
 }) => {
     useEffect(() => {
@@ -40,10 +41,11 @@ const Dashboard = ({
                 <h5>PRIVS</h5>
                 <CheckPrivs />
             </p> */}
-            <p>
+            {privledgedInfo(auth)}
+            {/* <p>
                 <h3>Next Meeting</h3>
                 <NextGathering />
-            </p>
+            </p> */}
 
             {/* {profile !== null ? (
                 <Fragment>
@@ -73,6 +75,27 @@ const Dashboard = ({
             )} */}
         </Fragment>
     );
+    function privledgedInfo(auth) {
+        if (auth.activeStatus === 'approved') {
+            return [
+                <Fragment>
+                    <div>
+                        <u>
+                            <strong>[Authorized Information]</strong>
+                        </u>
+                    </div>
+                    <NextGathering />
+                </Fragment>,
+            ];
+        } else {
+            return [
+                <div>
+                    Please check with your system contact to get approved for
+                    use.
+                </div>,
+            ];
+        }
+    }
 };
 
 Dashboard.propTypes = {
