@@ -14,6 +14,8 @@ import {
     CLEAR_GROUP,
     CLEAR_PEOPLE,
     CLEAR_SERVANTS,
+    CLEAR_USER_AUTH,
+    SET_USER_AUTH,
 } from './types';
 import setAuthToken from '../utils/setAuthToken';
 
@@ -25,9 +27,53 @@ export const loadUser = () => async (dispatch) => {
 
     try {
         const res = await axios.get('/api/auth');
-
+        // console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@');
+        // console.log(' before USER_LOADED');
+        // console.log('res.data: ' + JSON.stringify(res));
+        // console.log('maybe: ' + res.data.activeClient);
+        // console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@');
+        // const { activeClient, _id } = res.body;
+        // console.log('activeClient: ' + activeClient);
+        // console.log('_id: ' + _id);
+        // console.log('==================================');
         dispatch({
             type: USER_LOADED,
+            payload: res.data,
+        });
+        //==========================================
+        // now would be good spot to SET_USER_AUTH
+        //==========================================
+        dispatch(setUserAuth(res.data.defaultClient, res.data._id));
+    } catch (err) {
+        dispatch({
+            type: AUTH_ERROR,
+        });
+    }
+};
+
+// SET USER AUTH
+export const setUserAuth = (client, uid) => async (dispatch) => {
+    const config = {
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    };
+    const body = JSON.stringify({ client, uid });
+    // console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@');
+    // console.log(' inside client::src::actions::auth::setUserAuth');
+    // // console.log('client: ' + client);
+    // // console.log('uid: ' + uid);
+    // console.log('body: ' + body);
+    // // console.log('maybe: ' + res.data.activeClient);
+    // console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@');
+    try {
+        const res = await axios.put('/api/meeter/setUserAuth', body, config);
+        // res should now have activeClient, activeRole, and activeStatus
+        // console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@');
+        // console.log(' inside client::src::actions::auth::setUserAuth');
+        // console.log('back from api/meeter/setUserAuth');
+        dispatch({
+            type: SET_USER_AUTH,
             payload: res.data,
         });
     } catch (err) {
@@ -51,7 +97,10 @@ export const register = ({ name, email, password, defaultClient }) => async (
 
     try {
         const res = await axios.post('/api/users', body, config);
-
+        console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@');
+        console.log(' before REGISTER_SUCCESS');
+        console.log('res.data: ' + res.data);
+        console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@');
         dispatch({
             type: REGISTER_SUCCESS,
             payload: res.data,
@@ -108,6 +157,7 @@ export const login = (email, password) => async (dispatch) => {
         // res.activeClient.upshift(res.defaultClient);
         // console.table(res);
         // console.log('that our res');
+
         dispatch({
             type: LOGIN_SUCCESS,
             payload: res.data,
@@ -133,5 +183,6 @@ export const logout = () => (dispatch) => {
     dispatch({ type: CLEAR_GATHERINGS });
     dispatch({ type: CLEAR_HATHERINGS });
     dispatch({ type: CLEAR_SERVANTS });
+    dispatch({ type: CLEAR_USER_AUTH });
     dispatch({ type: LOGOUT });
 };

@@ -47,3 +47,5 @@ export const UPDATE_GROUP = 'UPDATE_GROUP';
 export const GROUP_ERROR = 'GROUP_ERROR';
 export const CLEAR_GROUP = 'CLEAR_GROUP';
 export const CLEAR_GROUPS = 'CLEAR_GROUPS';
+export const SET_USER_AUTH = 'SET_USER_AUTH';
+export const CLEAR_USER_AUTH = 'CLEAR_USER_AUTH';

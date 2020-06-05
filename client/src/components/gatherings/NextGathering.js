@@ -94,7 +94,7 @@ function showFuture(meetings) {
         // we have the next testimony/lesson defined (if available)
         return [<>{theNext}</>];
     } else {
-        return [<h4>We have no future</h4>];
+        return [<h4>is not scheduled</h4>];
     }
 }
 function showDate(d) {

@@ -7,6 +7,7 @@ import {
     LOGIN_FAIL,
     LOGOUT,
     ACCOUNT_DELETED,
+    SET_USER_AUTH,
 } from '../actions/types';
 
 const initialState = {
@@ -34,7 +35,16 @@ export default function (state = initialState, action) {
             return {
                 ...state,
                 ...payload,
-                activeClient: defaultClient,
+                isAuthenticated: true,
+                loading: false,
+            };
+        case SET_USER_AUTH:
+            const { activeClient, activeRole, activeStatus } = payload;
+            return {
+                ...state,
+                activeClient: activeClient,
+                activeRole: activeRole,
+                activeStatus: activeStatus,
                 isAuthenticated: true,
                 loading: false,
             };
@@ -63,6 +73,9 @@ export default function (state = initialState, action) {
                 token: null,
                 isAuthenticated: false,
                 user: null,
+                activeClient: null,
+                activeRole: null,
+                activeStatus: null,
                 loading: false,
             };
         default:

@@ -28,7 +28,8 @@ router.get('/', auth, async (req, res) => {
         // console.log('now tenant:' + getCurrentTenantId());
         // console.table(JSON.stringify(user));
         //set activeClient to response from defaultClient
-        user.activeClient = user.defaultClient;
+
+        // user.activeClient = user.defaultClient;
 
         res.json(user);
     } catch (err) {
