@@ -70,7 +70,7 @@ const Navbar = ({ auth: { isAuthenticated, loading, user }, auth, logout }) => {
                 {auth.activeStatus === 'approved' ? (
                     <Fragment>
                         <li>
-                            <Link to='/profile'>
+                            <Link to={`/profile/${user._id}`}>
                                 <i className='fas fa fa-wrench' />{' '}
                                 <span className='hide-sm'>Profile</span>
                             </Link>

@@ -10,6 +10,7 @@ import AddExperience from '../profile-forms/AddExperience';
 import AddEducation from '../profile-forms/AddEducation';
 import Profiles from '../profiles/Profiles';
 import Profile from '../profile/Profile';
+import UserProfile from '../profile/UserProfile';
 import Posts from '../posts/Posts';
 import Post from '../post/Post';
 import People from '../people/People';
@@ -89,6 +90,11 @@ const Routes = () => {
                     exact
                     path='/EditPerson/:id'
                     component={EditPerson}
+                />
+                <PrivateRoute
+                    exact
+                    path='/UserProfile/:id'
+                    component={UserProfile}
                 />
                 <PrivateRoute exact path='/admin' component={Admin} />
                 <Route component={NotFound} />

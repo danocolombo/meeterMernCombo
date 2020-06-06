@@ -17,12 +17,16 @@ const Profile = ({
   match
 }) => {
   useEffect(() => {
+    // console.log('=====================================');
+    // console.log(' => in profile :: Profile, calling getProfileById with...');
+    // console.log('match.params.id: ' + match.params.id);
     getProfileById(match.params.id);
   }, [getProfileById, match.params.id]);
 
   return (
     <Fragment>
-      {profile === null || loading ? (
+      {/* {profile === null || loading ? ( */}
+      {loading ? (
         <Spinner />
       ) : (
         <Fragment>
