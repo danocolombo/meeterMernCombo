@@ -5,13 +5,6 @@ import PropTypes from 'prop-types';
 import { logout } from '../../actions/auth';
 
 const Navbar = ({ auth: { isAuthenticated, loading, user }, auth, logout }) => {
-    let testMe = null;
-    // let aRole = user.activeRole;
-    user ? (testMe = true) : (testMe = false);
-    console.log('testMe: ' + testMe);
-    console.table(user);
-    // aRole = getRole(user);
-    // console.log('aRole: ' + aRole);
     const authLinks = (
         <Fragment>
             <ul>
@@ -70,7 +63,7 @@ const Navbar = ({ auth: { isAuthenticated, loading, user }, auth, logout }) => {
                 {auth.activeStatus === 'approved' ? (
                     <Fragment>
                         <li>
-                            <Link to={`/profile/${user._id}`}>
+                            <Link to={`/UserProfile`}>
                                 <i className='fas fa fa-wrench' />{' '}
                                 <span className='hide-sm'>Profile</span>
                             </Link>

@@ -61,39 +61,60 @@ function showFuture(meetings) {
             console.log(
                 index +
                     ' - ' +
-                    meetings[index].meetingDate +
+                    returnSmallDate(meetings[index].meetingDate) +
                     meetings[index].meetingType
             );
             if (meetings[index].meetingType === 'Lesson') {
-                mDate = meetings[index].meetingDate;
+                mDate = returnSmallDate(meetings[index].meetingDate);
                 mTitle = 'Lesson:' + meetings[index].title;
                 mPeep = meetings[index].supportRole;
                 mCnt = index;
                 theNext = (
                     <div>
-                        {mDate} {mTitle} {mPeep}{' '}
+                        <table>
+                            <tr>
+                                <td className='.p-3'>{mDate}</td>
+                                <td>&nbsp;&nbsp;</td>
+                                <td>{mTitle}</td>
+                                <td>{mPeep}</td>
+                            </tr>
+                        </table>
                     </div>
                 );
             }
             if (meetings[index].meetingType === 'Testimony') {
-                mDate = meetings[index].meetingDate;
+                mDate = returnSmallDate(meetings[index].meetingDate);
                 mTitle = meetings[index].meetingType;
                 mPeep = meetings[index].title;
                 mCnt = index;
                 theNext = (
                     <div>
-                        {mDate} {mTitle} {mPeep}{' '}
+                        <table>
+                            <tr>
+                                <td className='.p-3'>{mDate}</td>
+                                <td>&nbsp;&nbsp;</td>
+                                <td>{mTitle}</td>
+                                <td>{mPeep}</td>
+                            </tr>
+                        </table>
                     </div>
                 );
             }
             if (meetings[index].meetingType === 'Special') {
-                mDate = meetings[index].meetingDate;
+                mDate = returnSmallDate(meetings[index].meetingDate);
                 mTitle = 'Special:' + meetings[index].title;
                 mPeep = meetings[index].supportRole;
                 mCnt = index;
                 theNext = (
                     <div>
-                        {mDate} {mTitle} {mPeep}{' '}
+                        <table>
+                            <tr>
+                                <td className='.p-3'>{mDate}</td>
+                                <td>&nbsp;&nbsp;</td>
+                                <td>{mTitle}</td>
+                                <td>{mPeep}</td>
+                            </tr>
+                        </table>
                     </div>
                 );
             }
@@ -104,7 +125,14 @@ function showFuture(meetings) {
                 mCnt = index;
                 theNext = (
                     <div>
-                        {mDate} {mTitle} {mPeep}{' '}
+                        <table>
+                            <tr>
+                                <td className='.p-3'>{mDate}</td>
+                                <td>&nbsp;&nbsp;</td>
+                                <td>{mTitle}</td>
+                                <td>{mPeep}</td>
+                            </tr>
+                        </table>
                     </div>
                 );
             }
@@ -115,7 +143,14 @@ function showFuture(meetings) {
                 mCnt = index;
                 theNext = (
                     <div>
-                        {mDate} {mTitle} {mPeep}{' '}
+                        <table>
+                            <tr>
+                                <td className='.p-3'>{mDate}</td>
+                                <td>&nbsp;&nbsp;</td>
+                                <td>{mTitle}</td>
+                                <td>{mPeep}</td>
+                            </tr>
+                        </table>
                     </div>
                 );
             }

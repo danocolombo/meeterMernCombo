@@ -3,43 +3,44 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import Spinner from '../layout/Spinner';
-import ProfileTop from '../profile/ProfileTop';
-import ProfileAbout from '../profile//ProfileAbout';
-import ProfileExperience from '../profile//ProfileExperience';
-import ProfileEducation from '../profile//ProfileEducation';
-import ProfileGithub from '../profile//ProfileGithub';
-import { getProfileById } from '../../actions/profile';
-
+import UserProfileClients from './UserProfileClients';
+// import ClientDef from './UserProfileClients';
 const UserProfile = ({
-    getProfileById,
-    profile: { profile, loading },
-    auth,
-    match,
+    auth: { user, activeClient, activeRole, activeStatus },
 }) => {
-    useEffect(() => {
-        //getProfileById(match.params.id);
-    }, [getProfileById, match.params.id]);
-
+    // useEffect(() => {
+    //     //getProfileById(match.params.id);
+    // }, [getProfileById, match.params.id]);
+    let uid = user && user._id;
     return (
         <Fragment>
             <Fragment>
                 <h2 className='large text-primary'>
-                    <i className='far fa fa-cogs'></i> Your Profile
+                    <i className='far fa fa-cogs'></i> Your profile
                 </h2>
+                <p>Welcome {user && user.name}</p>
+                <p>{uid}</p>
+                <p>Active Client: {activeClient}</p>
+                <p>Active Role: {activeRole}</p>
+                <p>Active Status: {activeStatus}</p>
             </Fragment>
+            <UserProfileClients uid={uid} />
         </Fragment>
     );
 };
-
+function greetings(u) {
+    return [
+        <Fragment>
+            <dif>Greetings {u && u.name}</dif>
+        </Fragment>,
+    ];
+}
 UserProfile.propTypes = {
-    getProfileById: PropTypes.func.isRequired,
-    profile: PropTypes.object.isRequired,
     auth: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = (state) => ({
-    profile: state.profile,
     auth: state.auth,
 });
 
-export default connect(mapStateToProps, { getProfileById })(UserProfile);
+export default connect(mapStateToProps, {})(UserProfile);

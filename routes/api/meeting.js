@@ -6,6 +6,7 @@ const auth = require('../../middleware/auth');
 
 const { check, validationResult } = require('express-validator');
 const Meeting = require('../../models/Meeting');
+const Meetin = require('../../models/Meetin');
 const User = require('../../models/User');
 const Post = require('../../models/Post');
 
@@ -183,6 +184,27 @@ router.get('/', async (req, res) => {
 // | |__| | |____   | |     / / | | | |_| | |_| |_| | | |  __/
 // \_____|______|  |_|    /_/  |_|  \__,_|\__|\__,_|_|  \___|
 //================================================================
+// @route    GET api/meeting/future/cid
+// @desc     Get all meetings today and future for cid client
+// @access   Public
+router.get('/future1/:cid', async (req, res) => {
+    try {
+        var tDay = new Date();
+        console.log('tDay:' + tDay);
+        console.log('cid: ' + req.params.cid);
+        const tenant = 'meeting-' + req.params.cid;
+        const meetings = await Meetin()
+            .find({
+                meetingDate: { $gte: tDay },
+                tenantId: { tenant },
+            })
+            .sort({ meetingDate: 0 });
+        res.json(meetings);
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Server Error');
+    }
+});
 
 // @route    GET api/meeting/future
 // @desc     Get all meetings today and future
@@ -212,6 +234,25 @@ router.get('/future', async (req, res) => {
 //                                                           __/ |
 //                                                          |___/
 //================================================================
+// @route    GET api/meeting/history/cid
+// @desc     Get all meetings before today for cid client
+// @access   Public
+router.get('/history1/:cid', async (req, res) => {
+    try {
+        var tDay = new Date();
+        const tenant = 'meeting-' + req.params.cid;
+        const meetings = await Meetin()
+            .find({
+                meetingDate: { $lt: tDay },
+                tenantId: { tenant },
+            })
+            .sort({ meetingDate: -1 });
+        res.json(meetings);
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Server Error');
+    }
+});
 // @route    GET api/meeting/history
 // @desc     Get all meetings today and future
 // @access   Public

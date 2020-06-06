@@ -93,7 +93,7 @@ const Routes = () => {
                 />
                 <PrivateRoute
                     exact
-                    path='/UserProfile/:id'
+                    path='/UserProfile'
                     component={UserProfile}
                 />
                 <PrivateRoute exact path='/admin' component={Admin} />
