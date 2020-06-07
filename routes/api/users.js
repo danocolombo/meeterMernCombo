@@ -97,4 +97,27 @@ router.get('/', auth, async (req, res) => {
         res.status(500).send('Server error');
     }
 });
+// @route    GET api/user/:uid
+// @desc     Return user of uid
+// @access   PRIVATE
+router.get(
+    '/identify/:uid',
+    [check('uid', 'id is required').not().isEmpty()],
+    auth,
+    async (req, res) => {
+        try {
+            // console.log('API::cid: ' + req.param.cid);
+            const user = await User.findById({ _id: req.params.uid });
+
+            if (!user) {
+                return res.status(400).json({ msg: 'No user info avaialble' });
+            }
+
+            res.json(user);
+        } catch (err) {
+            console.error(err.message);
+            res.status(500).send('Server Error');
+        }
+    }
+);
 module.exports = router;
