@@ -272,25 +272,6 @@ router.get('/future', async (req, res) => {
         res.status(500).send('Server Error');
     }
 });
-// @route    GET api/meeting/future
-// @desc     Get all meetings today and future
-// @access   Public
-router.get('/future/:cid', async (req, res) => {
-    try {
-        let client = 'meeting-' + req.params.cid;
-        // console.log('client: ' + client);
-        var tDay = new Date();
-        console.log('tDay:' + tDay);
-        const meetings = await Meeting.find({
-            meetingDate: { $gte: tDay },
-            tenantId: client,
-        }).sort({ meetingDate: 0 });
-        res.json(meetings);
-    } catch (err) {
-        console.error(err.message);
-        res.status(500).send('Server Error');
-    }
-});
 // @route    GET api/meeting/history
 // @desc     Get all meetings today and future
 // @access   Public
@@ -311,13 +292,11 @@ router.get('/history', async (req, res) => {
 // @access   Public
 router.get('/history/:cid', async (req, res) => {
     try {
-        // console.log('/history/:cid');
-        let client = 'meeting-' + req.params.cid;
-        console.log('history, client: ' + client);
+        console.log('/history/:cid');
         var tDay = new Date();
         const meetings = await Meeting.find({
             meetingDate: { $lt: tDay },
-            tenantId: client,
+            tenantID: req.params.cid
         }).sort({ meetingDate: -1 });
         res.json(meetings);
     } catch (err) {

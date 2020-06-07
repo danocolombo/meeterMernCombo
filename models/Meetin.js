@@ -1,87 +1,88 @@
 const mongoose = require('mongoose');
-const MeetingSchema = new mongoose.Schema({
+const MeetinSchema = new mongoose.Schema({
     title: {
         type: String,
-        required: true,
+        required: true
     },
     meetingDate: {
         type: Date,
-        required: true,
+        required: true
     },
     meetingType: {
         type: String,
-        required: true,
+        required: true
     },
     worship: {
-        type: String,
+        type: String
     },
     facilitator: {
-        type: String,
+        type: String
     },
     supportRole: {
-        type: String,
+        type: String
     },
     meal: {
-        type: String,
+        type: String
     },
     mealCount: {
-        type: Number,
+        type: Number
     },
     mealCoordinator: {
-        type: String,
+        type: String
     },
     cafeCoordinator: {
-        type: String,
+        type: String
     },
     attendance: {
-        type: Number,
+        type: Number
     },
     donations: {
-        type: Number,
+        type: Number
     },
     nursery: {
-        type: Number,
+        type: Number
     },
     children: {
-        type: Number,
+        type: Number
     },
     youth: {
-        type: Number,
+        type: Number
     },
     newcomers: {
-        type: Number,
+        type: Number
     },
     notes: {
-        type: String,
+        type: String
     },
     groups: [
         {
             title: {
-                type: String,
+                type: String
             },
             location: {
-                type: String,
+                type: String
             },
             facilitator: {
-                type: String,
+                type: String
             },
             cofacilitator: {
-                type: String,
+                type: String
             },
             gender: {
-                type: String,
+                type: String
             },
             attendance: {
-                type: Number,
+                type: Number
             },
             notes: {
-                type: String,
-            },
-        },
+                type: String
+            }
+        }
     ],
     date: {
         type: Date,
-        default: Date.now,
-    },
+        default: Date.now
+    }
 });
-module.exports = Meetin = mongoose.model('meetin', MeetingSchema);
+// module.exports = Meeting = tenantModel('meeting', MeetingSchema);
+module.exports = Meetin = mongoose.model('meetin', MeetinSchema);

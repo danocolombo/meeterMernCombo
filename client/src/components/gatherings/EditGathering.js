@@ -31,6 +31,7 @@ const initialState = {
 
 const EditGathering = ({
     gathering: { gathering, servants, loading, newGathering },
+    auth: { activeClient },
     group: { groups },
     createGathering,
     getGathering,
@@ -101,7 +102,7 @@ const EditGathering = ({
         e.preventDefault();
         if (formData['meetingType'] === 'Testimony')
             delete formData['supportRole'];
-        createGathering(formData, history, true);
+        createGathering(formData, history, activeClient, true);
         window.scrollTo(0, 0);
     };
 
@@ -480,12 +481,14 @@ EditGathering.propTypes = {
     getGathering: PropTypes.func.isRequired,
     gathering: PropTypes.object.isRequired,
     group: PropTypes.object.isRequired,
+    auth: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = (state) => ({
     gathering: state.gathering,
     servants: state.servants,
     group: state.group,
+    auth: state.auth,
 });
 
 export default connect(mapStateToProps, {

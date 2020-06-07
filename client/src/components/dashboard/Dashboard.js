@@ -24,7 +24,9 @@ const Dashboard = ({
     profile: { profile, loading },
 }) => {
     useEffect(() => {
-        getGatherings({ activeClient });
+        if(activeClient){
+            getGatherings({ activeClient });
+        }
         getCurrentProfile();
     }, [getGatherings, getCurrentProfile]);
 

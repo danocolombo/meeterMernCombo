@@ -17,15 +17,18 @@ import {
 } from './types';
 
 //get  gatherings
-export const getGatherings = (cid) => async (dispatch) => {
+export const getGatherings = cid => async (dispatch) => {
     try {
         dispatch({ type: CLEAR_GATHERINGS });
-
+        const util = require('util')
+        console.log('cid.activeClient: ' + cid.activeClient);
+        console.log(util.inspect(cid, {showHidden: false, depth: null}))
+        // console.log(util.inspect(cid, {showHidden: false, depth: null}))
+        // let c = JSON.parse(cid);
+        // console.log('c: ' + c);
         //const res = await axios.get('/api/meeting/future');
-        console.log('getGatherings::cid: ' + cid);
-        let clientID = 'meeter-' + cid;
-        //const res = await axios.get(`/api/meeting/future/${clientID}`);
-        const res = await axios.get('/api/meeting/future');
+        const res = await axios.get(`/api/meeting/future/${cid.activeClient}`);
+        // const res = await axios.get('/api/meeting/future');
         dispatch({ type: CLEAR_GATHERING });
         dispatch({
             type: GET_GATHERINGS,
@@ -34,8 +37,8 @@ export const getGatherings = (cid) => async (dispatch) => {
         //get the historical gathererings
         dispatch({ type: CLEAR_HATHERINGS });
 
-        const res1 = await axios.get('/api/meeting/history');
-        // const res1 = await axios.get(`/api/meeting/history/${clientID}`);
+        // const res1 = await axios.get('/api/meeting/history');
+        const res1 = await axios.get(`/api/meeting/history/${cid.activeClient}`);
         dispatch({
             type: GET_HATHERINGS,
             payload: res1.data,
@@ -147,7 +150,7 @@ export const getGatherings1 = () => async (dispatch) => {
     }
 };
 // Create or update gathering
-export const createGathering = (formData, history, edit = false) => async (
+export const createGathering = (formData, history, cid, edit = false) => async (
     dispatch
 ) => {
     try {
@@ -165,6 +168,11 @@ export const createGathering = (formData, history, edit = false) => async (
             formData.meetingId = formData._id;
             //formData._id = '';
         }
+        //-----------------------------------------------
+        // need to add the tenantId to the data to put
+        //-----------------------------------------------
+        var client = 'meeting-' + cid;
+        formData.tentantId = client;
         // if(formData._id) formData.push("meetingId", formData._id);
         //delete formData._id;
         // console.log('transformed formdata');

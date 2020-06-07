@@ -10,17 +10,23 @@ import { getGatherings } from '../../actions/gathering';
 const Gatherings = ({
     getGatherings,
     gathering: { gatherings, hatherings, loading },
+    auth: { activeClient, activeRole, activeStatus },
     match,
     historyView
 }) => {
     useEffect(() => {
         // console.log('SKylar: ' + match.params.options);
-
-        getGatherings();
+        if(activeClient){
+            checkActives();
+            console.log('actives: ' + activeClient + ' ' + activeRole + ' ' + activeStatus);
+            getGatherings({ activeClient });
+        }
+        // getGatherings();
     }, [getGatherings]);
     return loading ? (
         <Spinner />
     ) : (
+        
         <Fragment>
             <div>
                 <h2 className='large text-primary'>
@@ -76,6 +82,9 @@ const Gatherings = ({
         }
         return null;
     }
+    function checkActives() {
+        console.log('CHECK-CHECK-CHECK');
+    }
 };
 
 Gatherings.defaultProps = {
@@ -83,11 +92,13 @@ Gatherings.defaultProps = {
 };
 Gatherings.propTypes = {
     getGatherings: PropTypes.func.isRequired,
-    gathering: PropTypes.object.isRequired
+    gathering: PropTypes.object.isRequired,
+    auth: PropTypes.object.isRequired,
     // hathering: PropTypes.object.isRequired
 };
 const mapStateToProps = state => ({
     gathering: state.gathering,
-    hathering: state.hathering
+    hathering: state.hathering,
+    auth: state.auth
 });
 export default connect(mapStateToProps, { getGatherings })(Gatherings);
