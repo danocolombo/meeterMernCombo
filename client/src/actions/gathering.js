@@ -17,12 +17,12 @@ import {
 } from './types';
 
 //get  gatherings
-export const getGatherings = cid => async (dispatch) => {
+export const getGatherings = (cid) => async (dispatch) => {
     try {
         dispatch({ type: CLEAR_GATHERINGS });
-        const util = require('util')
+        const util = require('util');
         console.log('cid.activeClient: ' + cid.activeClient);
-        console.log(util.inspect(cid, {showHidden: false, depth: null}))
+        console.log(util.inspect(cid, { showHidden: false, depth: null }));
         // console.log(util.inspect(cid, {showHidden: false, depth: null}))
         // let c = JSON.parse(cid);
         // console.log('c: ' + c);
@@ -38,7 +38,9 @@ export const getGatherings = cid => async (dispatch) => {
         dispatch({ type: CLEAR_HATHERINGS });
 
         // const res1 = await axios.get('/api/meeting/history');
-        const res1 = await axios.get(`/api/meeting/history/${cid.activeClient}`);
+        const res1 = await axios.get(
+            `/api/meeting/history/${cid.activeClient}`
+        );
         dispatch({
             type: GET_HATHERINGS,
             payload: res1.data,
@@ -172,7 +174,7 @@ export const createGathering = (formData, history, cid, edit = false) => async (
         // need to add the tenantId to the data to put
         //-----------------------------------------------
         var client = 'meeting-' + cid;
-        formData.tentantId = client;
+        formData.tenantId = client;
         // if(formData._id) formData.push("meetingId", formData._id);
         //delete formData._id;
         // console.log('transformed formdata');
@@ -190,10 +192,7 @@ export const createGathering = (formData, history, cid, edit = false) => async (
         });
 
         dispatch(
-            setAlert(
-                edit ? 'Gathering Updated' : 'Gathering Created',
-                'success'
-            )
+            setAlert(edit ? 'Meeting Updated' : 'Meeting Created', 'success')
         );
 
         if (!edit) {

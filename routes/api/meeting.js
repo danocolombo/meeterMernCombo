@@ -40,13 +40,9 @@ router.post(
             // check('title', 'Title is required')
             //     .not()
             //     .isEmpty(),
-            check('meetingDate', 'Meeting date is required')
-                .not()
-                .isEmpty(),
-            check('meetingType', 'Meeting Type is required')
-                .not()
-                .isEmpty()
-        ]
+            check('meetingDate', 'Meeting date is required').not().isEmpty(),
+            check('meetingType', 'Meeting Type is required').not().isEmpty(),
+        ],
     ],
     async (req, res) => {
         const errors = validationResult(req);
@@ -58,6 +54,7 @@ router.post(
             meetingDate,
             facilitator,
             meetingType,
+            tenantId,
             title,
             supportRole,
             worship,
@@ -71,7 +68,7 @@ router.post(
             nursery,
             children,
             youth,
-            notes
+            notes,
         } = req.body;
         // if (meetingId) {
         //     // we got meeting ID, so attempting to update
@@ -151,11 +148,15 @@ router.post(
         // notes
         //##################
         console.table(req.body);
+        console.log(
+            '+++++++  ^^^^^^  from req.body coming into routes/api/meeting (POST)'
+        );
         const meetingFields = {};
         //first two are required, no need to check.
         meetingFields.meetingDate = meetingDate;
         meetingFields.meetingType = meetingType;
         if (meetingId) meetingFields.meetingId = meetingId;
+        if (tenantId) meetingFields.tenantId = tenantId;
         if (facilitator) meetingFields.facilitator = facilitator;
         if (title) meetingFields.title = title;
         if (supportRole) {
@@ -264,7 +265,7 @@ router.get('/future', async (req, res) => {
         var tDay = new Date();
         console.log('tDay:' + tDay);
         const meetings = await Meeting.find({
-            meetingDate: { $gte: tDay }
+            meetingDate: { $gte: tDay },
         }).sort({ meetingDate: 0 });
         res.json(meetings);
     } catch (err) {
@@ -298,7 +299,7 @@ router.get('/history', async (req, res) => {
     try {
         var tDay = new Date();
         const meetings = await Meeting.find({
-            meetingDate: { $lt: tDay }
+            meetingDate: { $lt: tDay },
         }).sort({ meetingDate: -1 });
         res.json(meetings);
     } catch (err) {
@@ -389,16 +390,10 @@ router.put(
     [
         auth,
         [
-            check('title', 'Title is required')
-                .not()
-                .isEmpty(),
-            check('company', 'Company is required')
-                .not()
-                .isEmpty(),
-            check('from', 'From date is required')
-                .not()
-                .isEmpty()
-        ]
+            check('title', 'Title is required').not().isEmpty(),
+            check('company', 'Company is required').not().isEmpty(),
+            check('from', 'From date is required').not().isEmpty(),
+        ],
     ],
     async (req, res) => {
         const errors = validationResult(req);
@@ -413,7 +408,7 @@ router.put(
             from,
             to,
             current,
-            description
+            description,
         } = req.body;
 
         const newExp = {
@@ -423,7 +418,7 @@ router.put(
             from,
             to,
             current,
-            description
+            description,
         };
 
         try {
@@ -474,7 +469,7 @@ router.delete('/experience/:exp_id', auth, async (req, res) => {
         // Filter exprience array using _id (NOTE: _id is a BSON type needs to be converted to string)
         // This can also be omitted and the next line and findOneAndUpdate to be used instead (above implementation)
         foundProfile.experience = foundProfile.experience.filter(
-            exp => exp._id.toString() !== req.params.exp_id
+            (exp) => exp._id.toString() !== req.params.exp_id
         );
 
         await foundProfile.save();
@@ -493,13 +488,9 @@ router.put(
     [
         auth,
         [
-            check('title', 'Title is required')
-                .not()
-                .isEmpty(),
-            check('grpGender', 'Gender is required')
-                .not()
-                .isEmpty()
-        ]
+            check('title', 'Title is required').not().isEmpty(),
+            check('grpGender', 'Gender is required').not().isEmpty(),
+        ],
     ],
     async (req, res) => {
         const errors = validationResult(req);
@@ -514,7 +505,7 @@ router.put(
             location,
             facilitator,
             cofacilitator,
-            notes
+            notes,
         } = req.body;
 
         const newGrp = {
@@ -524,7 +515,7 @@ router.put(
             location,
             facilitator,
             cofacilitator,
-            notes
+            notes,
         };
 
         try {
@@ -551,19 +542,11 @@ router.put(
     [
         auth,
         [
-            check('school', 'School is required')
-                .not()
-                .isEmpty(),
-            check('degree', 'Degree is required')
-                .not()
-                .isEmpty(),
-            check('fieldofstudy', 'Field of study is required')
-                .not()
-                .isEmpty(),
-            check('from', 'From date is required')
-                .not()
-                .isEmpty()
-        ]
+            check('school', 'School is required').not().isEmpty(),
+            check('degree', 'Degree is required').not().isEmpty(),
+            check('fieldofstudy', 'Field of study is required').not().isEmpty(),
+            check('from', 'From date is required').not().isEmpty(),
+        ],
     ],
     async (req, res) => {
         const errors = validationResult(req);
@@ -578,7 +561,7 @@ router.put(
             from,
             to,
             current,
-            description
+            description,
         } = req.body;
 
         const newEdu = {
@@ -588,7 +571,7 @@ router.put(
             from,
             to,
             current,
-            description
+            description,
         };
 
         try {
@@ -633,7 +616,7 @@ router.put(
 router.delete('/education/:edu_id', auth, async (req, res) => {
     try {
         const foundProfile = await Profile.findOne({ user: req.user.id });
-        const eduIds = foundProfile.education.map(edu => edu._id.toString());
+        const eduIds = foundProfile.education.map((edu) => edu._id.toString());
         // if i dont add .toString() it returns this weird mongoose coreArray and the ids are somehow objects and it still deletes anyway even if you put /education/5
         const removeIndex = eduIds.indexOf(req.params.edu_id);
         if (removeIndex === -1) {
@@ -670,7 +653,7 @@ router.get('/github/:username', (req, res) => {
                 )}&client_secret=${config.get('githubSecret')}`
             ),
             method: 'GET',
-            headers: { 'user-agent': 'node.js' }
+            headers: { 'user-agent': 'node.js' },
         };
 
         request(options, (error, response, body) => {
@@ -695,16 +678,10 @@ router.put(
     [
         auth,
         [
-            check('title', 'Title is required')
-                .not()
-                .isEmpty(),
-            check('company', 'Company is required')
-                .not()
-                .isEmpty(),
-            check('from', 'From date is required')
-                .not()
-                .isEmpty()
-        ]
+            check('title', 'Title is required').not().isEmpty(),
+            check('company', 'Company is required').not().isEmpty(),
+            check('from', 'From date is required').not().isEmpty(),
+        ],
     ],
     async (req, res) => {
         const errors = validationResult(req);
@@ -719,7 +696,7 @@ router.put(
             from,
             to,
             current,
-            description
+            description,
         } = req.body;
 
         const newExp = {
@@ -729,7 +706,7 @@ router.put(
             from,
             to,
             current,
-            description
+            description,
         };
 
         try {
