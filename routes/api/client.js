@@ -58,14 +58,45 @@ router.get('/code/:code', auth, async (req, res) => {
                 .status(400)
                 .json({ msg: 'No client info for client request' });
         }
-
         res.json(client);
     } catch (err) {
         console.error(err.message);
         res.status(500).send('Server Error');
     }
 });
+// @route    GET api/client/users/:code
+// @desc     get the users for client code
+// @access   Private
+router.get('/users/:code', auth, async (req, res) => {
+    try {
+        const client = await Client.findOne({ code: req.params.code });
+        if (!client) {
+            return res
+                .status(400)
+                .json({ msg: 'No user info for client request' });
+        }
+        // we have the client, now we need to build a body to
+        // respond with the users.
+        // const util = require('util');
+        // console.log(util.inspect(client, { showHidden: false, depth: null }));
+        // console.log('client.name: ' + client.name);
 
+        let cEntry = [];
+        client.users.forEach((u) => {
+            // console.log('role: ' + u.role);
+            cEntry.push({
+                _id: u._id,
+                role: u.role,
+                status: u.status,
+            });
+        });
+        // console.log(util.inspect(cEntry, { showHidden: false, depth: null }));
+        res.json(cEntry);
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Server Error');
+    }
+});
 // @route    POST api/client
 // @desc     Create or update client
 // @access   Private

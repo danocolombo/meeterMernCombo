@@ -20,6 +20,7 @@ import {
 export const getGatherings = (cid) => async (dispatch) => {
     try {
         dispatch({ type: CLEAR_GATHERINGS });
+        // this will print the Oject contents of cid
         const util = require('util');
         console.log('cid.activeClient: ' + cid.activeClient);
         console.log(util.inspect(cid, { showHidden: false, depth: null }));

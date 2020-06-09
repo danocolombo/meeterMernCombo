@@ -49,3 +49,5 @@ export const CLEAR_GROUP = 'CLEAR_GROUP';
 export const CLEAR_GROUPS = 'CLEAR_GROUPS';
 export const SET_USER_AUTH = 'SET_USER_AUTH';
 export const CLEAR_USER_AUTH = 'CLEAR_USER_AUTH';
+export const GET_CLIENT = 'GET_CLIENT';
+export const ADMIN_ERROR = 'ADMIN_ERROR';
