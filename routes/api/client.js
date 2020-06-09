@@ -64,7 +64,8 @@ router.get('/code/:code', auth, async (req, res) => {
         res.status(500).send('Server Error');
     }
 });
-// @route    GET api/client/users/:code
+
+// @route    GET api/client/usersDETAIL/:code
 // @desc     get the users for client code
 // @access   Private
 router.get('/users/:code', auth, async (req, res) => {
@@ -75,28 +76,41 @@ router.get('/users/:code', auth, async (req, res) => {
                 .status(400)
                 .json({ msg: 'No user info for client request' });
         }
+        const allUsers = await User.find();
         // we have the client, now we need to build a body to
         // respond with the users.
         // const util = require('util');
-        // console.log(util.inspect(client, { showHidden: false, depth: null }));
+        // console.log(util.inspect(allUsers, { showHidden: false, depth: null }));
         // console.log('client.name: ' + client.name);
 
         let cEntry = [];
+        let str1 = '';
+        let str2 = '';
         client.users.forEach((u) => {
             // console.log('role: ' + u.role);
-            cEntry.push({
-                _id: u._id,
-                role: u.role,
-                status: u.status,
+            allUsers.forEach((aU) => {
+                // need to cast array value as string
+                str1 = String(u._id);
+                str2 = String(aU._id);
+                if (str1.trim() == str2.trim()) {
+                    cEntry.push({
+                        _id: u._id,
+                        name: aU.name,
+                        email: aU.email,
+                        defaultClient: aU.defaultClient,
+                        role: u.role,
+                        status: u.status,
+                    });
+                }
             });
         });
-        // console.log(util.inspect(cEntry, { showHidden: false, depth: null }));
         res.json(cEntry);
     } catch (err) {
         console.error(err.message);
         res.status(500).send('Server Error');
     }
 });
+
 // @route    POST api/client
 // @desc     Create or update client
 // @access   Private
