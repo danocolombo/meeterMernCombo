@@ -235,5 +235,50 @@ router.put(
         }
     }
 );
-
+// @route    PUT api/client/user
+// @desc     Add or Update default group setting
+// @access   Private
+router.put(
+    '/defaultgroup',
+    auth,
+    [
+        check('cid', 'CID is required').not().isEmpty(),
+        check('gender', 'Gender is required').not().isEmpty(),
+        check('title', 'Title is required').not().isEmpty(),
+        // check('location', 'Location is required').not().isEmpty(),
+        // check('facilitator', 'Facilitator is required').not().isEmpty(),
+    ],
+    async (req, res) => {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            //if we got errors
+            return res.status(400).json({ errors: errors.array() });
+        }
+        // destructure req
+        const { cid, gender, title, location, facilitator } = req.body;
+        // create a body to pass from the data received
+        const groupInfo = {
+            gender: gender,
+            title: title,
+            location: location,
+            facilitator: facilitator,
+        };
+        try {
+            console.log('NEW GROUP ENTRY');
+            //need to add the user to the client
+            //first thing, find the client entry to add/update user
+            const newDefaultGroup = await Client.findOne({
+                code: cid,
+            });
+            //push the entry onto the end of users subarray
+            newDefaultGroup.defaultGroups.push(groupInfo);
+            //save the changes
+            await newDefaultGroup.save();
+            res.json(newDefaultGroup);
+        } catch (err) {
+            console.error('WOWSA: ' + err.message);
+            res.status(500).send('Server Error');
+        }
+    }
+);
 module.exports = router;
