@@ -281,4 +281,28 @@ router.put(
         }
     }
 );
+router.delete('/defaultgroup', auth, async (req, res) => {
+    try {
+        const { cid, gender, title, location, facilitator } = req.body;
+    
+        // Remove profile
+        //await Client.findOneAndRemove({ code: cid, 'defaultGroups.gender': gender, 'defaultGroups.title': title, 'defaultGroups.location': location, 'defaultGroups.facilitator': facilitator });
+        
+        await Client.update(
+            {code: cid},
+            { $pull: { defaultGroups: {
+                gender: gender,
+                title: title,
+                location: location,
+                facilitator: facilitator
+            }}}
+        )
+        
+        const feedback = 'Default Group Removed';
+        res.json({ msg: feedback });
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Server Error');
+    }
+});
 module.exports = router;
