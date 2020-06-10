@@ -11,7 +11,7 @@ const initialState = {
     _id: '',
     meetingId: '',
     meetingDate: '',
-    facilitator: 'Dano Colombo',
+    facilitator: '',
     meetingType: '',
     supportRole: '',
     worship: '',
@@ -130,7 +130,14 @@ const EditGathering = ({
                     />
                 </div>
                 <h4>Facilitator</h4>
-                <select
+                <input
+                    type='text'
+                    placeholder='Responsible party for meeting'
+                    name='facilitator'
+                    value={facilitator}
+                    onChange={onChange}
+                />
+                {/* <select
                     value={facilitator}
                     name='facilitator'
                     onChange={onChange}
@@ -140,7 +147,7 @@ const EditGathering = ({
                             {s.name}
                         </option>
                     ))}
-                </select>
+                </select> */}
                 <div className='form-group'>
                     <h4>Meeting Type **</h4>
                     <select
@@ -173,7 +180,15 @@ const EditGathering = ({
                 </div>
                 {meetingType === 'Lesson' && (
                     <Fragment>
-                        <select
+                        <input
+                            type='text'
+                            placeholder=''
+                            name='supportRole'
+                            value={supportRole}
+                            onChange={onChange}
+                        />
+
+                        {/* <select
                             value={supportRole}
                             name='supportRole'
                             onChange={onChange}
@@ -183,7 +198,7 @@ const EditGathering = ({
                                     {s.name}
                                 </option>
                             ))}
-                        </select>
+                        </select> */}
                         <small className='form-text'>
                             Who is teaching the lesson?
                         </small>
@@ -254,7 +269,14 @@ const EditGathering = ({
                     <small className='form-text'>Dinner provided</small>
                 </div>
                 <h4>Meal Coordinator</h4>
-                <select
+                <input
+                    type='text'
+                    placeholder=''
+                    name='mealCoordinator'
+                    value={mealCoordinator}
+                    onChange={onChange}
+                />
+                {/* <select
                     value={mealCoordinator ? mealCoordinator : 'pick someone'}
                     name='mealCoordinator'
                     onChange={onChange}
@@ -264,7 +286,7 @@ const EditGathering = ({
                             {s.name}
                         </option>
                     ))}
-                </select>
+                </select> */}
                 <br />
                 <h4>Individuals Fed</h4>
                 <input
@@ -278,7 +300,14 @@ const EditGathering = ({
                 />
                 <small className='form-text'>Number of people served?</small>
                 <h4>Cafe Coordinator</h4>
-                <select
+                <input
+                    type='text'
+                    placeholder=''
+                    name='cafeCoordinator'
+                    value={cafeCoordinator}
+                    onChange={onChange}
+                />
+                {/* <select
                     value={cafeCoordinator ? cafeCoordinator : 'pick someone'}
                     name='cafeCoordinator'
                     onChange={onChange}
@@ -288,7 +317,7 @@ const EditGathering = ({
                             {s.name}
                         </option>
                     ))}
-                </select>
+                </select> */}
                 <small className='form-text'>Cafe coordinator</small>
                 <br />
                 <h4>Nursery Count</h4>

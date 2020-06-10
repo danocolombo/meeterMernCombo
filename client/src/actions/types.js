@@ -51,3 +51,5 @@ export const SET_USER_AUTH = 'SET_USER_AUTH';
 export const CLEAR_USER_AUTH = 'CLEAR_USER_AUTH';
 export const GET_CLIENT = 'GET_CLIENT';
 export const ADMIN_ERROR = 'ADMIN_ERROR';
+export const SET_CLIENT_USERS = 'SET_CLIENT_USERS';
+export const CLEAR_CLIENT_USERS = 'CLEAR_CLIENT_USERS';

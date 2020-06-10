@@ -22,7 +22,7 @@ const Admin = ({ getClientInfo, auth: { activeClient } }) => {
                 Let's get info about {activeClient}
                 <DisplayUsers cid={activeClient} />
                 {/* <DisplayUsersC /> */}
-                <DisplayUsersComp cid={activeClient} />
+                {/* <DisplayUsersComp cid={activeClient} /> */}
                 {/* <DisplayUsersFC /> */}
                 {/* <DisplayUsers cid={activeClient} /> */}
             </Fragment>

@@ -16,6 +16,7 @@ import {
     CLEAR_SERVANTS,
     CLEAR_USER_AUTH,
     SET_USER_AUTH,
+    CLEAR_CLIENT_USERS,
 } from './types';
 import setAuthToken from '../utils/setAuthToken';
 
@@ -184,5 +185,6 @@ export const logout = () => (dispatch) => {
     dispatch({ type: CLEAR_HATHERINGS });
     dispatch({ type: CLEAR_SERVANTS });
     dispatch({ type: CLEAR_USER_AUTH });
+    dispatch({ type: CLEAR_CLIENT_USERS });
     dispatch({ type: LOGOUT });
 };

@@ -26,7 +26,7 @@ const Navbar = ({ auth: { isAuthenticated, loading, user }, auth, logout }) => {
                         </li>
                         <li>
                             <Link to='/people'>
-                                <i className='fas fa-user-shield'></i>{' '}
+                                <i className='fa fa-users'></i>{' '}
                                 <span className='hide-sm'>People</span>
                             </Link>
                         </li>
@@ -40,8 +40,8 @@ const Navbar = ({ auth: { isAuthenticated, loading, user }, auth, logout }) => {
                 auth.activeStatus === 'approved' ? (
                     <Fragment>
                         <li>
-                            <Link to='/admin'>
-                                <i className='fas fa fa-cogs'></i>{' '}
+                            <Link to='/DisplaySecurity'>
+                                <i className='fa fa-user-secret'></i>{' '}
                                 <span className='hide-sm'> Admin</span>
                             </Link>
                         </li>
@@ -101,7 +101,7 @@ const Navbar = ({ auth: { isAuthenticated, loading, user }, auth, logout }) => {
         <nav className='navbar bg-dark'>
             <h1>
                 <Link to='/'>
-                    <i className='fas fa-users' /> Meeter
+                    <i className='fa fa-cubes' /> Meeter
                 </Link>
             </h1>
             {!loading && (
