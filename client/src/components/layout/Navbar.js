@@ -14,20 +14,15 @@ const Navbar = ({ auth: { isAuthenticated, loading, user }, auth, logout }) => {
                         <span className='hide-sm'>Meetings</span>
                     </Link>
                 </li> */}
-                {(auth.activeRole === 'superuser' ||
+                {/* {(auth.activeRole === 'superuser' ||
                     auth.activeRole === 'owner') &&
-                auth.activeStatus === 'approved' ? (
+                auth.activeStatus === 'approved' ? ( */}
+                {auth.activeStatus === 'approved' ? (
                     <Fragment>
                         <li>
                             <Link to='/gatherings'>
                                 <i className='far fa-calendar-alt'></i>{' '}
                                 <span className='hide-sm'>Meetings</span>
-                            </Link>
-                        </li>
-                        <li>
-                            <Link to='/people'>
-                                <i className='fa fa-users'></i>{' '}
-                                <span className='hide-sm'>People</span>
                             </Link>
                         </li>
                     </Fragment>
@@ -36,6 +31,17 @@ const Navbar = ({ auth: { isAuthenticated, loading, user }, auth, logout }) => {
                         <li></li>
                     </Fragment>
                 )}
+                {auth.activeRole != 'guest' &&
+                auth.activeStatus === 'approved' ? (
+                    <Fragment>
+                        <li>
+                            <Link to='/people'>
+                                <i className='fa fa-users'></i>{' '}
+                                <span className='hide-sm'>People</span>
+                            </Link>
+                        </li>
+                    </Fragment>
+                ) : null}
                 {auth.activeRole === 'superuser' &&
                 auth.activeStatus === 'approved' ? (
                     <Fragment>

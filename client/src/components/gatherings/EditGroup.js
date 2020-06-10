@@ -25,6 +25,7 @@ const initialState = {
 const EditGroup = ({
     group: { group, loading, newGroup },
     createGroup,
+    auth: { activeRole, activeStatus },
     getGroup,
     deleteGroup,
     match,
@@ -133,21 +134,27 @@ const EditGroup = ({
                         >
                             Save
                         </Button> */}
-                        <input type='submit' className='btn btn-primary my-1' />
-                        {'      '}
+                        {activeStatus == 'approved' && activeRole != 'guest' ? (
+                            <input
+                                type='submit'
+                                className='btn btn-primary my-1'
+                            />
+                        ) : null}
                         <Link
                             className='btn btn-light my-1'
                             to={`/editGathering/${match.params.mid}`}
                         >
                             Go Back
                         </Link>
-                        <button
-                            onClick={() => deleteGroup(_id)}
-                            type='button'
-                            className='btn btn-danger'
+                        {activeStatus == 'approved' && activeRole != 'guest' ? (
+                            <button
+                                onClick={() => deleteGroup(_id)}
+                                type='button'
+                                className='btn btn-danger'
                             >
-                            <i className='fas fa-times' />
-                        </button>
+                                <i className='fas fa-times' />
+                            </button>
+                        ) : null}
                     </div>
                     <div className='grpAttendance'>
                         <div className='input-field inline'>
@@ -267,6 +274,7 @@ const EditGroup = ({
 
 EditGroup.propTypes = {
     group: PropTypes.object.isRequired,
+    auth: PropTypes.object.isRequired,
     createGroup: PropTypes.func.isRequired,
     getGroup: PropTypes.func.isRequired,
     deleteGroup: PropTypes.func.isRequired,
@@ -274,6 +282,7 @@ EditGroup.propTypes = {
 
 const mapStateToProps = (state) => ({
     group: state.group,
+    auth: state.auth,
 });
 
 export default connect(mapStateToProps, { createGroup, getGroup, deleteGroup })(

@@ -31,7 +31,7 @@ const initialState = {
 
 const EditGathering = ({
     gathering: { gathering, servants, loading, newGathering },
-    auth: { activeClient },
+    auth: { activeClient, activeRole, activeStatus },
     group: { groups },
     createGathering,
     getGathering,
@@ -371,16 +371,19 @@ const EditGathering = ({
                 <hr />
                 <h2>
                     Open-Share Groups
-                    <Link to={`/EditGroup/${_id}/0`}>
-                        <a class='waves-effect waves-light btn'>
-                            <i class='material-icons left green'>
-                                add_circle_outline
-                            </i>
-                            <span className='meeterNavTextHighlight'>
-                                {'  '}NEW
-                            </span>
-                        </a>
-                    </Link>
+                    {activeStatus == 'approved' && activeRole != 'guest' ? (
+                        <Link to={`/EditGroup/${_id}/0`}>
+                            <a class='waves-effect waves-light btn'>
+                                <i class='material-icons left green'>
+                                    add_circle_outline
+                                </i>
+
+                                <span className='meeterNavTextHighlight'>
+                                    {'  '}NEW
+                                </span>
+                            </a>
+                        </Link>
+                    ) : null}
                 </h2>
                 <GroupList mid={match.params.id} />
             </form>
@@ -433,14 +436,24 @@ const EditGathering = ({
         console.log('today:' + today);
         if (mDate >= today) {
             console.log('greater than or equal');
-            returnValue = [
-                <>
-                    <input type='submit' className='btn btn-primary my-1' />
-                    <Link className='btn btn-light my-1' to='/gatherings'>
-                        Go Back
-                    </Link>
-                </>,
-            ];
+            if (activeStatus == 'approved' && activeRole != 'guest') {
+                returnValue = [
+                    <>
+                        <input type='submit' className='btn btn-primary my-1' />
+                        <Link className='btn btn-light my-1' to='/gatherings'>
+                            Go Back
+                        </Link>
+                    </>,
+                ];
+            } else {
+                returnValue = [
+                    <>
+                        <Link className='btn btn-light my-1' to='/gatherings'>
+                            Go Back
+                        </Link>
+                    </>,
+                ];
+            }
         } else {
             console.log('less than today');
             returnValue = [

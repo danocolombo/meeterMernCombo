@@ -17,19 +17,25 @@ const GatheringItem = ({
         newcomers,
         meetingType,
     },
+    activeRole,
+    activeStatus,
 }) => (
     <Fragment>
         <div className={meetingType !== 'Other' ? 'PersonBox' : 'OtherBox'}>
             <Fragment>
                 <div className='DeleteTarget'>
-                    <a
-                        id='deleteGathering'
-                        title='-'
-                        href='/#'
-                        onClick={() => deleteGathering(_id)}
-                    >
-                        <i className='fas fa-minus-circle'></i>
-                    </a>
+                    {activeStatus == 'approved' && activeRole != 'guest' ? (
+                        <a
+                            id='deleteGathering'
+                            title='-'
+                            href='/#'
+                            onClick={() => deleteGathering(_id)}
+                        >
+                            <i className='fas fa-minus-circle'></i>
+                        </a>
+                    ) : (
+                        <div></div>
+                    )}
                 </div>
             </Fragment>
             <div>
@@ -58,7 +64,11 @@ const GatheringItem = ({
                 )}
                 <br />
                 <Link to={`/EditGathering/${_id}`}>
-                    <i className='fas fa-pen'></i>
+                    {activeStatus == 'approved' && activeRole != 'guest' ? (
+                        <i className='fas fa-pen'></i>
+                    ) : (
+                        <i className='fas fa-search'></i>
+                    )}
                 </Link>
             </div>
         </div>
@@ -73,6 +83,8 @@ function displayNewcomers(newcomers) {
 GatheringItem.propTypes = {
     gathering: PropTypes.object.isRequired,
     deleteGathering: PropTypes.func.isRequired,
+    activeRole: PropTypes.string.isRequired,
+    activeStatus: PropTypes.string.isRequired,
 };
 
 export default connect(null, { deleteGathering })(GatheringItem);
