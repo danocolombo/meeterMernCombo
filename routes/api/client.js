@@ -65,7 +65,7 @@ router.get('/code/:code', auth, async (req, res) => {
     }
 });
 
-// @route    GET api/client/usersDETAIL/:code
+// @route    GET api/client/users/:code
 // @desc     get the users for client code
 // @access   Private
 router.get('/users/:code', auth, async (req, res) => {
@@ -284,22 +284,54 @@ router.put(
 router.delete('/defaultgroup', auth, async (req, res) => {
     try {
         const { cid, gender, title, location, facilitator } = req.body;
-    
+
         // Remove profile
         //await Client.findOneAndRemove({ code: cid, 'defaultGroups.gender': gender, 'defaultGroups.title': title, 'defaultGroups.location': location, 'defaultGroups.facilitator': facilitator });
-        
+
         await Client.update(
-            {code: cid},
-            { $pull: { defaultGroups: {
-                gender: gender,
-                title: title,
-                location: location,
-                facilitator: facilitator
-            }}}
-        )
-        
+            { code: cid },
+            {
+                $pull: {
+                    defaultGroups: {
+                        gender: gender,
+                        title: title,
+                        location: location,
+                        facilitator: facilitator,
+                    },
+                },
+            }
+        );
+
         const feedback = 'Default Group Removed';
         res.json({ msg: feedback });
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Server Error');
+    }
+});
+// @route    GET api/client/defaultgroups/:code
+// @desc     get the default groups for client code
+// @access   Private
+router.get('/defaultgroups/:code', auth, async (req, res) => {
+    try {
+        const client = await Client.findOne({ code: req.params.code });
+        if (!client) {
+            return res
+                .status(400)
+                .json({ msg: 'No user info for client request' });
+        }
+
+        let dGroups = [];
+        client.defaultGroups.forEach((g) => {
+            dGroups.push({
+                _id: g._id,
+                gender: g.gender,
+                title: g.title,
+                location: g.location,
+                facilitator: g.facilitator,
+            });
+        });
+        res.json(dGroups);
     } catch (err) {
         console.error(err.message);
         res.status(500).send('Server Error');

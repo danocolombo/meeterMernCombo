@@ -4,14 +4,15 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Spinner from '../layout/Spinner';
 import DefaultGroup from './DefaultGroup';
+import ClientUser from './ClientUser';
 import Button from '@material-ui/core/Button';
 import { getClientUsers, getDefGroups } from '../../actions/admin';
 
 const DisplaySecurity = ({
     getClientUsers,
-    getDefaultGroups,
+    getDefGroups,
     auth: { activeClient, activeRole, activeStatus },
-    meeter: { defaultGroups, loading },
+    meeter: { defaultGroups, clientUsers, loading },
     historyView,
 }) => {
     useEffect(() => {
@@ -19,7 +20,7 @@ const DisplaySecurity = ({
             getClientUsers(activeClient);
             getDefGroups(activeClient);
         }
-    }, [getDefGroups]);
+    }, []);
     return loading ? (
         <Spinner />
     ) : (
@@ -32,9 +33,36 @@ const DisplaySecurity = ({
             </div>
             <p>This will be the security information for {activeClient}</p>
             <div className='posts'>
-                {defaultGroups.map(dGroup => (
-                <DefaultGroup key={dGroup._id} group={dGroup} />
-                ))}
+                <h3>Default Group Definitions</h3>
+                {defaultGroups ? (
+                    <table>
+                        <tr>
+                            <td>
+                                {defaultGroups.map((dGroup) => (
+                                    <DefaultGroup
+                                        key={dGroup._id}
+                                        defGroup={dGroup}
+                                    />
+                                ))}
+                            </td>
+                        </tr>
+                    </table>
+                ) : null}
+            </div>
+            <hr />
+            <div className='posts'>
+                <h3>Registered Users</h3>
+                {clientUsers ? (
+                    <table>
+                        <tr>
+                            <td>
+                                {clientUsers.map((user) => (
+                                    <ClientUser key={user._id} user={user} />
+                                ))}
+                            </td>
+                        </tr>
+                    </table>
+                ) : null}
             </div>
         </Fragment>
     );
@@ -51,6 +79,8 @@ DisplaySecurity.propTypes = {
 };
 const mapStateToProps = (state) => ({
     auth: state.auth,
-    
+    meeter: state.meeter,
 });
-export default connect(mapStateToProps, { getClientUsers, getDefGroups })(DisplaySecurity);
+export default connect(mapStateToProps, { getClientUsers, getDefGroups })(
+    DisplaySecurity
+);
