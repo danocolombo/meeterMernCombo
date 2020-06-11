@@ -32,3 +32,12 @@ export const getClientInfo = (cid) => async (dispatch) => {
         });
     }
 };
+export const getDefGroups = (cid) => async (dispatch) => {
+    //this loads all the default groups for cid
+    //into meeter.defaultGroups
+};
+export const deleteDefGroup = (id) => async (dispatch) => {
+    //this removes the defGroup id from client
+    //reference in database and updates meeter.defaultGroups
+};
+
