@@ -29,7 +29,17 @@ const ClientUser = ({
             <h4>{name}</h4>
         </div>
         <div>
-            <p className='my-1'>{role}</p>
+            {status == 'approved' && (
+                <p className='my-1'>Current Role: {role}</p>
+            )}
+            {status != 'approved' && (
+                <p className='my-1'>
+                    Requested Role:{' '}
+                    <strong>
+                        <u>{role}</u>
+                    </strong>
+                </p>
+            )}
 
             {showActions && (
                 <Fragment>
@@ -45,7 +55,7 @@ const ClientUser = ({
                     <button
                         onClick={() => deleteClientUser(_id)}
                         type='button'
-                        className='btn btn-light'
+                        className='btn btn-light-blue'
                     >
                         <i className='fas fa-ban' />
                     </button>

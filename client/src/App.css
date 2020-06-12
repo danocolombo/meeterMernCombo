@@ -212,7 +212,13 @@ img {
     background: #f6fa9c;
     color: #333;
 }
-
+.btn-light-blue,
+.bg-light-blue,
+.badge-light-blue,
+.alert-light-blue {
+    background: #87cefa;
+    color: #333;
+}
 .btn:hover {
     opacity: 0.8;
 }
