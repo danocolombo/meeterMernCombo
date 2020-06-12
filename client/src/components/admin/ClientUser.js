@@ -17,7 +17,7 @@ const ClientUser = ({
     user: { _id, name, role, status },
 }) => (
     <Fragment>
-        <div className={'PersonBox'}>
+        <div className={'ClientUserBox'}>
             <table>
                 <tr>
                     <td>{name}</td>
@@ -31,21 +31,21 @@ const ClientUser = ({
                                     type='button'
                                     className='btn btn-success'
                                 >
-                                    APPROVE
+                                    <i class='material-icons md-18'>check</i>
                                 </button>
                                 <button
                                     onClick={() => suspendClientUser(_id)}
                                     type='button'
                                     className='btn btn-dark'
                                 >
-                                    SUSPEND
+                                    <i class='material-icons md-18'>pan_tool</i>
                                 </button>
                                 <button
                                     onClick={() => deleteClientUser(_id)}
                                     type='button'
                                     className='btn btn-danger'
                                 >
-                                    DELETE
+                                    <i class='material-icons md-18'>delete</i>
                                 </button>
                             </Fragment>
                         )}
