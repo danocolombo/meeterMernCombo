@@ -499,7 +499,18 @@ button {
     grid-gap: 1rem;
     align-items: center;
 }
-
+.adminDefaultGroupBox {
+    border: 1px solid rgb(109, 84, 84);
+    box-shadow: 0 2px 3px rgb(216, 146, 146);
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    grid-gap: 1rem;
+    align-items: center;
+}
+.adminDefaultGroupBox > div {
+    text-align: center;
+    padding: 10px;
+}
 /* Posts Page */
 .post-form .post-form-header {
     background: var(--primary-color);
@@ -705,6 +716,19 @@ button {
     line-height: 1.8;
     margin-bottom: 1rem;
 }
+/* Admin defaultGroup box */
+.AdminDefaultGroupBox {
+    border: 1px solid rgb(109, 84, 84);
+    box-shadow: 0 2px 3px rgb(216, 146, 146);
+    /* padding: 10px;
+    margin-left: 25px;
+    margin-bottom: 10px;
+    margin-right: 10px;
+    max-width: 400px; */
+    display: grid;
+    grid-template-columns: auto, auto;
+}
+
 .PersonBox {
     border: 1px solid rgb(109, 84, 84);
     box-shadow: 0 2px 3px rgb(216, 146, 146);

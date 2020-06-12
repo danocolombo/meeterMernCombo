@@ -12,8 +12,25 @@ const DefaultGroups = ({
     showActions,
 }) => (
     <Fragment>
-        <div className={'PersonBox'}>
-            <table>
+        <div className={'adminDefaultGroupBox bg-white p my'}>
+            {gender == 'f' && <div>women</div>}
+            {gender == 'm' && <div>men</div>}
+            {gender == 'x' && <div>mixed</div>}
+            <div>{title}</div>
+            <div>{location}</div>
+            <div>{facilitator}</div>
+            <div>
+                {!auth.loading && (
+                    <button
+                        onClick={() => deleteDefGroup(_id)}
+                        type='button'
+                        className='btn btn-danger'
+                    >
+                        <i className='fas fa-times' />
+                    </button>
+                )}
+            </div>
+            {/* <table>
                 <tr>
                     <td>{gender}</td>
                     <td>{title}</td>
@@ -31,7 +48,7 @@ const DefaultGroups = ({
                         )}
                     </td>
                 </tr>
-            </table>
+            </table> */}
             {/* <div>Gender: {gender}</div>
             <div>Title: {title}</div>
             <div>Location: {location}</div>
