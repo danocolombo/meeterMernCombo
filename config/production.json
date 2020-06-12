@@ -1,2 +1,6 @@
 {
+     "mongoURI": "mongodb+srv://meeterApp:QTRxJJrTkFRn0yBn@wbc-ox4iq.mongodb.net/meeter?retryWrites=true&w=majority",
+    "jwtSecret": "meeterSecret",
+    "githubClientId": "",
+    "githubSecret": ""
 }
