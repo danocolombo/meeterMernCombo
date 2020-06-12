@@ -1,48 +1,48 @@
 const mongoose = require('mongoose');
-const { tenantModel } = require("../lib/multiTenant");
+const { tenantModel } = require('../lib/multiTenant');
 const PersonSchema = new mongoose.Schema({
     name: {
         type: String,
-        required: true
+        required: true,
     },
     email: {
-        type: String
+        type: String,
     },
     phone: {
-        type: String
+        type: String,
     },
     active: {
         type: Boolean,
-        default: true
+        default: true,
     },
     gender: {
-        type: String
+        type: String,
     },
     shirtSize: {
-        type: String
+        type: String,
     },
     birthday: {
-        type: String
+        type: String,
     },
     service: {
-        type: String
+        type: String,
     },
     date: {
         type: Date,
-        default: Date.now
+        default: Date.now,
     },
     training: [
         {
             title: {
                 type: String,
-                required: true
+                required: true,
             },
             trainingDate: {
                 type: Date,
-                required: true
-            }
-        }
-    ]
+                required: true,
+            },
+        },
+    ],
 });
 module.exports = Person = tenantModel('people', PersonSchema);
 //module.exports = Person = mongoose.model('person', PersonSchema);

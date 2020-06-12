@@ -111,6 +111,106 @@ router.get('/users/:code', auth, async (req, res) => {
     }
 });
 
+// @route    GET api/client/userstatus/:code
+// @desc     get the users for client code ordered
+//           - pending
+//           - suspended
+//           - approved
+// @access   Private
+router.get('/userstatus/:code', auth, async (req, res) => {
+    try {
+        const client = await Client.findOne({ code: req.params.code });
+        if (!client) {
+            return res
+                .status(400)
+                .json({ msg: 'No user info for client request' });
+        }
+        const allUsers = await User.find();
+        // we have the client, now we need to build a body to
+        // respond with the users.
+        // const util = require('util');
+        // console.log(util.inspect(allUsers, { showHidden: false, depth: null }));
+        // console.log('client.name: ' + client.name);
+
+        let cEntry = [];
+        let str1 = '';
+        let str2 = '';
+        //-----------------------------------------
+        // first add the pending to response array
+        //-----------------------------------------
+        client.users.forEach((u) => {
+            // console.log('role: ' + u.role);
+            if (u.status == 'pending') {
+                allUsers.forEach((aU) => {
+                    // need to cast array value as string
+                    str1 = String(u._id);
+                    str2 = String(aU._id);
+                    if (str1.trim() == str2.trim()) {
+                        cEntry.push({
+                            _id: u._id,
+                            name: aU.name,
+                            email: aU.email,
+                            defaultClient: aU.defaultClient,
+                            role: u.role,
+                            status: u.status,
+                        });
+                    }
+                });
+            }
+        });
+        //-----------------------------------------
+        // then add the suspended to response array
+        //-----------------------------------------
+        client.users.forEach((u) => {
+            // console.log('role: ' + u.role);
+            if (u.status == 'suspended') {
+                allUsers.forEach((aU) => {
+                    // need to cast array value as string
+                    str1 = String(u._id);
+                    str2 = String(aU._id);
+                    if (str1.trim() == str2.trim()) {
+                        cEntry.push({
+                            _id: u._id,
+                            name: aU.name,
+                            email: aU.email,
+                            defaultClient: aU.defaultClient,
+                            role: u.role,
+                            status: u.status,
+                        });
+                    }
+                });
+            }
+        });
+        //-----------------------------------------
+        // then add the suspended to response array
+        //-----------------------------------------
+        client.users.forEach((u) => {
+            // console.log('role: ' + u.role);
+            if (u.status == 'approved') {
+                allUsers.forEach((aU) => {
+                    // need to cast array value as string
+                    str1 = String(u._id);
+                    str2 = String(aU._id);
+                    if (str1.trim() == str2.trim()) {
+                        cEntry.push({
+                            _id: u._id,
+                            name: aU.name,
+                            email: aU.email,
+                            defaultClient: aU.defaultClient,
+                            role: u.role,
+                            status: u.status,
+                        });
+                    }
+                });
+            }
+        });
+        res.json(cEntry);
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Server Error');
+    }
+});
+
 // @route    POST api/client
 // @desc     Create or update client
 // @access   Private

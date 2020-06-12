@@ -15,47 +15,57 @@ const ClientUser = ({
     suspendClientUser,
     auth,
     user: { _id, name, role, status },
+    showActions,
 }) => (
-    <Fragment>
-        <div className={'ClientUserBox'}>
-            <table>
-                <tr>
-                    <td>{name}</td>
-                    <td>{role}</td>
-                    <td>{status}</td>
-                    <td>
-                        {!auth.loading && (
-                            <Fragment>
-                                <button
-                                    onClick={() => approveClientUser(_id)}
-                                    type='button'
-                                    className='btn btn-success'
-                                >
-                                    <i class='material-icons md-18'>check</i>
-                                </button>
-                                <button
-                                    onClick={() => suspendClientUser(_id)}
-                                    type='button'
-                                    className='btn btn-dark'
-                                >
-                                    <i class='material-icons md-18'>pan_tool</i>
-                                </button>
-                                <button
-                                    onClick={() => deleteClientUser(_id)}
-                                    type='button'
-                                    className='btn btn-danger'
-                                >
-                                    <i class='material-icons md-18'>delete</i>
-                                </button>
-                            </Fragment>
-                        )}
-                    </td>
-                </tr>
-            </table>
+    // <div className='clientUser bg-white p-1 my-1'>
+    <div
+        className={
+            status !== 'approved'
+                ? 'clientUser bg-light-yellow p my'
+                : 'clientUser bg-white p-1 my'
+        }
+    >
+        <div>
+            <h4>{name}</h4>
         </div>
-    </Fragment>
-);
+        <div>
+            <p className='my-1'>{role}</p>
 
+            {showActions && (
+                <Fragment>
+                    {status != 'approved' && (
+                        <button
+                            onClick={() => approveClientUser(_id)}
+                            type='button'
+                            className='btn btn-success'
+                        >
+                            <i className='fas fa-thumbs-up' />
+                        </button>
+                    )}
+                    <button
+                        onClick={() => deleteClientUser(_id)}
+                        type='button'
+                        className='btn btn-light'
+                    >
+                        <i className='fas fa-ban' />
+                    </button>
+                    {!auth.loading && (
+                        <button
+                            onClick={() => deleteClientUser(_id)}
+                            type='button'
+                            className='btn btn-danger'
+                        >
+                            <i className='fas fa-times' />
+                        </button>
+                    )}
+                </Fragment>
+            )}
+        </div>
+    </div>
+);
+ClientUser.defaultProps = {
+    showActions: true,
+};
 ClientUser.propTypes = {
     user: PropTypes.object.isRequired,
     auth: PropTypes.object.isRequired,

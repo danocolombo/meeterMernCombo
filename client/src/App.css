@@ -205,6 +205,13 @@ img {
     color: #333;
     border: #ccc solid 1px;
 }
+.btn-light-yellow,
+.bg-light-yellow,
+.badge-light-yellow,
+.alert-light-yellow {
+    background: #f6fa9c;
+    color: #333;
+}
 
 .btn:hover {
     opacity: 0.8;
@@ -484,6 +491,14 @@ button {
     font-size: 0.7em;
 }
 /* GATHERINGS Page */
+
+/* ADMIN - REGISTERED USERS */
+.clientUser {
+    display: grid;
+    grid-template-columns: 1fr 4fr;
+    grid-gap: 1rem;
+    align-items: center;
+}
 
 /* Posts Page */
 .post-form .post-form-header {

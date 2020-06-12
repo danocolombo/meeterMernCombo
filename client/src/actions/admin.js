@@ -7,7 +7,7 @@ export const getClientUsers = (client) => async (dispatch) => {
         //we know that this is called when the people list is created.
         //for this reason. Clear out the temporary person value.
         //dispatch({ type: CLEAR_PERSON });
-        const res = await axios.get(`/api/client/users/${client}`);
+        const res = await axios.get(`/api/client/userstatus/${client}`);
         dispatch({
             type: SET_CLIENT_USERS,
             payload: res.data,

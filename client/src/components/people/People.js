@@ -32,7 +32,7 @@ const People = ({ getPeople, person: { people, loading } }) => {
                 </Link>
             </div>
             <div className='posts'>
-                {people.map(person => (
+                {people.map((person) => (
                     <PersonItem key={person._id} person={person} />
                 ))}
             </div>
@@ -42,10 +42,10 @@ const People = ({ getPeople, person: { people, loading } }) => {
 
 People.propTypes = {
     getPeople: PropTypes.func.isRequired,
-    person: PropTypes.object.isRequired
+    person: PropTypes.object.isRequired,
 };
-const mapStateToProps = state => ({
-    person: state.person
+const mapStateToProps = (state) => ({
+    person: state.person,
 });
 
 export default connect(mapStateToProps, { getPeople })(People);
