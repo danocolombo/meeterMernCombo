@@ -1,5 +1,11 @@
 import axios from 'axios';
-import { SET_CLIENT_USERS, ADMIN_ERROR, SET_DEFAULT_GROUPS } from './types';
+import { setAlert } from './alert';
+import {
+    SET_CLIENT_USERS,
+    ADMIN_ERROR,
+    SET_DEFAULT_GROUPS,
+    REMOVE_CLIENT_USER,
+} from './types';
 
 // GET CLIENT INFO
 export const getClientUsers = (client) => async (dispatch) => {
@@ -59,10 +65,29 @@ export const deleteDefGroup = (id) => async (dispatch) => {
     //this removes the defGroup id from client
     //reference in database and updates meeter.defaultGroups
 };
-export const deleteClientUser = (id) => async (dispatch) => {
+export const deleteClientUser = (cid, uid) => async (dispatch) => {
     //this removes the user id from client users
     // in database and removes from meeter.clientUsers
+    try {
+        await axios.delete(`/api/client/user/${cid}/${uid}`);
+
+        dispatch({
+            type: REMOVE_CLIENT_USER,
+            payload: uid,
+        });
+
+        dispatch(setAlert('Client User Removed', 'success'));
+    } catch (err) {
+        dispatch({
+            type: ADMIN_ERROR,
+            payload: {
+                msg: err.response.statusText,
+                status: err.response.status,
+            },
+        });
+    }
 };
+
 export const approveClientUser = (id) => async (dispatch) => {
     //this updates the status of the user (id) in client
     //users in database to approved and updates

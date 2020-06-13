@@ -73,7 +73,7 @@ router.post(
             const newClientUpdate = await Client.findOne({
                 code: defaultClient,
             });
-            console.table(reqUser);
+
             // push the entry onto the end of users subarray
             newClientUpdate.users.push(reqUser);
             //save the changes

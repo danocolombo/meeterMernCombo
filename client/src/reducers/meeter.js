@@ -2,11 +2,13 @@ import {
     SET_CLIENT_USERS,
     CLEAR_CLIENT_USERS,
     SET_DEFAULT_GROUPS,
+    REMOVE_CLIENT_USER,
     ADMIN_ERROR,
 } from '../actions/types';
 
 const initialState = {
     clientUsers: [],
+    clientUser: null,
     defaultGroups: [],
     loading: true,
     error: {},
@@ -20,6 +22,14 @@ export default function (state = initialState, action) {
             return {
                 ...state,
                 clientUsers: payload,
+                loading: false,
+            };
+        case REMOVE_CLIENT_USER:
+            return {
+                ...state,
+                clientUsers: state.clientUsers.filter(
+                    (clientUser) => clientUser._id !== payload
+                ),
                 loading: false,
             };
         case CLEAR_CLIENT_USERS:

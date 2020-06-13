@@ -47,10 +47,6 @@ const EditGroup = ({
         }
         if (match.params.gid > 0)
             setFormData({ ...formData, groupId: match.params.gid });
-        //setFormData({...formData, mid: match.params.mid});
-        // (group)?console.log('GROUP'):console.log('NO_GROUP');
-        // if(!group){setFormData({...formData,mid: match.params.mid});}
-        // console.table(formData);
     }, [loading, getGroup, group]);
 
     const {
@@ -65,13 +61,6 @@ const EditGroup = ({
         notes,
     } = formData;
 
-    // const getExistingGroup = (gid) => {
-    //     // console.log('getExistingGroup: gid:' + gid);
-    //     // const res = getGroup(gid);
-    //     // // console.log('the response back was...');
-    //     // // console.log('response:' + response.json);
-    //     // return res();
-    // };
     const handleGenderChange = (e) => {
         console.log('btnValue:' + e.target.value);
         setFormData({ ...formData, gender: e.target.value });
@@ -89,14 +78,6 @@ const EditGroup = ({
 
     const onSubmit = (e) => {
         e.preventDefault();
-
-        // setFormData({...formData, [mid]: match.params.mid});
-        // console.table(formData);
-        // console.log('mid: ' + match.params.mid);
-        // console.log('__BEFORE_ action::createGroup');
-
-        // let edit = false;
-        // groupId != 0 ? (edit = true) : (edit = false);
         createGroup(formData, history, true);
         window.scrollTo(0, 0);
     };
@@ -107,13 +88,6 @@ const EditGroup = ({
                     <header className='grpHeader'>
                         <h2>Open Share Group</h2>
                     </header>
-                    {/* <div>
-                        <input
-                            type='hidden'
-                            name='meetingId'
-                            value={meetingId}
-                        />
-                    </div> */}
                     <div className='grpTitle'>
                         <TextField
                             id='title'
@@ -126,14 +100,6 @@ const EditGroup = ({
                         />
                     </div>
                     <div className='grpButtons'>
-                        {/* <Button
-                            variant='contained'
-                            color='primary'
-                            size='small'
-                            className='pl10 py-2'
-                        >
-                            Save
-                        </Button> */}
                         {activeStatus == 'approved' && activeRole != 'guest' ? (
                             <input
                                 type='submit'

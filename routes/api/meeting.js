@@ -70,87 +70,7 @@ router.post(
             youth,
             notes,
         } = req.body;
-        // if (meetingId) {
-        //     // we got meeting ID, so attempting to update
-        //     //=============================================
-        //     // just because we to a variable, does not mean
-        //     // it is a valid id. Verify
-        //     var mongodbObjID = require('mongodb').ObjectID;
-        //     if (!mongodbObjID.isValid(meetingId)) {
-        //         return res.status(400).json({ msg: 'bad rquest' });
-        //     }
-        //     //==========================================
-        //     // now load object with all supported variables
-        //     const mInput = new Meeting();
-        //     if (facilitator) {
-        //         mInput.facilitator = facilitator;
-        //     } else {
-        //         mInput.facilitator = req.user.name;
-        //     }
-        //     mInput.title = title;
-        //     mInput.meetingDate = meetingDate;
-        //     mInput.meetingType = meetingType;
-        //     if (supportRole) meetingFields.supportRole = teacher;
-        //     if (worship) meetingFields.worship = worship;
-        //     if (cafe) meetingFields.cafe = cafe;
-        //     if (teacher) meetingFields.teacher = teacher;
 
-        //     if (meal) mInput.meal = meal;
-        //     if (mealCount) {
-        //         mInput.mealCount = mealCount;
-        //     } else {
-        //         mInput.mealCount = 0;
-        //     }
-        //     if (attendance) {
-        //         mInput.attendance = attendance;
-        //     } else {
-        //         mInput.attendance = 0;
-        //     }
-        //     if (donations) {
-        //         meetingFields.donations = donations;
-        //     } else {
-        //         meetingFields.donations = 0;
-        //     }
-        //     if (notes) mInput.notes = notes;
-        //     try {
-        //         // Using upsert option (creates new doc if no match is found):
-        //         let meeting = await Meeting.updateOne({ id: meetingId });
-        //         res.json(meeting);
-        //     } catch (err) {
-        //         console.error(err.message);
-        //         res.status(500).send('Server Error');
-        //     }
-
-        //     // await mInput.save();
-        //     // res.json(mInput);
-        //     // console.log(mInput);
-        //     // return res.status(200).json({ msg: 'going to update' });
-        // } else {
-        //===========================
-        //===========================
-        //we did not get a meeting ID, so we are going with
-        // with an insert.
-        // Build meeting object
-        //##################
-        // meetingId,
-        // meetingDate,
-        // facilitator,
-        // meetingType,
-        // title,
-        // supportRole,
-        // worship,
-        // attendance,
-        // donations,
-        // meal,
-        // mealCoordinator,
-        // mealCount,
-        // cafeCoordinator,
-        // notes
-        //##################
-        console.table(req.body);
-        console.log(
-            '+++++++  ^^^^^^  from req.body coming into routes/api/meeting (POST)'
-        );
         const meetingFields = {};
         //first two are required, no need to check.
         meetingFields.meetingDate = meetingDate;
@@ -211,8 +131,6 @@ router.post(
         }
         try {
             // Using upsert option (creates new doc if no match is found):
-            console.log('this is going to findOneAndUpdate');
-            console.table(meetingFields);
             if (meetingId) {
                 let meeting = await Meeting.findOneAndUpdate(
                     { _id: meetingId },
@@ -229,12 +147,6 @@ router.post(
                 );
                 res.json(meeting2);
             }
-            // console.clear;
-            // console.log(meetingId);
-            // console.log(JSON.stringify(meetingFields));
-            // res.json(meeting2);
-            // console.log(JSON.stringify(meetingFields));
-            // res.json('there we are...');
         } catch (err) {
             console.error(err.message);
             res.status(500).send('Server Error');

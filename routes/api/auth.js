@@ -18,18 +18,8 @@ router.get('/', auth, async (req, res) => {
         //----------------------------------------------
         // need to set the clientID from user profile
         //----------------------------------------------
-        // console.log('NOW-NOW-NOW');
         const cid = getCurrentTenantId();
-        // console.log(getCurrentTenantId());
-        // console.log(user);
-        // console.log('defaultClient:' + user.defaultClient);
-        // console.log('switching tenant value');
         setCurrentTenantId(user.defaultClient);
-        // console.log('now tenant:' + getCurrentTenantId());
-        // console.table(JSON.stringify(user));
-        //set activeClient to response from defaultClient
-
-        // user.activeClient = user.defaultClient;
 
         res.json(user);
     } catch (err) {

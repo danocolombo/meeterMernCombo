@@ -74,15 +74,11 @@ export const createPerson = (formData, history, edit = false) => async (
     dispatch
 ) => {
     try {
-        // console.log('ACTION::PERSON - createPerson');
         const config = {
             headers: {
                 'Content-Type': 'application/json',
             },
         };
-        // console.log('in action/createPerson');
-        // console.table(formData);
-        // console.log(JSON.stringify(formData));
         const res = await axios.post('/api/person', formData, config);
 
         dispatch({

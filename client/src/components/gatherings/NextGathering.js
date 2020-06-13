@@ -162,8 +162,6 @@ function showFuture(meetings) {
         }
         // we have the next testimony/lesson defined (if available)
         return [<>{theNext}</>];
-    } else {
-        return [<h4>is not scheduled</h4>];
     }
     function returnSmallDate(d) {
         // this strips the junk and returns just the month/day/year

@@ -67,7 +67,7 @@ router.post(
             notes,
         } = req.body;
         // if (req.params.gid) console.log('gid:' + req.params.gid);
-        console.table(req.body);
+
         const groupFields = {};
         //first two are required, no need to check.
         groupFields.mid = meetingId;
@@ -126,32 +126,6 @@ router.post(
         // }
     }
 );
-
-// router.post('/groupA/:gid', auth, async (req, res) => {
-//     try {
-//         const {
-//             gid,
-//             mid,
-//             title,
-//             attendance,
-//             gender,
-//             location,
-//             facilitator,
-//             cofacilitator,
-//             notes
-//         } = req.body;
-//         // console.log('gid:' + req.params.gid);
-//         // console.table(req.body);
-//         // const groups = await Groups.findById(req.params.gid);
-//         let group = await Groups.findOne({ _id: req.params.gid });
-//         console.table(group);
-//         res.json(group);
-//     } catch (err) {
-//         console.error(err.message);
-
-//         res.status(500).send('Server Error');
-//     }
-// });
 
 // @route    POST api/groups/group
 // @desc     Create or update a group

@@ -19,11 +19,17 @@ import {
 //get  gatherings
 export const getGatherings = (cid) => async (dispatch) => {
     try {
+        if (!cid.activeClient) {
+            return;
+        }
         dispatch({ type: CLEAR_GATHERINGS });
         // this will print the Oject contents of cid
-        const util = require('util');
-        console.log('cid.activeClient: ' + cid.activeClient);
-        console.log(util.inspect(cid, { showHidden: false, depth: null }));
+        // const util = require('util');
+        // console.log('cid.activeClient: ' + cid.activeClient);
+        // console.log(
+        //     'cid: ' + util.inspect(cid, { showHidden: false, depth: null })
+        // );
+
         // console.log(util.inspect(cid, {showHidden: false, depth: null}))
         // let c = JSON.parse(cid);
         // console.log('c: ' + c);
@@ -157,12 +163,6 @@ export const createGathering = (formData, history, cid, edit = false) => async (
     dispatch
 ) => {
     try {
-        // console.log('in action/gatherings.js');
-        // console.log(JSON.stringify(formData));
-        console.table(formData);
-        console.log('that was from actions::gatherings::createGathering');
-        // console.log(typeof formData._id);
-        // console.log(formData._id.length);
         if (formData._id.length < 1) {
             //this is an add, so delete _id and meetingId from formData
             delete formData._id;
@@ -176,10 +176,7 @@ export const createGathering = (formData, history, cid, edit = false) => async (
         //-----------------------------------------------
         var client = 'meeting-' + cid;
         formData.tenantId = client;
-        // if(formData._id) formData.push("meetingId", formData._id);
-        //delete formData._id;
-        // console.log('transformed formdata');
-        // console.log(JSON.stringify(formData));
+
         const config = {
             headers: {
                 'Content-Type': 'application/json',

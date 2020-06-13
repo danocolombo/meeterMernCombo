@@ -25,7 +25,21 @@ const Register = ({ setAlert, register, isAuthenticated }) => {
         if (password !== password2) {
             setAlert('Passwords do not match', 'danger');
         } else {
-            register({ name, email, password, defaultClient });
+            //now verify that client code is acceptable
+            switch (defaultClient) {
+                case 'wbc':
+                case 'cpv':
+                case 'ccc':
+                case 'vpc':
+                    register({ name, email, password, defaultClient });
+                    break;
+                default:
+                    setAlert(
+                        'Invalid client code, please get assistance',
+                        'danger'
+                    );
+                    break;
+            }
         }
     };
 

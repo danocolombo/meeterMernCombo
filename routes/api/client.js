@@ -279,18 +279,12 @@ router.put(
             role,
             status,
         };
-        console.table(userInfo);
         try {
             // //see if user exists for client
             const client = await Client.findOne({
                 code: cid,
                 'users._id': _id,
             });
-            // const util = require('util');
-            // // console.log('cid.activeClient: ' + cid.activeClient);
-            // console.log(
-            //     util.inspect(client, { showHidden: false, depth: null })
-            // );
             if (client) {
                 //user exists, update it
                 const updateClient = await Client.findOneAndUpdate(
@@ -430,6 +424,38 @@ router.get('/defaultgroups/:code', auth, async (req, res) => {
             });
         });
         res.json(dGroups);
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Server Error');
+    }
+});
+
+// @route    DELETE api/client/:cid/:uid
+// @desc     Remove user (uid) from client (cid)
+// @access   Private
+router.delete('/user/:cid/:uid', auth, async (req, res) => {
+    try {
+        // get the clent entry (by cid)
+        const clientEntry = await Client.findOne({
+            code: req.params.cid,
+        });
+        // pull out user from the client array
+        const user = await clientEntry.users.find(
+            (user) => user.id === req.params.uid
+        );
+
+        // make sure user exists
+        if (!user) {
+            return res.status(404).json({ msg: 'User does not exist' });
+        }
+        // Get the index to remove based on user.id
+        const removeIndex = clientEntry.users
+            .map((user) => user.id)
+            .indexOf(req.params.uid);
+
+        clientEntry.users.splice(removeIndex, 1);
+        await clientEntry.save();
+        res.json(clientEntry.users);
     } catch (err) {
         console.error(err.message);
         res.status(500).send('Server Error');

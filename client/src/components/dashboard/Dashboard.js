@@ -20,17 +20,34 @@ const Dashboard = ({
     getCurrentProfile,
     deleteAccount,
     auth: { user, activeClient },
+    gathering: { gatherings },
     auth,
     profile: { profile, loading },
 }) => {
     useEffect(() => {
+        console.log('(1)');
+        //check for activeClient, get it if needed
+        console.log('activeClient: ' + activeClient);
+        if (!activeClient) {
+            // when first logging in, sometimes the delay
+            // in processing might get us to dashboard
+            // before activeClient is set. If undefined,
+            // go get the users default client value
+
+            getCurrentProfile();
+        }
+        if (gatherings.length == 0) {
+            getGatherings({ activeClient });
+        }
+    }, []);
+    useEffect(() => {
+        getCurrentProfile();
         if (activeClient) {
             getGatherings({ activeClient });
         }
-        getCurrentProfile();
     }, [getGatherings, getCurrentProfile]);
 
-    return loading && profile === null ? (
+    return loading ? (
         <Spinner />
     ) : (
         <Fragment>
@@ -39,6 +56,7 @@ const Dashboard = ({
             <p className='lead'>
                 <i className='fas fa-user' /> Welcome {user && user.name}
             </p>
+            <div>activeClient:{activeClient}</div>
             <strong>What's happening...</strong>
             {privledgedInfo(auth)}
             {/* <p>
@@ -103,11 +121,13 @@ Dashboard.propTypes = {
     deleteAccount: PropTypes.func.isRequired,
     auth: PropTypes.object.isRequired,
     profile: PropTypes.object.isRequired,
+    gathering: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = (state) => ({
     auth: state.auth,
     profile: state.profile,
+    gathering: state.gathering,
 });
 
 export default connect(mapStateToProps, {

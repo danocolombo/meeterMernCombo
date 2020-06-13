@@ -69,8 +69,7 @@ export const getGroupNoRedux = (gid) => async () => {
 // Get group by groupId
 export const getGroup = (groupId) => async (dispatch) => {
     try {
-        
-        dispatch({ type: CLEAR_GROUP});
+        dispatch({ type: CLEAR_GROUP });
         const res = await axios.get(`/api/groups/group/${groupId}`);
         dispatch({
             type: GET_GROUP,
@@ -96,11 +95,8 @@ export const createGroup = (formData, history, edit = false) => async (
     dispatch
 ) => {
     try {
-        console.table(formData);
-        console.log('from actions/group :: createGroup');
-        if(formData._id.length < 1){
+        if (formData._id.length < 1) {
             //this is an add
-            // console.log('We acknowledge it is new');
             delete formData._id;
         }
         const config = {
@@ -109,28 +105,27 @@ export const createGroup = (formData, history, edit = false) => async (
             },
         };
         let res = null;
-        if(formData._id){
-            res = await axios.post(`/api/groups/group/${formData._id}`, formData, config);
-        }else{
+        if (formData._id) {
+            res = await axios.post(
+                `/api/groups/group/${formData._id}`,
+                formData,
+                config
+            );
+        } else {
             res = await axios.post(`/api/groups/group/0`, formData, config);
         }
 
         dispatch({
             type: GET_GROUP,
-            payload: res.data
+            payload: res.data,
         });
-        dispatch(
-            setAlert(
-                edit ? 'Group Updates' : 'Group Created',
-                'success'
-            )
-        );
+        dispatch(setAlert(edit ? 'Group Updates' : 'Group Created', 'success'));
 
-        if(!edit) {
-            const target = "/editGathering/" + formData.mid;
+        if (!edit) {
+            const target = '/editGathering/' + formData.mid;
             history.push(target);
         }
-    }catch (err) {
+    } catch (err) {
         return err;
     }
 };
