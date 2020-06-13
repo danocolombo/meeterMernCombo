@@ -8,6 +8,7 @@ const { check, validationResult } = require('express-validator');
 const auth = require('../../middleware/auth');
 
 const User = require('../../models/User');
+const Client = require('../../models/Client');
 
 // @route    POST api/users
 // @desc     Register user
@@ -61,6 +62,23 @@ router.post(
             user.password = await bcrypt.hash(password, salt);
 
             await user.save();
+
+            //------ ADDING USER TO CLIENT DOC ------
+            const reqUser = {};
+            reqUser._id = user.id;
+            reqUser.role = 'unregistered';
+            reqUser.status = 'pending';
+
+            //first thing, find the client entry to add/update user
+            const newClientUpdate = await Client.findOne({
+                code: defaultClient,
+            });
+            console.table(reqUser);
+            // push the entry onto the end of users subarray
+            newClientUpdate.users.push(reqUser);
+            //save the changes
+            await newClientUpdate.save();
+            //------ DONE ADDING USER TO CLIENT DOC ------
 
             const payload = {
                 user: {

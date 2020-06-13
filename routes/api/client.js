@@ -279,22 +279,20 @@ router.put(
             role,
             status,
         };
+        console.table(userInfo);
         try {
             // //see if user exists for client
             const client = await Client.findOne({
                 code: cid,
                 'users._id': _id,
             });
-            const util = require('util');
-            // console.log('cid.activeClient: ' + cid.activeClient);
-            console.log(
-                util.inspect(client, { showHidden: false, depth: null })
-            );
+            // const util = require('util');
+            // // console.log('cid.activeClient: ' + cid.activeClient);
+            // console.log(
+            //     util.inspect(client, { showHidden: false, depth: null })
+            // );
             if (client) {
-                console.log('EXISTING USER NEEDS UPDATING');
                 //user exists, update it
-                console.log('code: ' + cid);
-                console.log('user.id: ' + _id);
                 const updateClient = await Client.findOneAndUpdate(
                     {
                         code: cid,
@@ -319,9 +317,9 @@ router.put(
                 );
                 res.json(updateClient);
             } else {
-                console.log('NEW USER ENTRY');
                 //need to add the user to the client
                 //first thing, find the client entry to add/update user
+
                 const newClientUpdate = await Client.findOne({ code: cid });
                 //push the entry onto the end of users subarray
                 newClientUpdate.users.push(userInfo);

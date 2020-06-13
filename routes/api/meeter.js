@@ -9,7 +9,7 @@ const Client = require('../../models/Client');
 const User = require('../../models/User');
 
 // @route    PUT api/client/privledges/:code/:uid
-// @desc     put privledges for user of client code
+// @desc     gets the user defaultClient, role and status
 // @access   Private
 router.put('/setUserAuth', auth, async (req, res) => {
     const { client, uid } = req.body;

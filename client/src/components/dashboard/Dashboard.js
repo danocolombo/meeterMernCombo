@@ -24,7 +24,7 @@ const Dashboard = ({
     profile: { profile, loading },
 }) => {
     useEffect(() => {
-        if(activeClient){
+        if (activeClient) {
             getGatherings({ activeClient });
         }
         getCurrentProfile();
@@ -39,10 +39,7 @@ const Dashboard = ({
             <p className='lead'>
                 <i className='fas fa-user' /> Welcome {user && user.name}
             </p>
-            {/* <p>
-                <h5>PRIVS</h5>
-                <CheckPrivs />
-            </p> */}
+            <strong>What's happening...</strong>
             {privledgedInfo(auth)}
             {/* <p>
                 <h3>Next Meeting</h3>
@@ -81,11 +78,11 @@ const Dashboard = ({
         if (auth.activeStatus === 'approved') {
             return [
                 <Fragment>
-                    <div>
+                    {/* <div>
                         <u>
-                            <strong>[Authorized Information]</strong>
+                            <strong>What's happening...</strong>
                         </u>
-                    </div>
+                    </div> */}
                     <NextGathering />
                 </Fragment>,
             ];
