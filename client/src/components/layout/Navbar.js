@@ -42,7 +42,8 @@ const Navbar = ({ auth: { isAuthenticated, loading, user }, auth, logout }) => {
                         </li>
                     </Fragment>
                 ) : null}
-                {auth.activeRole === 'superuser' &&
+                {(auth.activeRole === 'superuser' ||
+                    auth.activeRole === 'owner') &&
                 auth.activeStatus === 'approved' ? (
                     <Fragment>
                         <li>
@@ -51,6 +52,11 @@ const Navbar = ({ auth: { isAuthenticated, loading, user }, auth, logout }) => {
                                 <span className='hide-sm'> Admin</span>
                             </Link>
                         </li>
+                    </Fragment>
+                ) : null}
+                {auth.activeRole === 'superuser' &&
+                auth.activeStatus === 'approved' ? (
+                    <Fragment>
                         <li>
                             <Link to='/posts'>Posts</Link>
                         </li>
