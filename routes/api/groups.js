@@ -155,7 +155,6 @@ router.post(
             notes,
         } = req.body;
         // if (req.params.gid) console.log('gid:' + req.params.gid);
-        console.table(req.body);
         const groupFields = {};
         //first two are required, no need to check.
         groupFields.mid = mid;
