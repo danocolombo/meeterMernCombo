@@ -497,7 +497,15 @@ button {
     font-size: 0.7em;
 }
 /* GATHERINGS Page */
-
+/* GATHERING - GroupListItem */
+.groupListItem {
+    border: 1px solid rgb(109, 84, 84);
+    box-shadow: 0 2px 3px rgb(216, 146, 146);
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    grid-gap: 1rem;
+    align-items: center;
+}
 /* ADMIN - REGISTERED USERS */
 .clientUser {
     display: grid;

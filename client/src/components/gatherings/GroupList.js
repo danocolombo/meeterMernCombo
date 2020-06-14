@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { getGroups } from '../../actions/group';
 import props from 'prop-types';
 import { deleteGroup } from '../../actions/group';
@@ -58,29 +58,48 @@ export default class ExistingGroups extends Component {
         var smallGroups = [];
         if (this.state.existingGroups) {
             smallGroups = this.state.existingGroups.map((grp) => (
-                <tr>
-                    <td className='GGL-Gender'>
+                <Fragment>
+                <div className={'groupListItem'}>
+                    <div>
                         <a href={this.generateGroupLink(grp._id)}>
                             {this.showGender(grp.gender, grp._id)}
                         </a>
-                    </td>
-                    <td className='GGL-Title'>{grp.title}</td>
-                    <td className='GGL'>{grp.location}</td>
-                    <td className='GGL-Facilitator'>{grp.facilitator}</td>
-                    {/* <td className='GGL-Delete'>
-                        <div className='mx-2'>
-                            <a
-                                id='deleteGrp'
-                                className='DeleteTarget'
-                                title='DELETE'
-                                href='/#'
-                                onClick={() => deleteGroup(grp._id)}
-                            >
-                                <i className='fas fa-minus-circle'></i>
-                            </a>
-                        </div>
-                    </td> */}
-                </tr>
+                    </div>
+                
+                <div>
+                    <p className='GGL-Title my'>{grp.title}</p>
+                </div>
+                <div>
+                    <p className='GGL-Location my'>{grp.location}</p>
+                </div>
+                <div>
+                    <p className='GGL-Facilitator my'>{grp.facilitator}</p>
+                </div>
+                </div>
+                </Fragment>
+                // <tr>
+                //     <td className='GGL-Gender'>
+                //         <a href={this.generateGroupLink(grp._id)}>
+                //             {this.showGender(grp.gender, grp._id)}
+                //         </a>
+                //     </td>
+                //     <td className='GGL-Title'>{grp.title}</td>
+                //     <td className='GGL'>{grp.location}</td>
+                //     <td className='GGL-Facilitator'>{grp.facilitator}</td>
+                    // {/* {/* <td className='GGL-Delete'>
+                    //     <div className='mx-2'>
+                    //         <a
+                    //             id='deleteGrp'
+                    //             className='DeleteTarget'
+                    //             title='DELETE'
+                    //             href='/#'
+                    //             onClick={() => deleteGroup(grp._id)}
+                    //         >
+                    //             <i className='fas fa-minus-circle'></i>
+                    //         </a>
+                    //     </div>
+                    // </td> */}
+                // </tr> */}
             ));
         }
 
