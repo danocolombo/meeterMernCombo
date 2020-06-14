@@ -87,29 +87,6 @@ export default class ExistingGroups extends Component {
                         </div>
                     </div>
                 </Fragment>
-                // <tr>
-                //     <td className='GGL-Gender'>
-                //         <a href={this.generateGroupLink(grp._id)}>
-                //             {this.showGender(grp.gender, grp._id)}
-                //         </a>
-                //     </td>
-                //     <td className='GGL-Title'>{grp.title}</td>
-                //     <td className='GGL'>{grp.location}</td>
-                //     <td className='GGL-Facilitator'>{grp.facilitator}</td>
-                // {/* {/* <td className='GGL-Delete'>
-                //     <div className='mx-2'>
-                //         <a
-                //             id='deleteGrp'
-                //             className='DeleteTarget'
-                //             title='DELETE'
-                //             href='/#'
-                //             onClick={() => deleteGroup(grp._id)}
-                //         >
-                //             <i className='fas fa-minus-circle'></i>
-                //         </a>
-                //     </div>
-                // </td> */}
-                // </tr> */}
             ));
         }
 

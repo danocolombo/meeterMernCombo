@@ -279,8 +279,8 @@ router.get('/:id', auth, async (req, res) => {
 //   }
 // });
 
-// @route    DELETE api/profile
-// @desc     Delete profile, user & posts
+// @route    DELETE api/meeting
+// @desc     Delete meeting
 // @access   Private
 router.delete('/:id', auth, async (req, res) => {
     try {

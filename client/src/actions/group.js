@@ -6,17 +6,23 @@ import {
     CLEAR_GROUP,
     DELETE_GROUP,
     GET_GROUP,
+    GET_GATHERING_GROUPS,
     UPDATE_GROUP,
     CLEAR_GROUPS,
     SET_GROUP,
 } from './types';
 
 // Get groups associated with meetingId
-export const getGroups = (mid) => async () => {
+export const getGroups = (mid) => async (dispatch) => {
     try {
         // dispatch({ type: CLEAR_GROUPS });
         const res = await axios.get(`/api/groups/meeting/${mid}`);
-
+        dispatch({ type: CLEAR_GROUP });
+        dispatch({ type: CLEAR_GROUPS });
+        dispatch({
+            type: GET_GATHERING_GROUPS,
+            payload: res.data,
+        });
         return res.data;
     } catch (err) {
         const resMsg = {
@@ -32,8 +38,8 @@ export const getGroupNoRedux = (gid) => async () => {
     console.log('actions/group: getGroup: gid:' + gid);
     try {
         // dispatch({ type: CLEAR_GROUPS });
-        const res = await axios.get(`/api/groups/group/${gid}`);
-        return await axios.get(`/api/groups/group/${gid}`).then((response) => {
+        const res = await axios.get(`/api/groups/${gid}`);
+        return await axios.get(`/api/groups/${gid}`).then((response) => {
             return response.data;
         });
         return res.data;
@@ -70,7 +76,7 @@ export const getGroupNoRedux = (gid) => async () => {
 export const getGroup = (groupId) => async (dispatch) => {
     try {
         dispatch({ type: CLEAR_GROUP });
-        const res = await axios.get(`/api/groups/group/${groupId}`);
+        const res = await axios.get(`/api/groups/${groupId}`);
         dispatch({
             type: GET_GROUP,
             payload: res.data,
@@ -134,12 +140,13 @@ export const createGroup = (formData, history, edit = false) => async (
 export const deleteGroup = (groupId) => async (dispatch) => {
     console.log('actions/group.js: (' + groupId + ')');
     try {
-        //const res = await axios.delete(`/api/groups/group/${groupId}`);
-        const res = await axios.delete(`/api/groups/${groupId}`);
+        await axios.delete(`/api/groups/${groupId}`);
         dispatch({
             type: DELETE_GROUP,
-            payload: res.data,
+            payload: groupId,
         });
+        console.log('back from dispatch DELETE_GROUP and payload');
+        dispatch(setAlert('Group removed', 'success'));
     } catch (err) {
         dispatch({
             type: GROUP_ERROR,

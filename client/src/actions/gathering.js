@@ -220,14 +220,6 @@ export const getGathering = (id) => async (dispatch) => {
     if (id.length < 1) return;
     if (id === 0) return;
     try {
-        // dispatch({ type: CLEAR_GROUPS });
-        // const resGrp = await axios.get(`/api/groups/meeting/${id}`);
-        // dispatch({
-        //     type: GET_GROUPS,
-        //     payload: resGrp.data
-        // });
-        //console.log('getGathering:TRY');
-        // console.log('id:' + id);
         dispatch({ type: CLEAR_GATHERING });
         const res = await axios.get(`/api/meeting/${id}`);
 

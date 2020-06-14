@@ -34,7 +34,7 @@ const EditGroup = ({
     const [formData, setFormData] = useState(initialState);
 
     useEffect(() => {
-        if (!group && match.params.gid !== 0) {
+        if (!group) {
             getGroup(match.params.gid);
         }
         if (!loading) {

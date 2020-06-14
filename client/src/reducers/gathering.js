@@ -9,20 +9,23 @@ import {
     CLEAR_SERVANTS,
     GET_HATHERINGS,
     CLEAR_HATHERINGS,
-    UPDATE_GATHERING
+    UPDATE_GATHERING,
+    GET_GATHERING_GROUPS,
+    CLEAR_GATHERING_GROUPS,
 } from '../actions/types';
 
 const initialState = {
     gatherings: [],
     hatherings: [],
     gathering: null,
+    groups: [],
     servants: [],
     loading: true,
     newGathering: false,
-    error: {}
+    error: {},
 };
 
-export default function(state = initialState, action) {
+export default function (state = initialState, action) {
     const { type, payload } = action;
 
     switch (type) {
@@ -30,20 +33,26 @@ export default function(state = initialState, action) {
             return {
                 ...state,
                 gatherings: payload,
-                loading: false
+                loading: false,
             };
         case GET_HATHERINGS:
             return {
                 ...state,
                 hatherings: payload,
-                loading: false
+                loading: false,
             };
         case GET_GATHERING:
         case UPDATE_GATHERING:
             return {
                 ...state,
                 gathering: payload,
-                loading: false
+                loading: false,
+            };
+        case GET_GATHERING_GROUPS:
+            return {
+                ...state,
+                groups: payload,
+                loading: false,
             };
         case GET_SERVANTS:
             //this inserts a blank row at the top of payload
@@ -57,54 +66,60 @@ export default function(state = initialState, action) {
                 training: '',
                 email: '',
                 phone: '',
-                sysem: ''
+                sysem: '',
             };
-            payload.forEach(element => {
+            payload.forEach((element) => {
                 newPayload.push(element);
             });
 
             return {
                 ...state,
                 servants: newPayload,
-                loading: false
+                loading: false,
             };
         case GATHERING_ERROR:
             return {
                 ...state,
                 error: payload,
-                loading: false
+                loading: false,
             };
         case CLEAR_GATHERING:
             return {
                 ...state,
                 gathering: null,
-                loading: false
+                loading: false,
+            };
+        case CLEAR_GATHERING_GROUPS:
+            return {
+                ...state,
+                groups: null,
+                loading: false,
             };
         case CLEAR_SERVANTS:
             return {
                 ...state,
                 servants: null,
-                loading: false
+                loading: false,
             };
         case CLEAR_GATHERINGS:
             return {
                 ...state,
                 gatherings: [],
-                loading: false
+                loading: false,
             };
         case CLEAR_HATHERINGS:
             return {
                 ...state,
                 hatherings: [],
-                loading: false
+                loading: false,
             };
         case DELETE_GATHERING:
             return {
                 ...state,
                 gatherings: state.gatherings.filter(
-                    gathering => gathering._id !== payload
+                    (gathering) => gathering._id !== payload
                 ),
-                loading: false
+                loading: false,
             };
         default:
             return state;

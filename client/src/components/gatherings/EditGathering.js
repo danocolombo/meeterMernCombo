@@ -3,6 +3,8 @@ import { Link, withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createGathering, getGathering } from '../../actions/gathering';
+import { getGroups } from '../../actions/group';
+import GroupListItem from './GroupListItem';
 // import { deleteGroup } from '../../actions/group';
 import ServantSelect from './ServantSelect';
 import GroupList from './GroupList';
@@ -30,17 +32,23 @@ const initialState = {
 };
 
 const EditGathering = ({
-    gathering: { gathering, servants, loading, newGathering },
+    gathering: { gathering, groups, servants, loading, newGathering },
     auth: { activeClient, activeRole, activeStatus },
-    group: { groups },
+    // group: { groups },
     createGathering,
     getGathering,
+    getGroups,
     deleteGroup,
     match,
     history,
 }) => {
     const [formData, setFormData] = useState(initialState);
-
+    useEffect(() => {
+        if (match.params.id) {
+            getGroups(match.params.id);
+        }
+        // getGroups(match.params.id);
+    }, [getGroups]);
     useEffect(() => {
         // console.log('match.params.id:' + match.params.id);
 
@@ -49,6 +57,7 @@ const EditGathering = ({
         // if (gathering == null) console.log('YEP');
         if (!gathering) {
             getGathering(match.params.id);
+            getGroups(match.params.id);
         }
         // if (!groups) {
         //     getGroups(match.params.id);
@@ -63,7 +72,7 @@ const EditGathering = ({
         }
 
         if (_id) setFormData({ ...formData, meetingId: _id });
-    }, [loading, getGathering, gathering]);
+    }, [loading, getGathering, gathering, getGroups]);
 
     const {
         _id,
@@ -385,7 +394,30 @@ const EditGathering = ({
                         </Link>
                     ) : null}
                 </h2>
-                <GroupList mid={match.params.id} />
+                {/* {groups ? (
+                    <Fragment>
+                        <div>GROUPS IDENTIFIED</div>
+                        <div>
+                            {groups.map((g) => (
+                                <div>{g._id}</div>
+                            ))}
+                        </div>
+                    </Fragment>
+                ) : (
+                    <div>CANNOT SEE THEM</div>
+                )} */}
+                {groups ? (
+                    <div>
+                        {groups.map((dGroup) => (
+                            <GroupListItem
+                                key={dGroup._id}
+                                mid={dGroup.mid}
+                                group={dGroup}
+                            />
+                        ))}
+                    </div>
+                ) : null}
+                {/* <GroupList mid={match.params.id} /> */}
             </form>
         </Fragment>
     );
@@ -521,19 +553,21 @@ const EditGathering = ({
 EditGathering.propTypes = {
     createGathering: PropTypes.func.isRequired,
     getGathering: PropTypes.func.isRequired,
+    getGroups: PropTypes.func.isRequired,
     gathering: PropTypes.object.isRequired,
-    group: PropTypes.object.isRequired,
+    // group: PropTypes.object.isRequired,
     auth: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = (state) => ({
     gathering: state.gathering,
     servants: state.servants,
-    group: state.group,
+    // groups: state.gathering.groups,
     auth: state.auth,
 });
 
 export default connect(mapStateToProps, {
     createGathering,
     getGathering,
+    getGroups,
 })(withRouter(EditGathering));

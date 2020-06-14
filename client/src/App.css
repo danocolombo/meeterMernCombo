@@ -673,7 +673,7 @@ button {
 /* --------------------------------------*/
 /* GATHERINGS Page */
 /* GATHERING - GroupListItem */
-.groupListItem {
+.GGL-Box {
     border: 1px solid rgb(109, 84, 84);
     /* box-shadow: 0 2px 3px rgb(216, 146, 146); */
     display: grid;

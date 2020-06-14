@@ -76,6 +76,7 @@ export default function (state = initialState, action) {
                 activeClient: null,
                 activeRole: null,
                 activeStatus: null,
+                groups: null,
                 loading: false,
             };
         default:
