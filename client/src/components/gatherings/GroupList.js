@@ -23,7 +23,6 @@ export default class ExistingGroups extends Component {
 
     getExistingGroups() {
         // replace with whatever your api logic is.
-        const mid1 = '5eb87420c29f0b5ac02ad73d';
         const mid = this.state.mid;
         const res = getGroups(mid);
         return res();
@@ -59,23 +58,34 @@ export default class ExistingGroups extends Component {
         if (this.state.existingGroups) {
             smallGroups = this.state.existingGroups.map((grp) => (
                 <Fragment>
-                <div className={'groupListItem'}>
-                    <div>
-                        <a href={this.generateGroupLink(grp._id)}>
-                            {this.showGender(grp.gender, grp._id)}
-                        </a>
+                    <div className={'groupListItem'}>
+                        <div className='GGL-Gender my-1'>
+                            <a href={this.generateGroupLink(grp._id)}>
+                                {this.showGender(grp.gender, grp._id)}
+                            </a>
+                        </div>
+
+                        <div>
+                            <p className='GGL-Title my-1 pr-1'>{grp.title}</p>
+                        </div>
+                        <div>
+                            <p className='GGL-Location my-1'>{grp.location}</p>
+                        </div>
+                        <div>
+                            <p className='GGL-Facilitator my-1'>
+                                {grp.facilitator}
+                            </p>
+                        </div>
+                        <div className='GGL-Button my'>
+                            <button
+                                onClick={() => deleteGroup(grp._id)}
+                                type='button'
+                                className='btn btn-danger my0'
+                            >
+                                <i className='fas fa-times' />
+                            </button>
+                        </div>
                     </div>
-                
-                <div>
-                    <p className='GGL-Title my'>{grp.title}</p>
-                </div>
-                <div>
-                    <p className='GGL-Location my'>{grp.location}</p>
-                </div>
-                <div>
-                    <p className='GGL-Facilitator my'>{grp.facilitator}</p>
-                </div>
-                </div>
                 </Fragment>
                 // <tr>
                 //     <td className='GGL-Gender'>
@@ -86,19 +96,19 @@ export default class ExistingGroups extends Component {
                 //     <td className='GGL-Title'>{grp.title}</td>
                 //     <td className='GGL'>{grp.location}</td>
                 //     <td className='GGL-Facilitator'>{grp.facilitator}</td>
-                    // {/* {/* <td className='GGL-Delete'>
-                    //     <div className='mx-2'>
-                    //         <a
-                    //             id='deleteGrp'
-                    //             className='DeleteTarget'
-                    //             title='DELETE'
-                    //             href='/#'
-                    //             onClick={() => deleteGroup(grp._id)}
-                    //         >
-                    //             <i className='fas fa-minus-circle'></i>
-                    //         </a>
-                    //     </div>
-                    // </td> */}
+                // {/* {/* <td className='GGL-Delete'>
+                //     <div className='mx-2'>
+                //         <a
+                //             id='deleteGrp'
+                //             className='DeleteTarget'
+                //             title='DELETE'
+                //             href='/#'
+                //             onClick={() => deleteGroup(grp._id)}
+                //         >
+                //             <i className='fas fa-minus-circle'></i>
+                //         </a>
+                //     </div>
+                // </td> */}
                 // </tr> */}
             ));
         }
