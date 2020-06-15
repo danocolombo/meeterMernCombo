@@ -15,7 +15,6 @@ const Gatherings = ({
     historyView,
 }) => {
     useEffect(() => {
-        // console.log('SKylar: ' + match.params.options);
         if (activeClient) {
             checkActives();
             console.log(

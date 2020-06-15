@@ -8,6 +8,7 @@ import GroupListItem from './GroupListItem';
 // import { deleteGroup } from '../../actions/group';
 import ServantSelect from './ServantSelect';
 import GroupList from './GroupList';
+import Spinner from '../layout/Spinner';
 
 const initialState = {
     _id: '',
@@ -43,12 +44,12 @@ const EditGathering = ({
     history,
 }) => {
     const [formData, setFormData] = useState(initialState);
-    useEffect(() => {
-        if (match.params.id) {
-            getGroups(match.params.id);
-        }
-        // getGroups(match.params.id);
-    }, [getGroups]);
+    // useEffect(() => {
+    //     if (match.params.id) {
+    //         getGroups(match.params.id);
+    //     }
+    //     // getGroups(match.params.id);
+    // }, [getGroups]);
     useEffect(() => {
         // console.log('match.params.id:' + match.params.id);
 
@@ -115,7 +116,10 @@ const EditGathering = ({
         window.scrollTo(0, 0);
     };
 
-    return (
+    return loading ? (
+        <Spinner/>
+    ) :
+    (
         // function inside(){
         //     console.log('inside');
         // }

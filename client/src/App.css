@@ -718,6 +718,54 @@ button {
     /* padding-left: 10px;
     padding-right: 20px; */
 }
+/* DisplaySecurity file */
+/* --------------------------------------*/
+/* Default Group Form Page */
+.DGF-Box {
+    border: 1px solid rgb(109, 84, 84);
+    /* box-shadow: 0 2px 3px rgb(216, 146, 146); */
+    display: grid;
+    grid-template-columns: 1fr fr 1fr 1fr;
+    grid-gap: 0rem;
+    /* align-items: center; */
+}
+.DGF {
+    font-size: 1rem;
+    margin-bottom: 1rem;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+.DGF-Gender {
+    font-size: 1rem;
+    text-align: left;
+    /* margin-bottom: 1rem; */
+    /* padding-right: 5px; */
+}
+.DGF-Title {
+    font-size: 1rem;
+    text-align: left;
+    /* margin-bottom: 1rem; */
+    /* padding-right: 15px; */
+}
+.DGF-Location {
+    font-size: 1rem;
+    text-align: left;
+    /* margin-bottom: 1rem; */
+    /* padding-right: 10px; */
+}
+.DGF-Facilitator {
+    font-size: 1rem;
+    font-style: italic;
+    /* margin-bottom: 1rem; */
+    /* padding-left: 10px;
+    padding-right: 20px; */
+}
+.DGF-Button {
+    font-size: 1rem;
+    /* margin-bottom: 1rem; */
+    /* padding-left: 10px;
+    padding-right: 20px; */
+}
 /* Meetings Page
 .meeting {
   grid-template-columns: 1fr;

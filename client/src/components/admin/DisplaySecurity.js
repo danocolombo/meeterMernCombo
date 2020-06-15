@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import Spinner from '../layout/Spinner';
 import DefaultGroup from './DefaultGroup';
 import ClientUser from './ClientUser';
+import DefaultGroupForm from './DefaultGroupForm';
 import Button from '@material-ui/core/Button';
 import { getClientUsers, getDefGroups } from '../../actions/admin';
 
@@ -33,7 +34,8 @@ const DisplaySecurity = ({
             </div>
             <p>This will be the security information for {activeClient}</p>
             <div className='posts'>
-                <h3>Default Group Definitions</h3>
+                <h1>Default Group Definitions</h1>
+               
                 {defaultGroups ? (
                     <table>
                         <tr>
@@ -48,10 +50,11 @@ const DisplaySecurity = ({
                         </tr>
                     </table>
                 ) : null}
+                 <DefaultGroupForm />
             </div>
             <hr />
             <div className='posts'>
-                <h3>Registered Users</h3>
+                <h1>Registered Users</h1>
                 {clientUsers ? (
                     <table>
                         <tr>
