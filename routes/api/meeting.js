@@ -190,12 +190,31 @@ router.get('/future', async (req, res) => {
 // @access   Public
 router.get('/future/:cid', async (req, res) => {
     try {
+        // need to create the tenant value
         let client = 'meeting-' + req.params.cid;
-        // console.log('client: ' + client);
-        var tDay = new Date();
-        console.log('tDay:' + tDay);
+
+        // need to create special date for today starting at T00:00:00.000Z
+        let tDate = new Date();
+        let numMonth = tDate.getMonth() + 1;
+        let tmpMonth = numMonth.toString();
+        let tmpDay = tDate.getDate().toString();
+        let tMonth = '';
+        let tDay = '';
+        if (tmpMonth.length < 2) {
+            tMonth = '0' + tmpMonth;
+        } else {
+            tMonth = tmpMonth;
+        }
+        if (tmpDay.length < 2) {
+            tDay = '0' + tmpDay;
+        } else {
+            tDay = tmpDay;
+        }
+        let tYear = tDate.getFullYear();
+        let target = tYear + '-' + tMonth + '-' + tDay + 'T00:00:00.000Z';
+
         const meetings = await Meeting.find({
-            meetingDate: { $gte: tDay },
+            meetingDate: { $gte: target },
             tenantId: client,
         }).sort({ meetingDate: 0 });
         res.json(meetings);
