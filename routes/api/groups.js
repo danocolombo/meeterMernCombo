@@ -166,6 +166,7 @@ router.post(
             cofacilitator,
             notes,
         } = req.body;
+        console.log('IN API POST group/groups');
         // if (req.params.gid) console.log('gid:' + req.params.gid);
         const groupFields = {};
         //first two are required, no need to check.

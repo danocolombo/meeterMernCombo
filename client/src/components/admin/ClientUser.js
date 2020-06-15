@@ -13,6 +13,7 @@ const ClientUser = ({
     deleteClientUser,
     approveClientUser,
     suspendClientUser,
+    auth: { activeRole },
     auth,
     user: { _id, name, role, status },
     showActions,
@@ -52,14 +53,16 @@ const ClientUser = ({
                             <i className='fas fa-thumbs-up' />
                         </button>
                     )}
-                    <button
-                        onClick={() => deleteClientUser(_id)}
-                        type='button'
-                        className='btn btn-light-blue'
-                    >
-                        <i className='fas fa-ban' />
-                    </button>
-                    {!auth.loading && (
+                    {!auth.loading && role != 'superuser' && (
+                        <button
+                            onClick={() => suspendClientUser(_id)}
+                            type='button'
+                            className='btn btn-light-blue'
+                        >
+                            <i className='fas fa-ban' />
+                        </button>
+                    )}
+                    {!auth.loading && role != 'superuser' && (
                         <button
                             onClick={() =>
                                 deleteClientUser(auth.activeClient, _id)

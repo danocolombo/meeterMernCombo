@@ -3,8 +3,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import DisplayUsers from './DisplayUsers';
-import DisplayUsersC from './DisplayUsersC';
-import DisplayUsersComp from './DisplayUsersComp';
+
 import { getClientInfo } from '../../actions/admin';
 
 const Admin = ({ getClientInfo, auth: { activeClient } }) => {
@@ -21,10 +20,6 @@ const Admin = ({ getClientInfo, auth: { activeClient } }) => {
                 </h2>
                 Let's get info about {activeClient}
                 <DisplayUsers cid={activeClient} />
-                {/* <DisplayUsersC /> */}
-                {/* <DisplayUsersComp cid={activeClient} /> */}
-                {/* <DisplayUsersFC /> */}
-                {/* <DisplayUsers cid={activeClient} /> */}
             </Fragment>
         </Fragment>
     );

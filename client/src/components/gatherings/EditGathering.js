@@ -73,7 +73,7 @@ const EditGathering = ({
         }
 
         if (_id) setFormData({ ...formData, meetingId: _id });
-    }, [loading, getGathering, gathering, getGroups]);
+    }, [loading, getGathering, gathering]);
 
     const {
         _id,
@@ -117,9 +117,8 @@ const EditGathering = ({
     };
 
     return loading ? (
-        <Spinner/>
-    ) :
-    (
+        <Spinner />
+    ) : (
         // function inside(){
         //     console.log('inside');
         // }

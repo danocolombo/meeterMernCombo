@@ -245,10 +245,29 @@ router.get('/history/:cid', async (req, res) => {
     try {
         // console.log('/history/:cid');
         let client = 'meeting-' + req.params.cid;
-        console.log('history, client: ' + client);
-        var tDay = new Date();
+
+        // need to create special date for today starting at T00:00:00.000Z
+        let tDate = new Date();
+        let numMonth = tDate.getMonth() + 1;
+        let tmpMonth = numMonth.toString();
+        let tmpDay = tDate.getDate().toString();
+        let tMonth = '';
+        let tDay = '';
+        if (tmpMonth.length < 2) {
+            tMonth = '0' + tmpMonth;
+        } else {
+            tMonth = tmpMonth;
+        }
+        if (tmpDay.length < 2) {
+            tDay = '0' + tmpDay;
+        } else {
+            tDay = tmpDay;
+        }
+        let tYear = tDate.getFullYear();
+        let target = tYear + '-' + tMonth + '-' + tDay + 'T00:00:00.000Z';
+
         const meetings = await Meeting.find({
-            meetingDate: { $lt: tDay },
+            meetingDate: { $lt: target },
             tenantId: client,
         }).sort({ meetingDate: -1 });
         res.json(meetings);

@@ -35,7 +35,9 @@ const EditGroup = ({
 
     useEffect(() => {
         if (!group) {
-            getGroup(match.params.gid);
+            if (match.params.gid != 0) {
+                getGroup(match.params.gid);
+            }
         }
         if (!loading) {
             const groupData = { ...initialState };
@@ -112,15 +114,6 @@ const EditGroup = ({
                         >
                             Go Back
                         </Link>
-                        {activeStatus == 'approved' && activeRole != 'guest' ? (
-                            <button
-                                onClick={() => deleteGroup(_id)}
-                                type='button'
-                                className='btn btn-danger'
-                            >
-                                <i className='fas fa-times' />
-                            </button>
-                        ) : null}
                     </div>
                     <div className='grpAttendance'>
                         <div className='input-field inline'>

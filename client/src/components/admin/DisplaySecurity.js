@@ -35,7 +35,7 @@ const DisplaySecurity = ({
             <p>This will be the security information for {activeClient}</p>
             <div className='posts'>
                 <h1>Default Group Definitions</h1>
-               
+
                 {defaultGroups ? (
                     <table>
                         <tr>
@@ -50,7 +50,15 @@ const DisplaySecurity = ({
                         </tr>
                     </table>
                 ) : null}
-                 <DefaultGroupForm />
+                {activeRole == 'superuser' ? (
+                    <DefaultGroupForm />
+                ) : (
+                    <Fragment>
+                        <p>Feature coming soon...</p>
+                        <br />
+                        <br />
+                    </Fragment>
+                )}
             </div>
             <hr />
             <div className='posts'>

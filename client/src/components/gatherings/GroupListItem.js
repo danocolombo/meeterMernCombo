@@ -8,7 +8,7 @@ import { deleteGroup } from '../../actions/group';
 const GroupListItem = ({
     deleteGroup,
     mid,
-    auth,
+    auth: { activeRole },
     group: { _id, gender, title, location, facilitator },
 }) => (
     <Fragment>
@@ -30,6 +30,7 @@ const GroupListItem = ({
             <div>
                 <p className='GGL-Facilitator my-1 pl'>{facilitator}</p>
             </div>
+
             <div className='GGL-Button my'>
                 <button
                     onClick={() => deleteGroup(_id)}

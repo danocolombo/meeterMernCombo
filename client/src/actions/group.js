@@ -100,6 +100,7 @@ export const getGroup = (groupId) => async (dispatch) => {
 export const createGroup = (formData, history, edit = false) => async (
     dispatch
 ) => {
+    console.log('createGroup inside actions/group.js');
     try {
         if (formData._id.length < 1) {
             //this is an add
@@ -148,6 +149,7 @@ export const deleteGroup = (groupId) => async (dispatch) => {
         console.log('back from dispatch DELETE_GROUP and payload');
         dispatch(setAlert('Group removed', 'success'));
     } catch (err) {
+        console.log('err typeof: ' + typeof err);
         dispatch({
             type: GROUP_ERROR,
             payload: {
