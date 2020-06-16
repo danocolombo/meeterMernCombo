@@ -119,7 +119,6 @@ router.post(
                 //     res.status(400).send('Group not found');
                 // }
             } else {
-                console.log('gotta add this one.');
                 let nGroup = await Groups.findOneAndUpdate(
                     {
                         mid: groupFields.mid,
@@ -166,8 +165,6 @@ router.post(
             cofacilitator,
             notes,
         } = req.body;
-        console.log('IN API POST group/groups');
-        // if (req.params.gid) console.log('gid:' + req.params.gid);
         const groupFields = {};
         //first two are required, no need to check.
         groupFields.mid = mid;
@@ -175,7 +172,6 @@ router.post(
         //=====================================
         // if it is group update, they will provide
         // a group id
-        //if (req.params.gid) groupFields.gid = req.params.gid;
         if (attendance) {
             groupFields.attendance = attendance;
         } else {

@@ -17,20 +17,20 @@ export const getGroups = (mid) => async (dispatch) => {
     try {
         // dispatch({ type: CLEAR_GROUPS });
         const res = await axios.get(`/api/groups/meeting/${mid}`);
-        dispatch({ type: CLEAR_GROUP });
-        dispatch({ type: CLEAR_GROUPS });
+        // dispatch({ type: CLEAR_GROUP });
+        // dispatch({ type: CLEAR_GROUPS });
         dispatch({
             type: GET_GATHERING_GROUPS,
             payload: res.data,
         });
-        return res.data;
+        // return res.data;
     } catch (err) {
         const resMsg = {
             msg: err.response.statusText,
             status: err.response.status,
         };
 
-        return resMsg;
+        // return resMsg;
     }
 };
 // Get group associated with groupID
@@ -83,6 +83,7 @@ export const getGroup = (groupId) => async (dispatch) => {
         });
     } catch (err) {
         dispatch({
+            //getGroup
             type: GROUP_ERROR,
             payload: {
                 msg: err.response.statusText,
@@ -139,24 +140,24 @@ export const createGroup = (formData, history, edit = false) => async (
 
 // Delete group
 export const deleteGroup = (groupId) => async (dispatch) => {
-    console.log('actions/group.js: (' + groupId + ')');
     try {
         await axios.delete(`/api/groups/${groupId}`);
         dispatch({
             type: DELETE_GROUP,
             payload: groupId,
         });
-        console.log('back from dispatch DELETE_GROUP and payload');
         dispatch(setAlert('Group removed', 'success'));
     } catch (err) {
-        console.log('err typeof: ' + typeof err);
-        dispatch({
-            type: GROUP_ERROR,
-            payload: {
-                msg: err.response.statusText,
-                status: err.response.status,
-            },
-        });
+        // console.log('err typeof: ' + typeof err);
+        // dispatch({
+        //     //deleteGroup
+        //     type: GROUP_ERROR,
+        //     payload: {
+        //         msg: err.response.statusText,
+        //         status: err.response.status,
+        //     },
+        // });
+        return err;
     }
 };
 
@@ -200,6 +201,7 @@ export const OLDcreateGroup = (formData, history, edit = false) => async (
         }
 
         dispatch({
+            //oldCreateGroup
             type: GROUP_ERROR,
             payload: {
                 msg: err.response.statusText,

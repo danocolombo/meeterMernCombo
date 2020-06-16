@@ -7,7 +7,7 @@ import { getGroups } from '../../actions/group';
 import GroupListItem from './GroupListItem';
 // import { deleteGroup } from '../../actions/group';
 import ServantSelect from './ServantSelect';
-import GroupList from './GroupList';
+// import GroupList from './GroupList';
 import Spinner from '../layout/Spinner';
 
 const initialState = {
@@ -33,37 +33,23 @@ const initialState = {
 };
 
 const EditGathering = ({
-    gathering: { gathering, groups, servants, loading, newGathering },
+    gathering: { gathering, servants, loading, newGathering },
     auth: { activeClient, activeRole, activeStatus },
-    // group: { groups },
+    group: { groups },
     createGathering,
     getGathering,
     getGroups,
-    deleteGroup,
     match,
     history,
 }) => {
     const [formData, setFormData] = useState(initialState);
-    // useEffect(() => {
-    //     if (match.params.id) {
-    //         getGroups(match.params.id);
-    //     }
-    //     // getGroups(match.params.id);
-    // }, [getGroups]);
     useEffect(() => {
-        // console.log('match.params.id:' + match.params.id);
-
-        //if (match.params.id === 0) setState(newGathering = true;
-        // console.log('gathering:' + gathering);
-        // if (gathering == null) console.log('YEP');
+        getGroups(match.params.id);
+    }, [getGroups]);
+    useEffect(() => {
         if (!gathering) {
             getGathering(match.params.id);
-            getGroups(match.params.id);
         }
-        // if (!groups) {
-        //     getGroups(match.params.id);
-        // }
-        // console.log('gathering2:' + gathering);
         if (!loading) {
             const gatheringData = { ...initialState };
             for (const key in gathering) {
@@ -409,18 +395,15 @@ const EditGathering = ({
                 ) : (
                     <div>CANNOT SEE THEM</div>
                 )} */}
-                {groups ? (
-                    <div>
-                        {groups.map((dGroup) => (
-                            <GroupListItem
-                                key={dGroup._id}
-                                mid={dGroup.mid}
-                                group={dGroup}
-                            />
-                        ))}
-                    </div>
-                ) : null}
-                {/* <GroupList mid={match.params.id} /> */}
+                <div>
+                    {groups.map((group) => (
+                        <GroupListItem
+                            key={group._id}
+                            mid={group.mid}
+                            group={group}
+                        />
+                    ))}
+                </div>
             </form>
         </Fragment>
     );
@@ -558,13 +541,14 @@ EditGathering.propTypes = {
     getGathering: PropTypes.func.isRequired,
     getGroups: PropTypes.func.isRequired,
     gathering: PropTypes.object.isRequired,
-    // group: PropTypes.object.isRequired,
+    group: PropTypes.object.isRequired,
     auth: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = (state) => ({
     gathering: state.gathering,
     servants: state.servants,
+    group: state.gathering,
     // groups: state.gathering.groups,
     auth: state.auth,
 });
