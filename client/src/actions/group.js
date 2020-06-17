@@ -35,7 +35,7 @@ export const getGroups = (mid) => async (dispatch) => {
     }
 };
 // Get group associated with groupID
-export const getGroupNoRedux = (gid) => async () => {
+export const getGroupNoRedux = (gid) => async (dispatch) => {
     console.log('actions/group: getGroup: gid:' + gid);
     try {
         // dispatch({ type: CLEAR_GROUPS });
@@ -46,12 +46,16 @@ export const getGroupNoRedux = (gid) => async () => {
         return res.data;
         // return;
     } catch (err) {
-        const resMsg = {
-            msg: err.response.statusText,
-            status: err.response.status,
-        };
+        dispatch({
+            type: GROUP_ERROR,
+            payload: {
+                msg: err.response.statusText,
+                status: err.response.status,
+            },
+        });
+        
 
-        return resMsg;
+        // return resMsg;
     }
 };
 // export const getGroups2 = mid => async dispatch => {
@@ -125,7 +129,7 @@ export const createGroup = (formData, history, edit = false) => async (
         }
 
         dispatch({
-            type: GET_GROUP,
+            type: ADD_GROUP,
             payload: res.data,
         });
         dispatch(setAlert(edit ? 'Group Updates' : 'Group Created', 'success'));

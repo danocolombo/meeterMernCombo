@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { createGathering, getGathering } from '../../actions/gathering';
 import { getGroups } from '../../actions/group';
 import GroupListItem from './GroupListItem';
-// import { deleteGroup } from '../../actions/group';
+import { deleteGroup } from '../../actions/group';
 import ServantSelect from './ServantSelect';
 // import GroupList from './GroupList';
 import Spinner from '../layout/Spinner';
@@ -45,10 +45,12 @@ const EditGathering = ({
     const [formData, setFormData] = useState(initialState);
     useEffect(() => {
         getGroups(match.params.id);
-    }, [getGroups]);
+        // console.log('just ran getGroups');
+    }, [deleteGroup]);
     useEffect(() => {
         if (!gathering) {
             getGathering(match.params.id);
+            // getGroups(match.params.id);
         }
         if (!loading) {
             const gatheringData = { ...initialState };
