@@ -203,7 +203,6 @@ router.post(
                     res.status(400).send('Group not found');
                 }
             } else {
-                console.log('gotta add this one.');
                 let nGroup = await Groups.findOneAndUpdate(
                     {
                         mid: groupFields.mid,
@@ -226,12 +225,14 @@ router.post(
 // @desc     Delete group by ID
 // @access   Private
 router.delete('/:gid', auth, async (req, res) => {
-    console.log('DELETING GROUP: ' + req.params.gid);
     try {
-        await Groups.findOneAndRemove({ _id: req.params.gid });
-        console.log('BACK FROM DELETING');
-        const feedback = 'Group removed (' + req.params.gid + ')';
-        res.json({ msg: feedback });
+        const group = await Groups.findById(req.params.gid);
+        await group.remove();
+        res.json({ msg: 'Post removed' });
+
+        // await Groups.findOneAndRemove({ _id: req.params.gid });
+        // const feedback = 'Group removed (' + req.params.gid + ')';
+        // res.json({ msg: feedback });
         // return res.status(200).json({ msg: 'group removed' });
     } catch (error) {
         console.error(error);

@@ -33,7 +33,7 @@ const GroupListItem = ({
 
             <div className='GGL-Button my'>
                 <button
-                    onClick={() => deleteGroup(_id)}
+                    onClick={() => deleteGroup(_id, mid)}
                     type='button'
                     className='btn btn-danger my0'
                 >

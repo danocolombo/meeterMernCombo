@@ -1,6 +1,6 @@
 import {
     GET_GROUPS,
-    GROUP_ERROR, 
+    GROUP_ERROR,
     DELETE_GROUP,
     ADD_GROUP,
     GET_GROUP,
@@ -43,12 +43,13 @@ export default function (state = initialState, action) {
                 groupLoading: false,
             };
         case GROUP_ERROR:
+            //reducers:group
             return {
                 ...state,
                 error: payload,
                 groupLoading: false,
             };
-        
+
         // case CLEAR_GROUPS:
         //     return {
         //         ...state,
@@ -61,8 +62,7 @@ export default function (state = initialState, action) {
         //         group: null,
         //         groupLoading: false,
         //     };
-        
-        
+
         default:
             return state;
     }
