@@ -18,7 +18,7 @@ const initialState = {
     gatherings: [],
     hatherings: [],
     gathering: null,
-    groups: [],
+    // groups: [],
     servants: [],
     loading: true,
     newGathering: false,
@@ -48,12 +48,12 @@ export default function (state = initialState, action) {
                 gathering: payload,
                 loading: false,
             };
-        case GET_GATHERING_GROUPS:
-            return {
-                ...state,
-                groups: payload,
-                loading: false,
-            };
+        // case GET_GATHERING_GROUPS:
+        //     return {
+        //         ...state,
+        //         groups: payload,
+        //         loading: false,
+        //     };
         case GET_SERVANTS:
             //this inserts a blank row at the top of payload
             var newPayload = [];
@@ -89,12 +89,12 @@ export default function (state = initialState, action) {
                 gathering: null,
                 loading: false,
             };
-        case CLEAR_GATHERING_GROUPS:
-            return {
-                ...state,
-                groups: null,
-                loading: false,
-            };
+        // case CLEAR_GATHERING_GROUPS:
+        //     return {
+        //         ...state,
+        //         groups: null,
+        //         loading: false,
+        //     };
         case CLEAR_SERVANTS:
             return {
                 ...state,

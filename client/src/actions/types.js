@@ -39,6 +39,7 @@ export const GET_SERVANTS = 'GET_SERVANTS';
 export const CLEAR_SERVANTS = 'CLEAR_SERVANTS';
 export const GET_HATHERINGS = 'GET_HATHERINGS';
 export const CLEAR_HATHERINGS = 'CLEAR_HATHERINGS';
+export const ADD_GROUP = 'ADD_GROUP';
 export const EDIT_GROUP = 'EDIT_GROUP';
 export const DELETE_GROUP = 'DELETE_GROUP';
 export const GET_GROUPS = 'GET_GROUPS';

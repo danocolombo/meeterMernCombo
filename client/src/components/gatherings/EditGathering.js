@@ -35,7 +35,7 @@ const initialState = {
 const EditGathering = ({
     gathering: { gathering, servants, loading, newGathering },
     auth: { activeClient, activeRole, activeStatus },
-    group: { groups },
+    group: { groups, groupLoading },
     createGathering,
     getGathering,
     getGroups,
@@ -383,28 +383,17 @@ const EditGathering = ({
                         </Link>
                     ) : null}
                 </h2>
-                {/* {groups ? (
-                    <Fragment>
-                        <div>GROUPS IDENTIFIED</div>
-                        <div>
-                            {groups.map((g) => (
-                                <div>{g._id}</div>
-                            ))}
-                        </div>
-                    </Fragment>
-                ) : (
-                    <div>CANNOT SEE THEM</div>
-                )} */}
-                <div>
-                    {groups.map((group) => (
+            </form>
+            <div>
+                {groups &&
+                    groups.map((group) => (
                         <GroupListItem
                             key={group._id}
                             mid={group.mid}
                             group={group}
                         />
                     ))}
-                </div>
-            </form>
+            </div>
         </Fragment>
     );
 
@@ -548,8 +537,7 @@ EditGathering.propTypes = {
 const mapStateToProps = (state) => ({
     gathering: state.gathering,
     servants: state.servants,
-    group: state.gathering,
-    // groups: state.gathering.groups,
+    group: state.group,
     auth: state.auth,
 });
 

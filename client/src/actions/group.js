@@ -1,12 +1,12 @@
 import axios from 'axios';
 import { setAlert } from './alert';
 import {
+    ADD_GROUP,
     GET_GROUPS,
     GROUP_ERROR,
     CLEAR_GROUP,
     DELETE_GROUP,
     GET_GROUP,
-    GET_GATHERING_GROUPS,
     UPDATE_GROUP,
     CLEAR_GROUPS,
     SET_GROUP,
@@ -20,17 +20,18 @@ export const getGroups = (mid) => async (dispatch) => {
         // dispatch({ type: CLEAR_GROUP });
         // dispatch({ type: CLEAR_GROUPS });
         dispatch({
-            type: GET_GATHERING_GROUPS,
+            type: GET_GROUPS,
             payload: res.data,
         });
         // return res.data;
     } catch (err) {
-        const resMsg = {
-            msg: err.response.statusText,
-            status: err.response.status,
-        };
-
-        // return resMsg;
+        dispatch({
+            type: GROUP_ERROR,
+            payload: {
+                msg: err.response.statusText,
+                status: err.response.status,
+            },
+        });
     }
 };
 // Get group associated with groupID
