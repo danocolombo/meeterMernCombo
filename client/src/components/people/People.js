@@ -5,10 +5,26 @@ import { connect } from 'react-redux';
 import Spinner from '../layout/Spinner';
 import PersonItem from './PersonItem';
 import { getPeople } from '../../actions/person';
+// import auth from '../../../../middleware/auth';
 
-const People = ({ getPeople, person: { people, loading } }) => {
+const People = ({
+    getPeople,
+    person: { people, loading },
+    auth: { activeClient, activeRole, activeStatus },
+    match,
+}) => {
     useEffect(() => {
-        getPeople();
+        if (activeClient) {
+            console.log(
+                'actives: ' +
+                    activeClient +
+                    ' ' +
+                    activeRole +
+                    ' ' +
+                    activeStatus
+            );
+            getPeople(activeClient);
+        }
     }, [getPeople]);
 
     return loading ? (
@@ -18,6 +34,8 @@ const People = ({ getPeople, person: { people, loading } }) => {
             <h1 className='large text-primary'>People</h1>
             <p className='lead'>
                 <i className='fas fa-user'></i>These are your peeps
+                <br />
+                activeClient{activeClient}
             </p>
             <div>
                 <Link to='/EditPerson/0'>
@@ -43,9 +61,11 @@ const People = ({ getPeople, person: { people, loading } }) => {
 People.propTypes = {
     getPeople: PropTypes.func.isRequired,
     person: PropTypes.object.isRequired,
+    auth: PropTypes.object.isRequired,
 };
 const mapStateToProps = (state) => ({
     person: state.person,
+    auth: state.auth,
 });
 
 export default connect(mapStateToProps, { getPeople })(People);

@@ -8,12 +8,12 @@ import {
     DELETE_PERSON,
 } from './types';
 
-export const getPeople = () => async (dispatch) => {
+export const getPeople = (cid) => async (dispatch) => {
     try {
         //we know that this is called when the people list is created.
         //for this reason. Clear out the temporary person value.
         dispatch({ type: CLEAR_PERSON });
-        const res = await axios.get('/api/person');
+        const res = await axios.get(`/api/person/client/${cid}`);
         dispatch({
             type: GET_PEOPLE,
             payload: res.data,

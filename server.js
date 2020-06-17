@@ -3,10 +3,10 @@ const connectDB = require('./config/db');
 const path = require('path');
 
 const app = express();
-//================================
-//multi-tenant stuff
-//--------------------------------
-const { bindCurrentNamespace } = require('./lib/storage');
+// //================================
+// //multi-tenant stuff
+// //--------------------------------
+// const { bindCurrentNamespace } = require('./lib/storage');
 
 //end of multi-tenant stuff
 //=================================
@@ -15,14 +15,14 @@ connectDB();
 
 // Init Middleware
 app.use(express.json({ extended: false }));
-app.use(bindCurrentNamespace);
+// app.use(bindCurrentNamespace);
 // Define Routes
 app.use('/api/users', require('./routes/api/users'));
 app.use('/api/auth', require('./routes/api/auth'));
 app.use('/api/profile', require('./routes/api/profile'));
 app.use('/api/posts', require('./routes/api/posts'));
 app.use('/api/meeting', require('./routes/api/meeting'));
-app.use('/api/person', require('./routes/api/person'));
+app.use('/api/people', require('./routes/api/people'));
 app.use('/api/groups', require('./routes/api/groups'));
 app.use('/api/client', require('./routes/api/client'));
 app.use('/api/meeter', require('./routes/api/meeter'));

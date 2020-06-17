@@ -1,9 +1,11 @@
 const mongoose = require('mongoose');
-const { tenantModel } = require('../lib/multiTenant');
-const PersonSchema = new mongoose.Schema({
+const HumanSchema = new mongoose.Schema({
     name: {
         type: String,
         required: true,
+    },
+    tenantId: {
+        type: String,
     },
     email: {
         type: String,
@@ -44,5 +46,4 @@ const PersonSchema = new mongoose.Schema({
         },
     ],
 });
-module.exports = Person = tenantModel('people', PersonSchema);
-//module.exports = Person = mongoose.model('person', PersonSchema);
+module.exports = Human = mongoose.model('human', HumanSchema);

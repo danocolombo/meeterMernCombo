@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-// const { teanantModel } = require("../lib/multiTenant");
 const UserSchema = new mongoose.Schema({
     name: {
         type: String,
