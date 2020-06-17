@@ -9,7 +9,7 @@ import { Button } from '@material-ui/core';
 import { Input } from '@material-ui/core';
 import { RadioGroup } from '@material-ui/core';
 import { Radio } from '@material-ui/core';
-import { createGroup, getGroup, deleteGroup } from '../../actions/group';
+import { addGroup, getGroup, deleteGroup } from '../../actions/group';
 const initialState = {
     _id: '',
     title: '',
@@ -24,7 +24,7 @@ const initialState = {
 
 const EditGroup = ({
     group: { group, loading, newGroup },
-    createGroup,
+    addGroup,
     auth: { activeRole, activeStatus },
     getGroup,
     deleteGroup,
@@ -80,7 +80,7 @@ const EditGroup = ({
 
     const onSubmit = (e) => {
         e.preventDefault();
-        createGroup(formData, history, true);
+        addGroup(formData, history, true);
         window.scrollTo(0, 0);
     };
     return (
@@ -219,22 +219,22 @@ const EditGroup = ({
         // return [<div>GROUP:{match.params.gid}</div>];
         return 'T';
     }
-    function giveRequestDetails() {
-        return [
-            <div>
-                BURP
-                {/* Meeting:{match.params.mid}
-                <br />
-                Group: {match.params.gid} */}
-            </div>,
-        ];
-    }
+    // function giveRequestDetails() {
+    //     return [
+    //         <div>
+    //             BURP
+    //             {/* Meeting:{match.params.mid}
+    //             <br />
+    //             Group: {match.params.gid} */}
+    //         </div>,
+    //     ];
+    // }
 };
 
 EditGroup.propTypes = {
     group: PropTypes.object.isRequired,
     auth: PropTypes.object.isRequired,
-    createGroup: PropTypes.func.isRequired,
+    addGroup: PropTypes.func.isRequired,
     getGroup: PropTypes.func.isRequired,
     deleteGroup: PropTypes.func.isRequired,
 };
@@ -244,6 +244,6 @@ const mapStateToProps = (state) => ({
     auth: state.auth,
 });
 
-export default connect(mapStateToProps, { createGroup, getGroup, deleteGroup })(
+export default connect(mapStateToProps, { addGroup, getGroup, deleteGroup })(
     withRouter(EditGroup)
 );

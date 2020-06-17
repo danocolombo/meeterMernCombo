@@ -130,7 +130,7 @@ export const getGroup = (groupId) => async (dispatch) => {
 // redirect to the meeting after adding the group. The edit
 // flag will define if it is new group or updating existing. We
 // default to false, which means new, insert the group
-export const createGroup = (formData, history, edit = false) => async (
+export const addGroup = (formData, history, edit = false) => async (
     dispatch
 ) => {
     try {
@@ -160,10 +160,14 @@ export const createGroup = (formData, history, edit = false) => async (
         });
         dispatch(setAlert(edit ? 'Group Updated' : 'Group Created', 'success'));
 
-        if (!edit) {
-            const target = '/editGathering/' + formData.mid;
-            history.push(target);
-        }
+        // if (!edit) {
+        //     const target = '/editGathering/' + formData.mid;
+        //     history.push(target);
+        // }
+        console.log('edit: ' + edit);
+        const target = '/editGathering/' + formData.mid;
+        history.push(target);
+        // history.push('/gatherings');
     } catch (err) {
         return err;
     }
