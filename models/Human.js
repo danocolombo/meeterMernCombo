@@ -46,4 +46,4 @@ const HumanSchema = new mongoose.Schema({
         },
     ],
 });
-module.exports = Human = mongoose.model('human', HumanSchema);
+module.exports = Human = mongoose.model('human', HumanSchema, 'humans');

@@ -2,22 +2,22 @@ import React, { Fragment } from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { deletePerson } from '../../actions/person';
+import { deleteHuman } from '../../actions/human';
 
-const PersonItem = ({ deletePerson, person: { _id, name, email, phone } }) => (
+const HumanItem = ({ deleteHuman, human: { _id, name, email, phone } }) => (
     <div className='PersonBox'>
         <div className='DeleteTarget'>
             <a
-                id='deletePerson'
+                id='deleteHuman'
                 title='-'
                 href='/#'
-                onClick={() => deletePerson(_id)}
+                onClick={() => deleteHuman(_id)}
             >
                 <i className='fas fa-minus-circle'></i>
             </a>
         </div>
         <div>
-            <Link to={`/EditPerson/${_id}`}>{name}</Link>
+            <Link to={`/EditHuman/${_id}`}>{name}</Link>
             <br />
             {/* only show phone field if there is a number for the user */}
             {phone ? (
@@ -42,10 +42,10 @@ const PersonItem = ({ deletePerson, person: { _id, name, email, phone } }) => (
     </div>
 );
 
-PersonItem.propTypes = {
-    person: PropTypes.object.isRequired,
-    deletePerson: PropTypes.func.isRequired
+HumanItem.propTypes = {
+    human: PropTypes.object.isRequired,
+    deleteHuman: PropTypes.func.isRequired
 };
 
-export default connect(null, { deletePerson })(PersonItem);
+export default connect(null, { deleteHuman })(HumanItem);
 //post bg-white p-1 my-1

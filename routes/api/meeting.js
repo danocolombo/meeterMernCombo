@@ -162,7 +162,7 @@ router.get('/', async (req, res) => {
     try {
         const meetings = await Meeting.find()
             .sort({ meetingDate: 1 })
-            .populate('people', ['name']);
+            .populate('humans', ['name']);
         res.json(meetings);
     } catch (err) {
         console.error(err.message);

@@ -22,7 +22,7 @@ app.use('/api/auth', require('./routes/api/auth'));
 app.use('/api/profile', require('./routes/api/profile'));
 app.use('/api/posts', require('./routes/api/posts'));
 app.use('/api/meeting', require('./routes/api/meeting'));
-app.use('/api/people', require('./routes/api/people'));
+app.use('/api/human', require('./routes/api/human'));
 app.use('/api/groups', require('./routes/api/groups'));
 app.use('/api/client', require('./routes/api/client'));
 app.use('/api/meeter', require('./routes/api/meeter'));

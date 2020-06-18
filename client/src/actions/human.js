@@ -1,45 +1,24 @@
 import axios from 'axios';
 import { setAlert } from './alert';
 import {
-    GET_PEOPLE,
-    PERSON_ERROR,
-    CLEAR_PERSON,
-    GET_PERSON,
-    DELETE_PERSON,
+    GET_HUMANS,
+    HUMAN_ERROR,
+    CLEAR_HUMAN,
+    GET_HUMAN,
+    DELETE_HUMAN,
 } from './types';
 
-export const getPeople = (cid) => async (dispatch) => {
+export const getHumans = (cid) => async (dispatch) => {
     try {
-        //we know that this is called when the people list is created.
-        //for this reason. Clear out the temporary person value.
-        dispatch({ type: CLEAR_PERSON });
-        const res = await axios.get(`/api/person/client/${cid}`);
+        dispatch({ type: CLEAR_HUMAN });
+        const res = await axios.get(`/api/human/client/${cid}`);
         dispatch({
-            type: GET_PEOPLE,
+            type: GET_HUMANS,
             payload: res.data,
         });
     } catch (err) {
         dispatch({
-            type: PERSON_ERROR,
-            payload: {
-                msg: err.response.statusText,
-                status: err.response.status,
-            },
-        });
-    }
-};
-// getCurrentPerson is used when editting a person, need to get it, to edit it.DeleteTarget
-export const getCurrentPerson = (id) => async (dispatch) => {
-    try {
-        dispatch({ CLEAR_PERSON });
-        const res = await axios.get(`/api/person/${id}`);
-        dispatch({
-            type: GET_PERSON,
-            payload: res.data,
-        });
-    } catch (err) {
-        dispatch({
-            type: PERSON_ERROR,
+            type: HUMAN_ERROR,
             payload: {
                 msg: err.response.statusText,
                 status: err.response.status,
@@ -48,20 +27,37 @@ export const getCurrentPerson = (id) => async (dispatch) => {
     }
 };
 
-export const getPerson = (id) => async (dispatch) => {
+export const getCurrentHuman = (id) => async (dispatch) => {
+    try {
+        dispatch({ CLEAR_HUMAN });
+        const res = await axios.get(`/api/human/${id}`);
+        dispatch({
+            type: GET_HUMAN,
+            payload: res.data,
+        });
+    } catch (err) {
+        dispatch({
+            type: HUMAN_ERROR,
+            payload: {
+                msg: err.response.statusText,
+                status: err.response.status,
+            },
+        });
+    }
+};
+
+export const getHuman = (id) => async (dispatch) => {
     if (id.length < 1) return;
     if (id === 0) return;
     try {
-        console.log('getPerson: CLEAR_PERSON..................');
-        //dispatch({ type: CLEAR_PERSON });
-        const res = await axios.get(`/api/person/${id}`);
+        const res = await axios.get(`/api/human/${id}`);
         dispatch({
-            type: GET_PERSON,
+            type: GET_HUMAN,
             payload: res.data,
         });
     } catch (err) {
         dispatch({
-            type: PERSON_ERROR,
+            type: HUMAN_ERROR,
             payload: {
                 msg: err.response.statusText,
                 status: err.response.status,
@@ -69,8 +65,8 @@ export const getPerson = (id) => async (dispatch) => {
         });
     }
 };
-// Create or update a person
-export const createPerson = (formData, history, edit = false) => async (
+
+export const createHuman = (formData, history, edit = false) => async (
     dispatch
 ) => {
     try {
@@ -79,10 +75,10 @@ export const createPerson = (formData, history, edit = false) => async (
                 'Content-Type': 'application/json',
             },
         };
-        const res = await axios.post('/api/person', formData, config);
+        const res = await axios.post('/api/human', formData, config);
 
         dispatch({
-            type: GET_PERSON,
+            type: GET_HUMAN,
             payload: res.data,
         });
 
@@ -91,7 +87,7 @@ export const createPerson = (formData, history, edit = false) => async (
         );
 
         if (!edit) {
-            history.push('/people');
+            history.push('/humans');
         }
     } catch (err) {
         const errors = err.response.data.errors;
@@ -101,7 +97,7 @@ export const createPerson = (formData, history, edit = false) => async (
         }
 
         dispatch({
-            type: PERSON_ERROR,
+            type: HUMAN_ERROR,
             payload: {
                 msg: err.response.statusText,
                 status: err.response.status,
@@ -110,18 +106,18 @@ export const createPerson = (formData, history, edit = false) => async (
     }
 };
 // Delete PERSON
-export const deletePerson = (id) => async (dispatch) => {
+export const deleteHuman = (id) => async (dispatch) => {
     try {
-        await axios.delete(`/api/person/${id}`);
+        await axios.delete(`/api/human/${id}`);
 
         dispatch({
-            type: DELETE_PERSON,
+            type: DELETE_HUMAN,
             payload: id,
         });
         dispatch(setAlert('Person Removed', 'success'));
     } catch (err) {
         dispatch({
-            type: PERSON_ERROR,
+            type: HUMAN_ERROR,
             payload: {
                 msg: err.response.statusText,
                 status: err.response.status,
@@ -129,13 +125,13 @@ export const deletePerson = (id) => async (dispatch) => {
         });
     }
 };
-export const editPerson = (id) => async (dispatch) => {
+export const editHuman = (id) => async (dispatch) => {
     try {
         //something
-        dispatch({ CLEAR_PERSON });
+        dispatch({ CLEAR_HUMAN });
     } catch (err) {
         dispatch({
-            type: PERSON_ERROR,
+            type: HUMAN_ERROR,
             payload: {
                 msg: err.response.statusText,
                 status: err.response.status,

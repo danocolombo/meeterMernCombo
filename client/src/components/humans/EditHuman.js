@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { FormControlLabel } from '@material-ui/core';
 import { components } from 'react-select';
 import { RadioGroup, Radio, FormLabel } from '@material-ui/core';
-import { createPerson, getPerson } from '../../actions/person';
+import { createHuman, getHuman } from '../../actions/human';
 const initialState = {
     name: '',
     gender: '',
@@ -20,10 +20,10 @@ const initialState = {
     notes: '',
 };
 
-const EditPeep = ({
-    person: { person, loading },
-    createPerson,
-    getPerson,
+const EditHuman = ({
+    human: { human, loading },
+    createHuman,
+    getHuman,
     match,
     history,
     pNum,
@@ -31,15 +31,15 @@ const EditPeep = ({
     const [formData, setFormData] = useState(initialState);
 
     useEffect(() => {
-        if (!person) getPerson(match.params.id);
+        if (!human) getHuman(match.params.id);
         if (!loading) {
             const personData = { ...initialState };
-            for (const key in person) {
-                if (key in personData) personData[key] = person[key];
+            for (const key in human) {
+                if (key in personData) personData[key] = human[key];
             }
             setFormData(personData);
         }
-    }, [loading, getPerson, person, match]);
+    }, [loading, getHuman, human, match]);
 
     const {
         name,
@@ -88,7 +88,7 @@ const EditPeep = ({
 
     const onSubmit = (e) => {
         e.preventDefault();
-        createPerson(formData, history, true);
+        createHuman(formData, history, true);
         window.scrollTo(0, 0);
     };
     const moveToTop = () => {
@@ -275,7 +275,7 @@ const EditPeep = ({
                     <small className='form-text'>Things to keep in mind</small>
                 </div>
                 <input type='submit' className='btn btn-primary my-1' />
-                <Link className='btn btn-light my-1' to='/people'>
+                <Link className='btn btn-light my-1' to='/humans'>
                     Go Back
                 </Link>
             </form>
@@ -284,16 +284,16 @@ const EditPeep = ({
     );
 };
 
-EditPeep.propTypes = {
-    createPerson: PropTypes.func.isRequired,
+EditHuman.propTypes = {
+    createHuman: PropTypes.func.isRequired,
     getPerson: PropTypes.func.isRequired,
     person: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = (state) => ({
-    person: state.person,
+    human: state.human,
 });
 
-export default connect(mapStateToProps, { createPerson, getPerson })(
-    withRouter(EditPeep)
+export default connect(mapStateToProps, { createHuman, getHuman })(
+    withRouter(EditHuman)
 );

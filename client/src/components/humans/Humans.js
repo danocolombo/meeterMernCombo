@@ -3,13 +3,12 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Spinner from '../layout/Spinner';
-import PersonItem from './PersonItem';
-import { getPeople } from '../../actions/person';
-// import auth from '../../../../middleware/auth';
+import HumanItem from './HumanItem';
+import { getHumans } from '../../actions/human';
 
-const People = ({
-    getPeople,
-    person: { people, loading },
+const Humans = ({
+    getHumans,
+    human: { humans, loading },
     auth: { activeClient, activeRole, activeStatus },
     match,
 }) => {
@@ -23,9 +22,9 @@ const People = ({
                     ' ' +
                     activeStatus
             );
-            getPeople(activeClient);
+            getHumans(activeClient);
         }
-    }, [getPeople]);
+    }, [getHumans]);
 
     return loading ? (
         <Spinner />
@@ -50,22 +49,22 @@ const People = ({
                 </Link>
             </div>
             <div className='posts'>
-                {people.map((person) => (
-                    <PersonItem key={person._id} person={person} />
+                {humans.map((human) => (
+                    <HumanItem key={human._id} human={human} />
                 ))}
             </div>
         </Fragment>
     );
 };
 
-People.propTypes = {
-    getPeople: PropTypes.func.isRequired,
-    person: PropTypes.object.isRequired,
+Humans.propTypes = {
+    getHumans: PropTypes.func.isRequired,
+    human: PropTypes.object.isRequired,
     auth: PropTypes.object.isRequired,
 };
 const mapStateToProps = (state) => ({
-    person: state.person,
+    human: state.human,
     auth: state.auth,
 });
 
-export default connect(mapStateToProps, { getPeople })(People);
+export default connect(mapStateToProps, { getHumans })(Humans);
