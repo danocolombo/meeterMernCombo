@@ -37,7 +37,7 @@ const Humans = ({
                 activeClient{activeClient}
             </p>
             <div>
-                <Link to='/EditPerson/0'>
+                <Link to='/EditHuman/0'>
                     <div class='waves-effect waves-light btn green'>
                         <i class='material-icons left green'>
                             add_circle_outline

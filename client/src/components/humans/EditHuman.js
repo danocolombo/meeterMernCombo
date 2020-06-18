@@ -8,6 +8,7 @@ import { RadioGroup, Radio, FormLabel } from '@material-ui/core';
 import { createHuman, getHuman } from '../../actions/human';
 const initialState = {
     name: '',
+    tId: '',
     gender: '',
     email: '',
     phone: '',
@@ -22,6 +23,7 @@ const initialState = {
 
 const EditHuman = ({
     human: { human, loading },
+    auth: { activeClient },
     createHuman,
     getHuman,
     match,
@@ -43,6 +45,7 @@ const EditHuman = ({
 
     const {
         name,
+        tId,
         gender,
         email,
         phone,
@@ -82,12 +85,25 @@ const EditHuman = ({
             // console.log(e.target.value);
             //e.target.value = is;
         }
-
+        
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
+    const setTenantValue = () => {
+        // setFormData({...formData, ['tenantId']: activeClient});
+        console.table(formData);
+        setFormData({...formData, tenantId: activeClient});
+        console.table(formData);
+        console.log('activeClient :' + activeClient);
+        console.log('##### tenantId set #####');
+    }
 
     const onSubmit = (e) => {
         e.preventDefault();
+        // insert tenantId (activeClient)
+        setTenantValue();
+        
+        console.table(formData);
+        if (activeClient){alert('activeClient:' + activeClient)};
         createHuman(formData, history, true);
         window.scrollTo(0, 0);
     };
@@ -132,6 +148,7 @@ const EditHuman = ({
         // function inside(){
         //     console.log('inside');
         // }
+        
         <Fragment>
             <h1 className='large text-primary'>People</h1>
             <p className='lead'>
@@ -288,10 +305,12 @@ EditHuman.propTypes = {
     createHuman: PropTypes.func.isRequired,
     getPerson: PropTypes.func.isRequired,
     person: PropTypes.object.isRequired,
+    auth: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = (state) => ({
     human: state.human,
+    auth: state.auth,
 });
 
 export default connect(mapStateToProps, { createHuman, getHuman })(

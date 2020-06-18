@@ -70,6 +70,8 @@ export const createHuman = (formData, history, edit = false) => async (
     dispatch
 ) => {
     try {
+        console.log('formData:');
+        console.table(formData);
         const config = {
             headers: {
                 'Content-Type': 'application/json',
