@@ -1,7 +1,10 @@
 import {
+    CLEAR_HUMANS,
+    CLEAR_HUMAN,
+    SET_HUMANS,
+    SET_HUMAN,
     GET_HUMANS,
     HUMAN_ERROR,
-    CLEAR_HUMAN,
     GET_HUMAN,
     DELETE_HUMAN,
 } from '../actions/types';
@@ -17,6 +20,22 @@ export default function (state = initialState, action) {
     const { type, payload } = action;
 
     switch (type) {
+        case SET_HUMANS:
+            return {
+                ...state,
+                humans: payload,
+                humanLoading: false,
+            };
+        case SET_HUMAN:
+            return {
+                ...state,
+                human: payload,
+                humanLoading: false,
+            };
+
+        //================================
+        // CLEAN UP ^^^^^^^^^^^^^^^^
+        //================================
         case GET_HUMANS:
             return {
                 ...state,
@@ -27,6 +46,12 @@ export default function (state = initialState, action) {
             return {
                 ...state,
                 human: payload,
+                humanLoading: false,
+            };
+        case CLEAR_HUMANS:
+            return {
+                ...state,
+                humans: [],
                 humanLoading: false,
             };
         case CLEAR_HUMAN:

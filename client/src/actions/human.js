@@ -1,19 +1,24 @@
 import axios from 'axios';
 import { setAlert } from './alert';
 import {
-    GET_HUMANS,
-    HUMAN_ERROR,
+    SET_HUMANS,
+    CLEAR_HUMANS,
     CLEAR_HUMAN,
+    HUMAN_ERROR,
     GET_HUMAN,
     DELETE_HUMAN,
 } from './types';
 
 export const getHumans = (cid) => async (dispatch) => {
     try {
+        // clean-up REDUX
+        dispatch({ type: CLEAR_HUMANS });
         dispatch({ type: CLEAR_HUMAN });
+
+        // get users from API
         const res = await axios.get(`/api/human/client/${cid}`);
         dispatch({
-            type: GET_HUMANS,
+            type: SET_HUMANS,
             payload: res.data,
         });
     } catch (err) {
@@ -26,7 +31,20 @@ export const getHumans = (cid) => async (dispatch) => {
         });
     }
 };
-
+export const removeHuman = () => async (dispatch) => {
+    console.log(' inside actions/human :: removeHuman');
+    try {
+        dispatch({ type: CLEAR_HUMAN });
+    } catch (err) {
+        dispatch({
+            type: HUMAN_ERROR,
+            payload: {
+                msg: err.response.statusText,
+                status: err.response.status,
+            },
+        });
+    }
+};
 export const getCurrentHuman = (id) => async (dispatch) => {
     try {
         dispatch({ CLEAR_HUMAN });
@@ -70,8 +88,6 @@ export const createHuman = (formData, history, edit = false) => async (
     dispatch
 ) => {
     try {
-        console.log('formData:');
-        console.table(formData);
         const config = {
             headers: {
                 'Content-Type': 'application/json',

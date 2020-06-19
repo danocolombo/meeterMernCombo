@@ -22,7 +22,16 @@ const Humans = ({
                     ' ' +
                     activeStatus
             );
+            //if we don't have humans, get them
+            //we might have them if returning from EditHuman
+            // getHumans(activeClient);
+        }
+        let hs = humans;
+        if (hs.length == 0) {
+            // getHumans(activeClient);
             getHumans(activeClient);
+        } else {
+            console.log('we have humans');
         }
     }, [getHumans]);
 
