@@ -12,8 +12,7 @@ import {
     CLEAR_GATHERINGS,
     CLEAR_HATHERINGS,
     CLEAR_SERVANTS,
-    CLEAR_HUMANS,
-    CLEAR_HUMAN,
+    CLEAR_PEOPLE,
     CLEAR_USER_AUTH,
     SET_USER_AUTH,
     CLEAR_CLIENT_USERS,
@@ -135,8 +134,7 @@ export const logout = () => (dispatch) => {
     dispatch({ type: CLEAR_GATHERINGS });
     dispatch({ type: CLEAR_HATHERINGS });
     dispatch({ type: CLEAR_SERVANTS });
-    dispatch({ type: CLEAR_HUMANS });
-    dispatch({ type: CLEAR_HUMAN });
+    dispatch({ type: CLEAR_PEOPLE });
     dispatch({ type: CLEAR_USER_AUTH });
     dispatch({ type: CLEAR_CLIENT_USERS });
     dispatch({ type: LOGOUT });

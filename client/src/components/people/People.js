@@ -3,12 +3,13 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Spinner from '../layout/Spinner';
-import HumanItem from './HumanItem';
-import { getHumans } from '../../actions/human';
+import PeopleItem from './PeopleItem';
+import { getPeople } from '../../actions/people';
+// import auth from '../../../../middleware/auth';
 
-const Humans = ({
-    getHumans,
-    human: { humans, loading },
+const People = ({
+    getPeople,
+    person: { people, loading },
     auth: { activeClient, activeRole, activeStatus },
     match,
 }) => {
@@ -22,18 +23,9 @@ const Humans = ({
                     ' ' +
                     activeStatus
             );
-            //if we don't have humans, get them
-            //we might have them if returning from EditHuman
-            // getHumans(activeClient);
+            getPeople(activeClient);
         }
-        let hs = humans;
-        if (hs.length == 0) {
-            // getHumans(activeClient);
-            getHumans(activeClient);
-        } else {
-            console.log('we have humans');
-        }
-    }, [getHumans]);
+    }, [getPeople]);
 
     return loading ? (
         <Spinner />
@@ -46,7 +38,7 @@ const Humans = ({
                 activeClient{activeClient}
             </p>
             <div>
-                <Link to='/EditHuman/0'>
+                <Link to='/EditPerson/0'>
                     <div class='waves-effect waves-light btn green'>
                         <i class='material-icons left green'>
                             add_circle_outline
@@ -58,22 +50,22 @@ const Humans = ({
                 </Link>
             </div>
             <div className='posts'>
-                {humans.map((human) => (
-                    <HumanItem key={human._id} human={human} />
+                {people.map((person) => (
+                    <PeopleItem key={person._id} person={person} />
                 ))}
             </div>
         </Fragment>
     );
 };
 
-Humans.propTypes = {
-    getHumans: PropTypes.func.isRequired,
-    human: PropTypes.object.isRequired,
+People.propTypes = {
+    getPeople: PropTypes.func.isRequired,
+    person: PropTypes.object.isRequired,
     auth: PropTypes.object.isRequired,
 };
 const mapStateToProps = (state) => ({
-    human: state.human,
+    person: state.person,
     auth: state.auth,
 });
 
-export default connect(mapStateToProps, { getHumans })(Humans);
+export default connect(mapStateToProps, { getPeople })(People);

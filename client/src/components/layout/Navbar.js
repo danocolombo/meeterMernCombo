@@ -35,7 +35,7 @@ const Navbar = ({ auth: { isAuthenticated, loading, user }, auth, logout }) => {
                 auth.activeStatus === 'approved' ? (
                     <Fragment>
                         <li>
-                            <Link to='/humans'>
+                            <Link to='/people'>
                                 <i className='fa fa-users'></i>{' '}
                                 <span className='hide-sm'>People</span>
                             </Link>

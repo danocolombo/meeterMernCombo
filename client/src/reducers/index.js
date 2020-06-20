@@ -2,7 +2,7 @@ import { combineReducers } from 'redux';
 import alert from './alert';
 import auth from './auth';
 import profile from './profile';
-import human from './human';
+import person from './person';
 import group from './group';
 import gathering from './gathering';
 import post from './post';
@@ -13,7 +13,7 @@ export default combineReducers({
     auth,
     profile,
     group,
-    human,
+    person,
     gathering,
     post,
     meeter,

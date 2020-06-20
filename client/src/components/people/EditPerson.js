@@ -2,14 +2,12 @@ import React, { Fragment, useState, useEffect } from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { FormControlLabel, Button } from '@material-ui/core';
+import { FormControlLabel } from '@material-ui/core';
 import { components } from 'react-select';
 import { RadioGroup, Radio, FormLabel } from '@material-ui/core';
-import { createHuman, getHuman, removeHuman } from '../../actions/human';
-import { CLEAR_HUMAN } from '../../actions/types';
+import { createPerson, getPerson } from '../../actions/people';
 const initialState = {
     name: '',
-    tenantId: '',
     gender: '',
     email: '',
     phone: '',
@@ -22,40 +20,29 @@ const initialState = {
     notes: '',
 };
 
-const EditHuman = ({
-    human: { human, loading },
-    auth: { activeClient },
-    createHuman,
-    getHuman,
+const EditPeep = ({
+    person: { person, loading },
+    createPerson,
+    getPerson,
     match,
     history,
+    pNum,
 }) => {
     const [formData, setFormData] = useState(initialState);
 
-    // useEffect(() => {
-    //     removeHuman();
-    //     if (!human) getHuman(match.params.id);
-    //     // return () => {
-    //     //     cleanup
-    //     // }
-    // }, []);
     useEffect(() => {
-        if (!human) getHuman(match.params.id);
-
+        if (!person) getPerson(match.params.id);
         if (!loading) {
-            removeHuman();
             const personData = { ...initialState };
-            for (const key in human) {
-                if (key in personData) personData[key] = human[key];
+            for (const key in person) {
+                if (key in personData) personData[key] = person[key];
             }
-            personData.tenantId = activeClient;
             setFormData(personData);
         }
-    }, [loading, getHuman, human]);
+    }, [loading, getPerson, person, match]);
 
     const {
         name,
-        tenantId,
         gender,
         email,
         phone,
@@ -68,7 +55,7 @@ const EditHuman = ({
         notes,
     } = formData;
     const handleGenderChange = (e) => {
-        // console.log('btnValue:' + e.target.value);
+        console.log('btnValue:' + e.target.value);
         setFormData({ ...formData, gender: e.target.value });
     };
     const handleChange = (event) => {
@@ -95,25 +82,14 @@ const EditHuman = ({
             // console.log(e.target.value);
             //e.target.value = is;
         }
-        // setTenantValue();
+
         setFormData({ ...formData, [e.target.name]: e.target.value });
-    };
-    const setTenantValue = () => {
-        // setFormData({...formData, ['tenantId']: activeClient});
-        setFormData({ ...formData, tenantId: activeClient });
     };
 
     const onSubmit = (e) => {
         e.preventDefault();
-
-        createHuman(formData, history, true);
+        createPerson(formData, history, true);
         window.scrollTo(0, 0);
-    };
-    const goBackHandler = () => {
-        // clean up redux and return
-        removeHuman();
-        history.push('/humans');
-        // window.location.assign('/humans');
     };
     const moveToTop = () => {
         window.scrollTo(0, 0);
@@ -156,7 +132,6 @@ const EditHuman = ({
         // function inside(){
         //     console.log('inside');
         // }
-
         <Fragment>
             <h1 className='large text-primary'>People</h1>
             <p className='lead'>
@@ -300,35 +275,25 @@ const EditHuman = ({
                     <small className='form-text'>Things to keep in mind</small>
                 </div>
                 <input type='submit' className='btn btn-primary my-1' />
-                {/* <Link className='btn btn-light my-1' to='/humans'>
+                <Link className='btn btn-light my-1' to='/people'>
                     Go Back
-                </Link> */}
-                <Button
-                    type='button'
-                    className='btn btn-light my-1'
-                    onClick={goBackHandler}
-                >
-                    Go Back
-                </Button>
+                </Link>
             </form>
             {moveToTop()}
         </Fragment>
     );
 };
 
-EditHuman.propTypes = {
-    createHuman: PropTypes.func.isRequired,
+EditPeep.propTypes = {
+    createPerson: PropTypes.func.isRequired,
     getPerson: PropTypes.func.isRequired,
-    removeHuman: PropTypes.func.isRequired,
     person: PropTypes.object.isRequired,
-    auth: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = (state) => ({
-    human: state.human,
-    auth: state.auth,
+    person: state.person,
 });
 
-export default connect(mapStateToProps, { createHuman, getHuman, removeHuman })(
-    withRouter(EditHuman)
+export default connect(mapStateToProps, { createPerson, getPerson })(
+    withRouter(EditPeep)
 );

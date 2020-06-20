@@ -13,14 +13,14 @@ import Profile from '../profile/Profile';
 import UserProfile from '../profile/UserProfile';
 import Posts from '../posts/Posts';
 import Post from '../post/Post';
-import Humans from '../humans/Humans';
+import People from '../people/People';
 import Admin from '../admin/Admin';
 import Security from '../admin/DisplaySecurity';
 // import Gathering from '../gatherings/Gathering';
 import Gatherings from '../gatherings/Gatherings';
 import EditGathering from '../gatherings/EditGathering';
 import EditGroup from '../gatherings/EditGroup';
-import EditHuman from '../humans/EditHuman';
+import EditPerson from '../people/EditPerson';
 //import GatheringForm from '../gatherings/GatheringForm';
 import NotFound from '../layout/NotFound';
 import PrivateRoute from '../routing/PrivateRoute';
@@ -58,7 +58,7 @@ const Routes = () => {
                 />
                 <PrivateRoute exact path='/posts' component={Posts} />
                 <PrivateRoute exact path='/posts/:id' component={Post} />
-                <PrivateRoute exact path='/humans' component={Humans} />
+                <PrivateRoute exact path='/people' component={People} />
 
                 <PrivateRoute exact path='/gatherings' component={Gatherings} />
                 <PrivateRoute
@@ -89,8 +89,8 @@ const Routes = () => {
                 />
                 <PrivateRoute
                     exact
-                    path='/EditHuman/:id'
-                    component={EditHuman}
+                    path='/EditPerson/:id'
+                    component={EditPerson}
                 />
                 <PrivateRoute
                     exact
