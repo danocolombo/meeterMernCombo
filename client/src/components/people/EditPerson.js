@@ -22,6 +22,7 @@ const initialState = {
 
 const EditPeep = ({
     person: { person, loading },
+    auth: { activeClient },
     createPerson,
     getPerson,
     match,
@@ -88,7 +89,7 @@ const EditPeep = ({
 
     const onSubmit = (e) => {
         e.preventDefault();
-        createPerson(formData, history, true);
+        createPerson(formData, activeClient, history, true);
         window.scrollTo(0, 0);
     };
     const moveToTop = () => {
@@ -288,10 +289,12 @@ EditPeep.propTypes = {
     createPerson: PropTypes.func.isRequired,
     getPerson: PropTypes.func.isRequired,
     person: PropTypes.object.isRequired,
+    auth: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = (state) => ({
     person: state.person,
+    auth: state.auth,
 });
 
 export default connect(mapStateToProps, { createPerson, getPerson })(

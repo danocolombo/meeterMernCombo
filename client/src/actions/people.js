@@ -70,7 +70,7 @@ export const getPerson = (id) => async (dispatch) => {
     }
 };
 // Create or update a person
-export const createPerson = (formData, history, edit = false) => async (
+export const createPerson = (formData, activeClient, history, edit = false) => async (
     dispatch
 ) => {
     try {
@@ -79,6 +79,8 @@ export const createPerson = (formData, history, edit = false) => async (
                 'Content-Type': 'application/json',
             },
         };
+        //need to add tentantId to formData
+        formData.tenaantId = 'people-' + activeClient;
         const res = await axios.post('/api/people', formData, config);
 
         dispatch({
