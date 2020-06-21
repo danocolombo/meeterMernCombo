@@ -79,11 +79,7 @@ router.post(
         }
         try {
             let person = await People.findOneAndUpdate(
-<<<<<<< HEAD
-                { name: name },
-=======
-                { name: name, tenantId: tenantId},
->>>>>>> 59cfbf50db092a26a45f6995f93b1e1fbf537c1a
+                { name: name, tenantId: tenantId },
                 { $set: personFields },
                 { new: true, upsert: true }
             );
