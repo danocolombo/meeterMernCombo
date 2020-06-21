@@ -40,6 +40,14 @@ const ClientSchema = new mongoose.Schema({
             },
         },
     ],
+    meetingConfig: {
+        donations: {
+            type: Boolean,
+        },
+        cafe: {
+            type: Boolean,
+        },
+    },
     date: {
         type: Date,
         default: Date.now,

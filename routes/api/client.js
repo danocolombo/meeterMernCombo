@@ -461,4 +461,31 @@ router.delete('/user/:cid/:uid', auth, async (req, res) => {
         res.status(500).send('Server Error');
     }
 });
+
+// @route    GET api/client/meetingConfigs/:code
+// @desc     Get list of client meeting configuratons for client code
+// @access   Private
+router.get('/meetingConfigs/:code', auth, async (req, res) => {
+    try {
+        const client = await Client.findOne({ code: req.params.code });
+        if (!client) {
+            return res
+                .status(400)
+                .json({ msg: 'No user info for client request' });
+        }
+        console.log('meetingConfig #: ' + client.meetingConfig);
+
+        // let configs = [];
+        // client.meetingConfig.forEach((c) => {
+        //     configs.push({
+        //         config: c.keyword,
+        //         value: c.value,
+        //     });
+        // });
+        res.json(client.meetingConfig);
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Server Error');
+    }
+});
 module.exports = router;
