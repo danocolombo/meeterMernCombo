@@ -82,11 +82,8 @@ export const createPerson = (
                 'Content-Type': 'application/json',
             },
         };
-        //-----------------------------------------------
-        // need to add the tenantId to the data to put
-        //-----------------------------------------------
-        var client = 'people-' + activeClient;
-        formData.tenantId = client;
+        //need to add tentantId to formData
+        formData.tenaantId = 'people-' + activeClient;
         const res = await axios.post('/api/people', formData, config);
 
         dispatch({

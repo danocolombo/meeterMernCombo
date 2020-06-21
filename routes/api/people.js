@@ -21,6 +21,7 @@ const People = require('../../models/People');
 router.post(
     '/',
     [check('name', 'Name is required').not().isEmpty()],
+    [check('tenantId', 'Tenant code is required').not().isEmpty()],
     async (req, res) => {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
@@ -42,6 +43,7 @@ router.post(
             notes,
         } = req.body;
         const personFields = {};
+        personFields.tenantId = 'people-' + tenantId;
         personFields.name = name;
         personFields.tenantId = tenantId;
         if (email) {
@@ -77,7 +79,11 @@ router.post(
         }
         try {
             let person = await People.findOneAndUpdate(
+<<<<<<< HEAD
                 { name: name },
+=======
+                { name: name, tenantId: tenantId},
+>>>>>>> 59cfbf50db092a26a45f6995f93b1e1fbf537c1a
                 { $set: personFields },
                 { new: true, upsert: true }
             );
