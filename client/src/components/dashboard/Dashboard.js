@@ -56,7 +56,6 @@ const Dashboard = ({
             <p className='lead'>
                 <i className='fas fa-user' /> Welcome {user && user.name}
             </p>
-            <div>activeClient:{activeClient}</div>
             <strong>What's happening...</strong>
             {privledgedInfo(auth)}
             {/* <p>

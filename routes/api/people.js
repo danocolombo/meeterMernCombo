@@ -29,6 +29,7 @@ router.post(
 
         const {
             name,
+            tenantId,
             gender,
             email,
             phone,
@@ -42,6 +43,7 @@ router.post(
         } = req.body;
         const personFields = {};
         personFields.name = name;
+        personFields.tenantId = tenantId;
         if (email) {
             personFields.email = email;
         } else {
@@ -74,7 +76,7 @@ router.post(
             personFields.service = '';
         }
         try {
-            let person = await People().findOneAndUpdate(
+            let person = await People.findOneAndUpdate(
                 { name: name },
                 { $set: personFields },
                 { new: true, upsert: true }

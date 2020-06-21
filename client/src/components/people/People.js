@@ -31,12 +31,10 @@ const People = ({
         <Spinner />
     ) : (
         <Fragment>
-            <h1 className='large text-primary'>People</h1>
-            <p className='lead'>
-                <i className='fas fa-user'></i>These are your peeps
-                <br />
-                activeClient{activeClient}
-            </p>
+            <h1 className='large text-primary'>
+                <i className='fas fa-user'></i>People
+            </h1>
+            <p className='lead'></p>
             <div>
                 <Link to='/EditPerson/0'>
                     <div class='waves-effect waves-light btn green'>
