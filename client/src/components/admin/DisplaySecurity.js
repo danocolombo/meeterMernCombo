@@ -15,12 +15,18 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import DefaultGroup from './DefaultGroup';
 import ClientUser from './ClientUser';
 import DefaultGroupForm from './DefaultGroupForm';
+import MeetingConfigForm from './MeetingConfigForm';
 import Button from '@material-ui/core/Button';
-import { getClientUsers, getDefGroups } from '../../actions/admin';
+import {
+    getClientUsers,
+    getDefGroups,
+    getMtgConfigs,
+} from '../../actions/admin';
 
 const DisplaySecurity = ({
     getClientUsers,
     getDefGroups,
+    getMtgConfigs,
     auth: { activeClient, activeRole, activeStatus },
     meeter: { defaultGroups, clientUsers, loading },
     historyView,
@@ -29,6 +35,7 @@ const DisplaySecurity = ({
         if (activeClient) {
             getClientUsers(activeClient);
             getDefGroups(activeClient);
+            getMtgConfigs(activeClient);
         }
     }, []);
     // const classes = useStyles();
@@ -118,6 +125,31 @@ const DisplaySecurity = ({
                         </div>
                     </ExpansionPanelDetails>
                 </ExpansionPanel>
+                <ExpansionPanel
+                    expanded={expanded === 'panel3'}
+                    onChange={handleChange('panel3')}
+                >
+                    <ExpansionPanelSummary
+                        aria-controls='panel1bh-content'
+                        id='panel1bh-header'
+                    >
+                        <h1>Meeting Configurations</h1>
+                    </ExpansionPanelSummary>
+
+                    <ExpansionPanelDetails>
+                        <div className='posts'>
+                            {activeRole == 'superuser' ? (
+                                <MeetingConfigForm />
+                            ) : (
+                                <Fragment>
+                                    <p>Feature coming soon...</p>
+                                    <br />
+                                    <br />
+                                </Fragment>
+                            )}
+                        </div>
+                    </ExpansionPanelDetails>
+                </ExpansionPanel>
             </div>
         </Fragment>
     );
@@ -130,12 +162,15 @@ DisplaySecurity.propTypes = {
     meeter: PropTypes.object.isRequired,
     getClientUsers: PropTypes.func.isRequired,
     getDefGroups: PropTypes.func.isRequired,
+    getMtgConfigs: PropTypes.func.isRequired,
     auth: PropTypes.object.isRequired,
 };
 const mapStateToProps = (state) => ({
     auth: state.auth,
     meeter: state.meeter,
 });
-export default connect(mapStateToProps, { getClientUsers, getDefGroups })(
-    DisplaySecurity
-);
+export default connect(mapStateToProps, {
+    getClientUsers,
+    getDefGroups,
+    getMtgConfigs,
+})(DisplaySecurity);

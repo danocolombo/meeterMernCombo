@@ -6,6 +6,7 @@ import { createGathering, getGathering } from '../../actions/gathering';
 import { getGroups } from '../../actions/group';
 import GroupListItem from './GroupListItem';
 import { deleteGroup } from '../../actions/group';
+import { getMtgConfigs } from '../../actions/admin';
 import ServantSelect from './ServantSelect';
 // import GroupList from './GroupList';
 import Spinner from '../layout/Spinner';
@@ -36,15 +37,18 @@ const EditGathering = ({
     gathering: { gathering, servants, loading, newGathering },
     auth: { activeClient, activeRole, activeStatus },
     group: { groups, groupLoading },
+    meeter: { mtgConfigs },
     createGathering,
     getGathering,
     getGroups,
+    getMtgConfigs,
     match,
     history,
 }) => {
     const [formData, setFormData] = useState(initialState);
     useEffect(() => {
         getGroups(match.params.id);
+        getMtgConfigs(activeClient);
         // console.log('just ran getGroups');
     }, [deleteGroup]);
     useEffect(() => {
@@ -241,22 +245,26 @@ const EditGathering = ({
                     onChange={(e) => onChange(e)}
                 />
                 <small className='form-text'>Number of newcomers?</small>
-                <div className='form-group'>
-                    <h4>Donations</h4>
-                    <input
-                        type='number'
-                        id='donations'
-                        name='donations'
-                        value={donations}
-                        min='0.00'
-                        step='0.01'
-                        max='500'
-                        onChange={(e) => onChange(e)}
-                    />
-                    <small className='form-text'>
-                        Amount of donations received?
-                    </small>
-                </div>
+                {console.log('mtgConfigs.donations: ' + mtgConfigs.donations)}
+                {console.table(mtgConfigs)}
+                {mtgConfigs.donations ? (
+                    <div className='form-group'>
+                        <h4>Donations</h4>
+                        <input
+                            type='number'
+                            id='donations'
+                            name='donations'
+                            value={donations}
+                            min='0.00'
+                            step='0.01'
+                            max='500'
+                            onChange={(e) => onChange(e)}
+                        />
+                        <small className='form-text'>
+                            Amount of donations received?
+                        </small>
+                    </div>
+                ) : null}
                 <div className='form-group'>
                     <h4>Meal</h4>
                     <input
@@ -367,7 +375,6 @@ const EditGathering = ({
                     <small className='form-text'>Things to remember</small>
                 </div>
                 {FormButtons()}
-
                 <hr />
                 <h2>
                     Open-Share Groups
@@ -531,9 +538,11 @@ EditGathering.propTypes = {
     createGathering: PropTypes.func.isRequired,
     getGathering: PropTypes.func.isRequired,
     getGroups: PropTypes.func.isRequired,
+    getMtgConfigs: PropTypes.func.isRequired,
     gathering: PropTypes.object.isRequired,
     group: PropTypes.object.isRequired,
     auth: PropTypes.object.isRequired,
+    meeter: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -541,10 +550,12 @@ const mapStateToProps = (state) => ({
     servants: state.servants,
     group: state.group,
     auth: state.auth,
+    meeter: state.meeter,
 });
 
 export default connect(mapStateToProps, {
     createGathering,
     getGathering,
     getGroups,
+    getMtgConfigs,
 })(withRouter(EditGathering));

@@ -4,12 +4,14 @@ import {
     SET_DEFAULT_GROUPS,
     REMOVE_CLIENT_USER,
     ADMIN_ERROR,
+    SET_MTG_CONFIGS,
 } from '../actions/types';
 
 const initialState = {
     clientUsers: [],
     clientUser: null,
     defaultGroups: [],
+    mtgConfigs: [],
     loading: true,
     error: {},
 };
@@ -18,6 +20,12 @@ export default function (state = initialState, action) {
     const { type, payload } = action;
 
     switch (type) {
+        case SET_MTG_CONFIGS:
+            return {
+                ...state,
+                mtgConfigs: payload,
+                loading: false,
+            };
         case SET_CLIENT_USERS:
             return {
                 ...state,

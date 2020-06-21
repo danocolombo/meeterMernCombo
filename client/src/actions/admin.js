@@ -5,6 +5,7 @@ import {
     ADMIN_ERROR,
     SET_DEFAULT_GROUPS,
     REMOVE_CLIENT_USER,
+    SET_MTG_CONFIGS,
 } from './types';
 
 // GET CLIENT INFO
@@ -61,6 +62,29 @@ export const getDefGroups = (cid) => async (dispatch) => {
         });
     }
 };
+export const getMtgConfigs = (cid) => async (dispatch) => {
+    //this loads all the default groups for cid
+    //into meeter.defaultGroups
+    try {
+        const res = await axios.get(`/api/client/meetingConfigs/${cid}`);
+        if (res) {
+            dispatch({
+                type: SET_MTG_CONFIGS,
+                payload: res.data,
+            });
+        } else {
+            console.log('NO CLIENT MEETING CONFIGS');
+        }
+    } catch (err) {
+        dispatch({
+            type: ADMIN_ERROR,
+            payload: {
+                msg: err.response.statusText ? err.response.statusText : '',
+                status: err.response.status,
+            },
+        });
+    }
+};
 export const deleteDefGroup = (id) => async (dispatch) => {
     //this removes the defGroup id from client
     //reference in database and updates meeter.defaultGroups
@@ -97,4 +121,9 @@ export const suspendClientUser = (id) => async (dispatch) => {
     //this updates the status of the user (id) in client
     //users in database to suspended and updates
     //meeter.clientUsers status
+};
+export const toggleConfig = (cid, config) => async (dispatch) => {
+    // this gets the client and configuration value
+    // if the value exists, we remove it, if it does
+    // not exist, we add it.
 };
