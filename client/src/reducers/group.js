@@ -1,60 +1,69 @@
 import {
     GET_GROUPS,
     GROUP_ERROR,
-    CLEAR_GROUPS,
-    CLEAR_GROUP,
+    DELETE_GROUP,
+    ADD_GROUP,
     GET_GROUP,
-    DELETE_GROUP
 } from '../actions/types';
 
 const initialState = {
     groups: [],
     group: null,
-    loading: true,
-    error: {}
+    // loading: true,
+    groupLoading: true,
+    error: {},
 };
 
-export default function(state = initialState, action) {
+export default function (state = initialState, action) {
     const { type, payload } = action;
 
     switch (type) {
-        case GROUP_ERROR:
-            return {
-                ...state,
-                error: payload,
-                loading: false
-            };
         case GET_GROUPS:
             return {
                 ...state,
                 groups: payload,
-                loading: false
-            };
-        case CLEAR_GROUPS:
-            return {
-                ...state,
-                groups: null,
-                loading: false
-            };
-        case CLEAR_GROUP:
-            return {
-                ...state,
-                group: null,
-                loading: false
+                groupLoading: false,
             };
         case GET_GROUP:
             return {
                 ...state,
                 group: payload,
-                loading: false
+                groupLoading: false,
+            };
+        case ADD_GROUP:
+            return {
+                ...state,
+                groups: [payload, ...state.groups],
+                groupLoading: false,
             };
         case DELETE_GROUP:
             return {
                 ...state,
-                groups: state.groups.filter(group => group.id !== payload),
-                loading: false
+                groups: state.groups.filter((group) => group.id !== payload),
+                groupLoading: false,
             };
+        case GROUP_ERROR:
+            //reducers:group
+            return {
+                ...state,
+                error: payload,
+                groupLoading: false,
+            };
+
+        // case CLEAR_GROUPS:
+        //     return {
+        //         ...state,
+        //         groups: null,
+        //         groupLoading: false,
+        //     };
+        // case CLEAR_GROUP:
+        //     return {
+        //         ...state,
+        //         group: null,
+        //         groupLoading: false,
+        //     };
+
         default:
-            return false;
+            return state;
     }
 }

@@ -3,48 +3,85 @@ import { setAlert } from './alert';
 import {
     GET_GROUPS,
     GROUP_ERROR,
-    CLEAR_GROUP,
     DELETE_GROUP,
+    ADD_GROUP,
     GET_GROUP,
-    UPDATE_GROUP,
-    CLEAR_GROUPS,
-    SET_GROUP,
+
+    // CLEAR_GROUP,
+    // UPDATE_GROUP,
+    // CLEAR_GROUPS,
+    // SET_GROUP,
 } from './types';
 
 // Get groups associated with meetingId
-export const getGroups = (mid) => async () => {
+export const getGroups = (mid) => async (dispatch) => {
     try {
-        // dispatch({ type: CLEAR_GROUPS });
         const res = await axios.get(`/api/groups/meeting/${mid}`);
 
-        return res.data;
+        dispatch({
+            type: GET_GROUPS,
+            payload: res.data,
+        });
     } catch (err) {
-        const resMsg = {
-            msg: err.response.statusText,
-            status: err.response.status,
-        };
+        dispatch({
+            //actions:getGroups
+            type: GROUP_ERROR,
+            payload: {
+                msg: err.response.statusText,
+                status: err.response.status,
+            },
+        });
+    }
+};
+// Delete group
+export const deleteGroup = (groupId, mid) => async (dispatch) => {
+    try {
+        await axios.delete(`/api/groups/${groupId}`);
+        dispatch({
+            type: DELETE_GROUP,
+            payload: groupId,
+        });
+        // reload the groups
+        const res = await axios.get(`/api/groups/meeting/${mid}`);
 
-        return resMsg;
+        dispatch({
+            type: GET_GROUPS,
+            payload: res.data,
+        });
+        dispatch(setAlert('Group removed', 'success'));
+    } catch (err) {
+        dispatch({
+            //actions:deleteGroup
+            type: GROUP_ERROR,
+            payload: {
+                msg: err.response.statusText,
+                status: err.response.status,
+            },
+        });
     }
 };
 // Get group associated with groupID
-export const getGroupNoRedux = (gid) => async () => {
+export const getGroupNoRedux = (gid) => async (dispatch) => {
     console.log('actions/group: getGroup: gid:' + gid);
     try {
         // dispatch({ type: CLEAR_GROUPS });
-        const res = await axios.get(`/api/groups/group/${gid}`);
-        return await axios.get(`/api/groups/group/${gid}`).then((response) => {
+        const res = await axios.get(`/api/groups/${gid}`);
+        return await axios.get(`/api/groups/${gid}`).then((response) => {
             return response.data;
         });
         return res.data;
         // return;
     } catch (err) {
-        const resMsg = {
-            msg: err.response.statusText,
-            status: err.response.status,
-        };
+        dispatch({
+            //actions:getGroupNoRedux
+            type: GROUP_ERROR,
+            payload: {
+                msg: err.response.statusText,
+                status: err.response.status,
+            },
+        });
 
-        return resMsg;
+        // return resMsg;
     }
 };
 // export const getGroups2 = mid => async dispatch => {
@@ -69,16 +106,17 @@ export const getGroupNoRedux = (gid) => async () => {
 // Get group by groupId
 export const getGroup = (groupId) => async (dispatch) => {
     try {
-        
-        dispatch({ type: CLEAR_GROUP});
-        const res = await axios.get(`/api/groups/group/${groupId}`);
+        // dispatch({ type: CLEAR_GROUP });
+        const res = await axios.get(`/api/groups/${groupId}`);
         dispatch({
             type: GET_GROUP,
             payload: res.data,
         });
     } catch (err) {
         dispatch({
+            //getGroup
             type: GROUP_ERROR,
+            //actions:getGroup
             payload: {
                 msg: err.response.statusText,
                 status: err.response.status,
@@ -92,15 +130,12 @@ export const getGroup = (groupId) => async (dispatch) => {
 // redirect to the meeting after adding the group. The edit
 // flag will define if it is new group or updating existing. We
 // default to false, which means new, insert the group
-export const createGroup = (formData, history, edit = false) => async (
+export const addGroup = (formData, history, edit = false) => async (
     dispatch
 ) => {
     try {
-        console.table(formData);
-        console.log('from actions/group :: createGroup');
-        if(formData._id.length < 1){
+        if (formData._id.length < 1) {
             //this is an add
-            // console.log('We acknowledge it is new');
             delete formData._id;
         }
         const config = {
@@ -109,50 +144,32 @@ export const createGroup = (formData, history, edit = false) => async (
             },
         };
         let res = null;
-        if(formData._id){
-            res = await axios.post(`/api/groups/group/${formData._id}`, formData, config);
-        }else{
+        if (formData._id) {
+            res = await axios.post(
+                `/api/groups/group/${formData._id}`,
+                formData,
+                config
+            );
+        } else {
             res = await axios.post(`/api/groups/group/0`, formData, config);
         }
 
         dispatch({
-            type: GET_GROUP,
-            payload: res.data
-        });
-        dispatch(
-            setAlert(
-                edit ? 'Group Updates' : 'Group Created',
-                'success'
-            )
-        );
-
-        if(!edit) {
-            const target = "/editGathering/" + formData.mid;
-            history.push(target);
-        }
-    }catch (err) {
-        return err;
-    }
-};
-
-// Delete group
-export const deleteGroup = (groupId) => async (dispatch) => {
-    console.log('actions/group.js: (' + groupId + ')');
-    try {
-        //const res = await axios.delete(`/api/groups/group/${groupId}`);
-        const res = await axios.delete(`/api/groups/${groupId}`);
-        dispatch({
-            type: DELETE_GROUP,
+            type: ADD_GROUP,
             payload: res.data,
         });
+        dispatch(setAlert(edit ? 'Group Updated' : 'Group Created', 'success'));
+
+        // if (!edit) {
+        //     const target = '/editGathering/' + formData.mid;
+        //     history.push(target);
+        // }
+        console.log('edit: ' + edit);
+        const target = '/editGathering/' + formData.mid;
+        history.push(target);
+        // history.push('/gatherings');
     } catch (err) {
-        dispatch({
-            type: GROUP_ERROR,
-            payload: {
-                msg: err.response.statusText,
-                status: err.response.status,
-            },
-        });
+        return err;
     }
 };
 
@@ -196,6 +213,7 @@ export const OLDcreateGroup = (formData, history, edit = false) => async (
         }
 
         dispatch({
+            //actions:oldCreateGroup
             type: GROUP_ERROR,
             payload: {
                 msg: err.response.statusText,

@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const { tenantModel } = require('../lib/multiTenant');
 const GroupSchema = new mongoose.Schema({
     mid: {
         type: String,
@@ -29,5 +28,4 @@ const GroupSchema = new mongoose.Schema({
         type: String,
     },
 });
-// module.exports = Groups = tenantModel('groups', GroupSchema);
 module.exports = Groups = mongoose.model('groups', GroupSchema);

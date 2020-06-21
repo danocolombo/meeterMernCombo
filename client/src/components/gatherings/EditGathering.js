@@ -3,15 +3,18 @@ import { Link, withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createGathering, getGathering } from '../../actions/gathering';
-// import { deleteGroup } from '../../actions/group';
+import { getGroups } from '../../actions/group';
+import GroupListItem from './GroupListItem';
+import { deleteGroup } from '../../actions/group';
 import ServantSelect from './ServantSelect';
-import GroupList from './GroupList';
+// import GroupList from './GroupList';
+import Spinner from '../layout/Spinner';
 
 const initialState = {
     _id: '',
     meetingId: '',
     meetingDate: '',
-    facilitator: 'Dano Colombo',
+    facilitator: '',
     meetingType: '',
     supportRole: '',
     worship: '',
@@ -31,28 +34,24 @@ const initialState = {
 
 const EditGathering = ({
     gathering: { gathering, servants, loading, newGathering },
-    group: { groups },
+    auth: { activeClient, activeRole, activeStatus },
+    group: { groups, groupLoading },
     createGathering,
     getGathering,
-    deleteGroup,
+    getGroups,
     match,
     history,
 }) => {
     const [formData, setFormData] = useState(initialState);
-
     useEffect(() => {
-        // console.log('match.params.id:' + match.params.id);
-
-        //if (match.params.id === 0) setState(newGathering = true;
-        // console.log('gathering:' + gathering);
-        // if (gathering == null) console.log('YEP');
+        getGroups(match.params.id);
+        // console.log('just ran getGroups');
+    }, [deleteGroup]);
+    useEffect(() => {
         if (!gathering) {
             getGathering(match.params.id);
+            // getGroups(match.params.id);
         }
-        // if (!groups) {
-        //     getGroups(match.params.id);
-        // }
-        // console.log('gathering2:' + gathering);
         if (!loading) {
             const gatheringData = { ...initialState };
             for (const key in gathering) {
@@ -86,7 +85,7 @@ const EditGathering = ({
     } = formData;
 
     const onChange = (e) => {
-        if (e.target == 'phone') {
+        if (e.target === 'phone') {
             console.log('phonephonephonephone');
         }
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -99,13 +98,15 @@ const EditGathering = ({
     };
     const onSubmit = (e) => {
         e.preventDefault();
-        if (formData['meetingType'] == 'Testimony')
+        if (formData['meetingType'] === 'Testimony')
             delete formData['supportRole'];
-        createGathering(formData, history, true);
+        createGathering(formData, history, activeClient, true);
         window.scrollTo(0, 0);
     };
 
-    return (
+    return loading ? (
+        <Spinner />
+    ) : (
         // function inside(){
         //     console.log('inside');
         // }
@@ -129,7 +130,14 @@ const EditGathering = ({
                     />
                 </div>
                 <h4>Facilitator</h4>
-                <select
+                <input
+                    type='text'
+                    placeholder='Responsible party for meeting'
+                    name='facilitator'
+                    value={facilitator}
+                    onChange={onChange}
+                />
+                {/* <select
                     value={facilitator}
                     name='facilitator'
                     onChange={onChange}
@@ -139,7 +147,7 @@ const EditGathering = ({
                             {s.name}
                         </option>
                     ))}
-                </select>
+                </select> */}
                 <div className='form-group'>
                     <h4>Meeting Type **</h4>
                     <select
@@ -172,7 +180,15 @@ const EditGathering = ({
                 </div>
                 {meetingType === 'Lesson' && (
                     <Fragment>
-                        <select
+                        <input
+                            type='text'
+                            placeholder=''
+                            name='supportRole'
+                            value={supportRole}
+                            onChange={onChange}
+                        />
+
+                        {/* <select
                             value={supportRole}
                             name='supportRole'
                             onChange={onChange}
@@ -182,7 +198,7 @@ const EditGathering = ({
                                     {s.name}
                                 </option>
                             ))}
-                        </select>
+                        </select> */}
                         <small className='form-text'>
                             Who is teaching the lesson?
                         </small>
@@ -253,7 +269,14 @@ const EditGathering = ({
                     <small className='form-text'>Dinner provided</small>
                 </div>
                 <h4>Meal Coordinator</h4>
-                <select
+                <input
+                    type='text'
+                    placeholder=''
+                    name='mealCoordinator'
+                    value={mealCoordinator}
+                    onChange={onChange}
+                />
+                {/* <select
                     value={mealCoordinator ? mealCoordinator : 'pick someone'}
                     name='mealCoordinator'
                     onChange={onChange}
@@ -263,7 +286,7 @@ const EditGathering = ({
                             {s.name}
                         </option>
                     ))}
-                </select>
+                </select> */}
                 <br />
                 <h4>Individuals Fed</h4>
                 <input
@@ -277,7 +300,14 @@ const EditGathering = ({
                 />
                 <small className='form-text'>Number of people served?</small>
                 <h4>Cafe Coordinator</h4>
-                <select
+                <input
+                    type='text'
+                    placeholder=''
+                    name='cafeCoordinator'
+                    value={cafeCoordinator}
+                    onChange={onChange}
+                />
+                {/* <select
                     value={cafeCoordinator ? cafeCoordinator : 'pick someone'}
                     name='cafeCoordinator'
                     onChange={onChange}
@@ -287,7 +317,7 @@ const EditGathering = ({
                             {s.name}
                         </option>
                     ))}
-                </select>
+                </select> */}
                 <small className='form-text'>Cafe coordinator</small>
                 <br />
                 <h4>Nursery Count</h4>
@@ -341,19 +371,31 @@ const EditGathering = ({
                 <hr />
                 <h2>
                     Open-Share Groups
-                    <Link to={`/EditGroup/${_id}/0`}>
-                        <a class='waves-effect waves-light btn'>
-                            <i class='material-icons left green'>
-                                add_circle_outline
-                            </i>
-                            <span className='meeterNavTextHighlight'>
-                                {'  '}NEW
-                            </span>
-                        </a>
-                    </Link>
+                    {activeStatus == 'approved' && activeRole != 'guest' ? (
+                        <Link to={`/EditGroup/${_id}/0`}>
+                            <a class='waves-effect waves-light btn'>
+                                <i class='material-icons left green'>
+                                    add_circle_outline
+                                </i>
+
+                                <span className='meeterNavTextHighlight'>
+                                    {'  '}NEW
+                                </span>
+                            </a>
+                        </Link>
+                    ) : null}
                 </h2>
-                <GroupList mid={match.params.id} />
             </form>
+            <div>
+                {groups &&
+                    groups.map((group) => (
+                        <GroupListItem
+                            key={group._id}
+                            mid={group.mid}
+                            group={group}
+                        />
+                    ))}
+            </div>
         </Fragment>
     );
 
@@ -403,14 +445,24 @@ const EditGathering = ({
         console.log('today:' + today);
         if (mDate >= today) {
             console.log('greater than or equal');
-            returnValue = [
-                <>
-                    <input type='submit' className='btn btn-primary my-1' />
-                    <Link className='btn btn-light my-1' to='/gatherings'>
-                        Go Back
-                    </Link>
-                </>,
-            ];
+            if (activeStatus == 'approved' && activeRole != 'guest') {
+                returnValue = [
+                    <>
+                        <input type='submit' className='btn btn-primary my-1' />
+                        <Link className='btn btn-light my-1' to='/gatherings'>
+                            Go Back
+                        </Link>
+                    </>,
+                ];
+            } else {
+                returnValue = [
+                    <>
+                        <Link className='btn btn-light my-1' to='/gatherings'>
+                            Go Back
+                        </Link>
+                    </>,
+                ];
+            }
         } else {
             console.log('less than today');
             returnValue = [
@@ -478,17 +530,21 @@ const EditGathering = ({
 EditGathering.propTypes = {
     createGathering: PropTypes.func.isRequired,
     getGathering: PropTypes.func.isRequired,
+    getGroups: PropTypes.func.isRequired,
     gathering: PropTypes.object.isRequired,
     group: PropTypes.object.isRequired,
+    auth: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = (state) => ({
     gathering: state.gathering,
     servants: state.servants,
     group: state.group,
+    auth: state.auth,
 });
 
 export default connect(mapStateToProps, {
     createGathering,
     getGathering,
+    getGroups,
 })(withRouter(EditGathering));

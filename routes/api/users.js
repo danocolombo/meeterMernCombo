@@ -8,6 +8,7 @@ const { check, validationResult } = require('express-validator');
 const auth = require('../../middleware/auth');
 
 const User = require('../../models/User');
+const Client = require('../../models/Client');
 
 // @route    POST api/users
 // @desc     Register user
@@ -62,6 +63,23 @@ router.post(
 
             await user.save();
 
+            //------ ADDING USER TO CLIENT DOC ------
+            const reqUser = {};
+            reqUser._id = user.id;
+            reqUser.role = 'unregistered';
+            reqUser.status = 'pending';
+
+            //first thing, find the client entry to add/update user
+            const newClientUpdate = await Client.findOne({
+                code: defaultClient,
+            });
+
+            // push the entry onto the end of users subarray
+            newClientUpdate.users.push(reqUser);
+            //save the changes
+            await newClientUpdate.save();
+            //------ DONE ADDING USER TO CLIENT DOC ------
+
             const payload = {
                 user: {
                     id: user.id,
@@ -97,4 +115,27 @@ router.get('/', auth, async (req, res) => {
         res.status(500).send('Server error');
     }
 });
+// @route    GET api/user/:uid
+// @desc     Return user of uid
+// @access   PRIVATE
+router.get(
+    '/identify/:uid',
+    [check('uid', 'id is required').not().isEmpty()],
+    auth,
+    async (req, res) => {
+        try {
+            // console.log('API::cid: ' + req.param.cid);
+            const user = await User.findById({ _id: req.params.uid });
+
+            if (!user) {
+                return res.status(400).json({ msg: 'No user info avaialble' });
+            }
+
+            res.json(user);
+        } catch (err) {
+            console.error(err.message);
+            res.status(500).send('Server Error');
+        }
+    }
+);
 module.exports = router;

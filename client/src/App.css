@@ -74,6 +74,7 @@ img {
 }
 
 /* Padding */
+/* all sides */
 .p {
     padding: 0.5rem;
 }
@@ -86,6 +87,33 @@ img {
 .p-3 {
     padding: 3rem;
 }
+/* right side */
+.pr {
+    padding-right: 0.5rem;
+}
+.pr-1 {
+    padding-right: 1rem;
+}
+.pr-2 {
+    padding-right: 2rem;
+}
+.pr-3 {
+    padding-right: 3rem;
+}
+/* left side */
+.pl {
+    padding-left: 0.5rem;
+}
+.pl-1 {
+    padding-left: 1rem;
+}
+.pl-2 {
+    padding-left: 2rem;
+}
+.pl-3 {
+    padding-left: 3rem;
+}
+
 .py {
     padding: 0.5rem 0;
 }
@@ -116,6 +144,9 @@ img {
 }
 .my {
     margin: 0.5rem 0;
+}
+.my-0 {
+    margin: 0 0;
 }
 .my-1 {
     margin: 1rem 0;
@@ -205,7 +236,20 @@ img {
     color: #333;
     border: #ccc solid 1px;
 }
-
+.btn-light-yellow,
+.bg-light-yellow,
+.badge-light-yellow,
+.alert-light-yellow {
+    background: #f6fa9c;
+    color: #333;
+}
+.btn-light-blue,
+.bg-light-blue,
+.badge-light-blue,
+.alert-light-blue {
+    background: #87cefa;
+    color: #333;
+}
 .btn:hover {
     opacity: 0.8;
 }
@@ -313,6 +357,7 @@ button {
 
 .table th,
 .table td {
+    width: 300px;
     padding: 1rem;
     text-align: left;
 }
@@ -482,8 +527,26 @@ button {
     color: red;
     font-size: 0.7em;
 }
-/* GATHERINGS Page */
 
+/* ADMIN - REGISTERED USERS */
+.clientUser {
+    display: grid;
+    grid-template-columns: 1fr 4fr;
+    grid-gap: 1rem;
+    align-items: center;
+}
+.adminDefaultGroupBox {
+    border: 1px solid rgb(109, 84, 84);
+    box-shadow: 0 2px 3px rgb(216, 146, 146);
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    grid-gap: 1rem;
+    align-items: center;
+}
+.adminDefaultGroupBox > div {
+    text-align: center;
+    padding: 10px;
+}
 /* Posts Page */
 .post-form .post-form-header {
     background: var(--primary-color);
@@ -608,6 +671,16 @@ button {
 }
 /* GroupList component of gathering page */
 /* --------------------------------------*/
+/* GATHERINGS Page */
+/* GATHERING - GroupListItem */
+.GGL-Box {
+    border: 1px solid rgb(109, 84, 84);
+    /* box-shadow: 0 2px 3px rgb(216, 146, 146); */
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    grid-gap: 0rem;
+    /* align-items: center; */
+}
 .GGL {
     font-size: 1rem;
     margin-bottom: 1rem;
@@ -616,24 +689,83 @@ button {
 }
 .GGL-Gender {
     font-size: 1rem;
-    text-align: right;
-    margin-bottom: 1rem;
-    padding-right: 10px;
+    text-align: left;
+    /* margin-bottom: 1rem; */
+    /* padding-right: 5px; */
 }
 .GGL-Title {
     font-size: 1rem;
     text-align: left;
-    margin-bottom: 1rem;
-    padding-right: 15px;
+    /* margin-bottom: 1rem; */
+    /* padding-right: 15px; */
+}
+.GGL-Location {
+    font-size: 1rem;
+    text-align: left;
+    /* margin-bottom: 1rem; */
+    /* padding-right: 10px; */
 }
 .GGL-Facilitator {
     font-size: 1rem;
     font-style: italic;
-    margin-bottom: 1rem;
-    padding-left: 10px;
-    padding-right: 20px;
+    /* margin-bottom: 1rem; */
+    /* padding-left: 10px;
+    padding-right: 20px; */
 }
-
+.GGL-Button {
+    font-size: 1rem;
+    /* margin-bottom: 1rem; */
+    /* padding-left: 10px;
+    padding-right: 20px; */
+}
+/* DisplaySecurity file */
+/* --------------------------------------*/
+/* Default Group Form Page */
+.DGF-Box {
+    border: 1px solid rgb(109, 84, 84);
+    /* box-shadow: 0 2px 3px rgb(216, 146, 146); */
+    display: grid;
+    grid-template-columns: 1fr fr 1fr 1fr;
+    grid-gap: 0rem;
+    /* align-items: center; */
+}
+.DGF {
+    font-size: 1rem;
+    margin-bottom: 1rem;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+.DGF-Gender {
+    font-size: 1rem;
+    text-align: left;
+    /* margin-bottom: 1rem; */
+    /* padding-right: 5px; */
+}
+.DGF-Title {
+    font-size: 1rem;
+    text-align: left;
+    /* margin-bottom: 1rem; */
+    /* padding-right: 15px; */
+}
+.DGF-Location {
+    font-size: 1rem;
+    text-align: left;
+    /* margin-bottom: 1rem; */
+    /* padding-right: 10px; */
+}
+.DGF-Facilitator {
+    font-size: 1rem;
+    font-style: italic;
+    /* margin-bottom: 1rem; */
+    /* padding-left: 10px;
+    padding-right: 20px; */
+}
+.DGF-Button {
+    font-size: 1rem;
+    /* margin-bottom: 1rem; */
+    /* padding-left: 10px;
+    padding-right: 20px; */
+}
 /* Meetings Page
 .meeting {
   grid-template-columns: 1fr;
@@ -689,6 +821,19 @@ button {
     line-height: 1.8;
     margin-bottom: 1rem;
 }
+/* Admin defaultGroup box */
+.AdminDefaultGroupBox {
+    border: 1px solid rgb(109, 84, 84);
+    box-shadow: 0 2px 3px rgb(216, 146, 146);
+    /* padding: 10px;
+    margin-left: 25px;
+    margin-bottom: 10px;
+    margin-right: 10px;
+    max-width: 400px; */
+    display: grid;
+    grid-template-columns: auto, auto;
+}
+
 .PersonBox {
     border: 1px solid rgb(109, 84, 84);
     box-shadow: 0 2px 3px rgb(216, 146, 146);
@@ -716,7 +861,18 @@ button {
     margin-right: 10px;
     max-width: 400px;
 }
-
+.AdminUsersBtn {
+    height: 10px;
+}
+.ClientUserBox {
+    border: 1px solid rgb(109, 84, 84);
+    box-shadow: 0 2px 3px rgb(99, 83, 83);
+    padding: 10px;
+    margin-left: 25px;
+    margin-bottom: 10px;
+    margin-right: 10px;
+    max-width: 800px;
+}
 /* GROUP STYLES */
 .group-form .group-form-header {
     background: var(--primary-color);

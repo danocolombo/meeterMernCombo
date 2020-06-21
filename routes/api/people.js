@@ -6,7 +6,7 @@ const config = require('config');
 const { check, validationResult } = require('express-validator');
 const auth = require('../../middleware/auth');
 
-const Person = require('../../models/Person');
+const People = require('../../models/People');
 //==========================================
 //  _____   ____   _____ _______       __
 // |  __ \ / __ \ / ____|__   __|     / /
@@ -15,12 +15,13 @@ const Person = require('../../models/Person');
 // | |    | |__| |____) |  | |     / /
 // |_|     \____/|_____/   |_|    /_/
 //==========================================
-// @route    POST api/person
+// @route    POST api/people
 // @desc     Register person
 // @access   Public
 router.post(
     '/',
     [check('name', 'Name is required').not().isEmpty()],
+    [check('tenantId', 'Tenant code is required').not().isEmpty()],
     async (req, res) => {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
@@ -29,6 +30,7 @@ router.post(
 
         const {
             name,
+            tenantId,
             gender,
             email,
             phone,
@@ -41,7 +43,9 @@ router.post(
             notes,
         } = req.body;
         const personFields = {};
+        personFields.tenantId = 'people-' + tenantId;
         personFields.name = name;
+        personFields.tenantId = tenantId;
         if (email) {
             personFields.email = email;
         } else {
@@ -74,8 +78,8 @@ router.post(
             personFields.service = '';
         }
         try {
-            let person = await Person().findOneAndUpdate(
-                { name: name },
+            let person = await People.findOneAndUpdate(
+                { name: name, tenantId: tenantId },
                 { $set: personFields },
                 { new: true, upsert: true }
             );
@@ -94,17 +98,16 @@ router.post(
 // | |__| | |____   | |     / /
 //  \_____|______|  |_|    /_/
 //===============================================
-// @route   GET api/person/
+// @route   GET api/people/
 router.get('/', async (req, res) => {
+    console.log('get all');
     try {
         //this is going to return the persons that are
         // not defined with system
-        const persons = await Person()
-            .find({ system: { $ne: true } })
-            .sort({
-                name: 1,
-            });
-        res.json(persons);
+        const people = await People.find({ system: { $ne: true } }).sort({
+            name: 1,
+        });
+        res.json(people);
     } catch (err) {
         console.error(err.message);
         res.status(500).send('Server Error');
@@ -123,16 +126,11 @@ router.get('/servants', async (req, res) => {
     try {
         //this is going to return the persons that are
         // not defined with system
-        const persons = await Person()
-            .find({
-                $and: [
-                    { system: { $ne: true } },
-                    { service: { $exists: true } },
-                ],
-            })
-            .sort({
-                name: 1,
-            });
+        const persons = await Person.find({
+            $and: [{ system: { $ne: true } }, { service: { $exists: true } }],
+        }).sort({
+            name: 1,
+        });
         res.json(persons);
     } catch (err) {
         console.error(err.message);
@@ -148,13 +146,39 @@ router.get('/servants', async (req, res) => {
 //  \_____|______|  |_|    /_/ \__,_|_|_|
 //===============================================
 
-// @route    GET api/person/all
-// @desc     Get all persons
+// @route    GET api/people/all
+// @desc     Get all people
 // @access   Public
 router.get('/all', async (req, res) => {
     try {
-        const persons = await Person().find().sort({ name: 1 });
-        res.json(persons);
+        const people = await People.find().sort({ name: 1 });
+        res.json(people);
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Server Error');
+    }
+});
+//===============================================
+//   _____ ______ _______       __   _ _
+//  / ____|  ____|__   __|     / /  | | |
+// | |  __| |__     | |       / /_ _| | |
+// | | |_ |  __|    | |      / / _` | | |
+// | |__| | |____   | |     / / (_| | | | by CID
+//  \_____|______|  |_|    /_/ \__,_|_|_|
+//===============================================
+
+// @route    GET api/people/client/cid
+// @desc     Get all people for a client (cid)
+// @access   Public
+router.get('/client/:cid', async (req, res) => {
+    // need to create the tenant value
+    let client = 'people-' + req.params.cid;
+    console.log('client: ' + client);
+    try {
+        const people = await People.find({
+            tenantId: client,
+        }).sort({ name: 1 });
+        res.json(people);
     } catch (err) {
         console.error(err.message);
         res.status(500).send('Server Error');
@@ -169,19 +193,19 @@ router.get('/all', async (req, res) => {
 //  \_____|______|  |_|    /_/  (_)_|\__,_|
 //====================================================================
 // new inline getMeeting....
-// @route    GET api/person/:id
+// @route    GET api/people/:id
 // @desc     Get meeting by ID
 // @access   Private
 router.get('/:id', auth, async (req, res) => {
     try {
-        const person = await Person().findById(req.params.id);
+        const people = await People.findById(req.params.id);
 
         // Check for ObjectId format and post
-        if (!req.params.id.match(/^[0-9a-fA-F]{24}$/) || !person) {
+        if (!req.params.id.match(/^[0-9a-fA-F]{24}$/) || !people) {
             return res.status(404).json({ msg: 'Person not found' });
         }
 
-        res.json(person);
+        res.json(people);
     } catch (err) {
         console.error(err.message);
 
@@ -201,7 +225,7 @@ router.get('/:id', auth, async (req, res) => {
 // @access   Private
 router.delete('/:id', auth, async (req, res) => {
     try {
-        await Person().findOneAndRemove({ _id: req.params.id });
+        await People.findOneAndRemove({ _id: req.params.id });
         return res.status(200).json({ msg: 'person removed' });
     } catch (error) {
         console.error(error);

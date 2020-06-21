@@ -35,6 +35,18 @@ router.get('/group/:gid', auth, async (req, res) => {
         res.status(500).send('Server Error');
     }
 });
+// @route    GET api/groups/group/:gid
+// @desc     Get group for group id
+// @access   Private
+router.get('/:gid', auth, async (req, res) => {
+    try {
+        const groups = await Groups.findById(req.params.gid);
+        res.jsonp(groups);
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Server Error');
+    }
+});
 
 //=========================================
 //  @route  POST api/groups
@@ -67,7 +79,7 @@ router.post(
             notes,
         } = req.body;
         // if (req.params.gid) console.log('gid:' + req.params.gid);
-        console.table(req.body);
+
         const groupFields = {};
         //first two are required, no need to check.
         groupFields.mid = meetingId;
@@ -107,7 +119,6 @@ router.post(
                 //     res.status(400).send('Group not found');
                 // }
             } else {
-                console.log('gotta add this one.');
                 let nGroup = await Groups.findOneAndUpdate(
                     {
                         mid: groupFields.mid,
@@ -126,32 +137,6 @@ router.post(
         // }
     }
 );
-
-// router.post('/groupA/:gid', auth, async (req, res) => {
-//     try {
-//         const {
-//             gid,
-//             mid,
-//             title,
-//             attendance,
-//             gender,
-//             location,
-//             facilitator,
-//             cofacilitator,
-//             notes
-//         } = req.body;
-//         // console.log('gid:' + req.params.gid);
-//         // console.table(req.body);
-//         // const groups = await Groups.findById(req.params.gid);
-//         let group = await Groups.findOne({ _id: req.params.gid });
-//         console.table(group);
-//         res.json(group);
-//     } catch (err) {
-//         console.error(err.message);
-
-//         res.status(500).send('Server Error');
-//     }
-// });
 
 // @route    POST api/groups/group
 // @desc     Create or update a group
@@ -180,8 +165,6 @@ router.post(
             cofacilitator,
             notes,
         } = req.body;
-        // if (req.params.gid) console.log('gid:' + req.params.gid);
-        console.table(req.body);
         const groupFields = {};
         //first two are required, no need to check.
         groupFields.mid = mid;
@@ -189,7 +172,6 @@ router.post(
         //=====================================
         // if it is group update, they will provide
         // a group id
-        //if (req.params.gid) groupFields.gid = req.params.gid;
         if (attendance) {
             groupFields.attendance = attendance;
         } else {
@@ -221,7 +203,6 @@ router.post(
                     res.status(400).send('Group not found');
                 }
             } else {
-                console.log('gotta add this one.');
                 let nGroup = await Groups.findOneAndUpdate(
                     {
                         mid: groupFields.mid,
@@ -244,10 +225,15 @@ router.post(
 // @desc     Delete group by ID
 // @access   Private
 router.delete('/:gid', auth, async (req, res) => {
-    console.log('DELETING GROUP: ' + req.params.gid);
     try {
-        await Groups.findOneAndRemove({ _id: req.params.gid });
-        return res.status(200).json({ msg: 'group removed' });
+        const group = await Groups.findById(req.params.gid);
+        await group.remove();
+        res.json({ msg: 'Post removed' });
+
+        // await Groups.findOneAndRemove({ _id: req.params.gid });
+        // const feedback = 'Group removed (' + req.params.gid + ')';
+        // res.json({ msg: feedback });
+        // return res.status(200).json({ msg: 'group removed' });
     } catch (error) {
         console.error(error);
         return res.status(500).json({ msg: 'Server error' });

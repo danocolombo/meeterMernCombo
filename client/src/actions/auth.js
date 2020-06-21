@@ -11,9 +11,11 @@ import {
     CLEAR_PROFILE,
     CLEAR_GATHERINGS,
     CLEAR_HATHERINGS,
-    CLEAR_GROUP,
-    CLEAR_PEOPLE,
     CLEAR_SERVANTS,
+    CLEAR_PEOPLE,
+    CLEAR_USER_AUTH,
+    SET_USER_AUTH,
+    CLEAR_CLIENT_USERS,
 } from './types';
 import setAuthToken from '../utils/setAuthToken';
 
@@ -22,12 +24,37 @@ export const loadUser = () => async (dispatch) => {
     if (localStorage.token) {
         setAuthToken(localStorage.token);
     }
-
     try {
         const res = await axios.get('/api/auth');
-
         dispatch({
             type: USER_LOADED,
+            payload: res.data,
+        });
+        dispatch(setUserAuth(res.data.defaultClient, res.data._id));
+    } catch (err) {
+        dispatch({
+            type: AUTH_ERROR,
+        });
+    }
+};
+
+// SET USER AUTH
+export const setUserAuth = (client, uid) => async (dispatch) => {
+    const config = {
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    };
+    const body = JSON.stringify({ client, uid });
+
+    try {
+        const res = await axios.put('/api/meeter/setUserAuth', body, config);
+        // res should now have activeClient, activeRole, and activeStatus
+        // console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@');
+        // console.log(' inside client::src::actions::auth::setUserAuth');
+
+        dispatch({
+            type: SET_USER_AUTH,
             payload: res.data,
         });
     } catch (err) {
@@ -46,12 +73,10 @@ export const register = ({ name, email, password, defaultClient }) => async (
             'Content-Type': 'application/json',
         },
     };
-
     const body = JSON.stringify({ name, email, password, defaultClient });
 
     try {
         const res = await axios.post('/api/users', body, config);
-
         dispatch({
             type: REGISTER_SUCCESS,
             payload: res.data,
@@ -83,31 +108,7 @@ export const login = (email, password) => async (dispatch) => {
 
     try {
         const res = await axios.post('/api/auth', body, config);
-        // if (res.defaultClient) {
-        //     //-------------------------------------------------
-        //     // now get the users role for the current client
-        //     //-------------------------------------------------
-        //     const clientPermissions = await axios.get(
-        //         `/api/client/code/${res.defaultClient}`
-        //     );
-        //     // if (clientPermissions) {
-        //     //     clientPermissions.users.map((privs) =>
-        //     //         console.log(
-        //     //             '---> ' +
-        //     //                 privs.user +
-        //     //                 ' : ' +
-        //     //                 privs.role +
-        //     //                 ' : ' +
-        //     //                 privs.status
-        //     //         )
-        //     //     );
-        //     // } else {
-        //     //     console.log('no privs');
-        //     // }
-        // }
-        // res.activeClient.upshift(res.defaultClient);
-        // console.table(res);
-        // console.log('that our res');
+
         dispatch({
             type: LOGIN_SUCCESS,
             payload: res.data,
@@ -133,5 +134,8 @@ export const logout = () => (dispatch) => {
     dispatch({ type: CLEAR_GATHERINGS });
     dispatch({ type: CLEAR_HATHERINGS });
     dispatch({ type: CLEAR_SERVANTS });
+    dispatch({ type: CLEAR_PEOPLE });
+    dispatch({ type: CLEAR_USER_AUTH });
+    dispatch({ type: CLEAR_CLIENT_USERS });
     dispatch({ type: LOGOUT });
 };

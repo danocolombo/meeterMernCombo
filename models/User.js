@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-// const { teanantModel } = require("../lib/multiTenant");
 const UserSchema = new mongoose.Schema({
     name: {
         type: String,
@@ -20,10 +19,6 @@ const UserSchema = new mongoose.Schema({
     defaultClient: {
         type: String,
     },
-    activeClient: {
-        type: String,
-        default: 'undefined',
-    },
     date: {
         type: Date,
         default: Date.now,
@@ -31,3 +26,7 @@ const UserSchema = new mongoose.Schema({
 });
 
 module.exports = User = mongoose.model('user', UserSchema);
+// activeClient: {
+//     type: String,
+//     default: 'WHY?',
+// },

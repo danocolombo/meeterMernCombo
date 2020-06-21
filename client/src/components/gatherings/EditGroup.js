@@ -9,9 +9,9 @@ import { Button } from '@material-ui/core';
 import { Input } from '@material-ui/core';
 import { RadioGroup } from '@material-ui/core';
 import { Radio } from '@material-ui/core';
-import { createGroup, getGroup, deleteGroup } from '../../actions/group';
+import { addGroup, getGroup, deleteGroup } from '../../actions/group';
 const initialState = {
-    _id: '',    
+    _id: '',
     title: '',
     mid: 0,
     gender: 'x',
@@ -23,33 +23,33 @@ const initialState = {
 };
 
 const EditGroup = ({
-    group: { group, loading, newGroup},
-    createGroup,
+    group: { group, loading, newGroup },
+    addGroup,
+    auth: { activeRole, activeStatus },
     getGroup,
     deleteGroup,
     match,
     history,
 }) => {
     const [formData, setFormData] = useState(initialState);
-        
+
     useEffect(() => {
-        if (!group && match.params.gid!=0) {
-            getGroup(match.params.gid);
+        if (!group) {
+            if (match.params.gid != 0) {
+                getGroup(match.params.gid);
+            }
         }
-        if(!loading){
-            const groupData = { ...initialState};
-            for (const key in group){
+        if (!loading) {
+            const groupData = { ...initialState };
+            for (const key in group) {
                 if (key in groupData) groupData[key] = group[key];
             }
             groupData['mid'] = match.params.mid;
             setFormData(groupData);
         }
-        if (match.params.gid > 0) setFormData({...formData, groupId: match.params.gid});
-        //setFormData({...formData, mid: match.params.mid});
-        // (group)?console.log('GROUP'):console.log('NO_GROUP');
-        // if(!group){setFormData({...formData,mid: match.params.mid});}
-        // console.table(formData);
-    }, [ loading, getGroup, group]);
+        if (match.params.gid > 0)
+            setFormData({ ...formData, groupId: match.params.gid });
+    }, [loading, getGroup, group]);
 
     const {
         _id,
@@ -63,13 +63,6 @@ const EditGroup = ({
         notes,
     } = formData;
 
-    // const getExistingGroup = (gid) => {
-    //     // console.log('getExistingGroup: gid:' + gid);
-    //     // const res = getGroup(gid);
-    //     // // console.log('the response back was...');
-    //     // // console.log('response:' + response.json);
-    //     // return res();
-    // };
     const handleGenderChange = (e) => {
         console.log('btnValue:' + e.target.value);
         setFormData({ ...formData, gender: e.target.value });
@@ -79,23 +72,15 @@ const EditGroup = ({
         setFormData({ ...formData, [event.target.name]: event.target.value });
     };
     const onChange = (e) => {
-        setFormData({ 
-            ...formData, 
-            [e.target.name]: e.target.value });
-
+        setFormData({
+            ...formData,
+            [e.target.name]: e.target.value,
+        });
     };
-        
+
     const onSubmit = (e) => {
         e.preventDefault();
-        
-        // setFormData({...formData, [mid]: match.params.mid});
-        // console.table(formData);
-        // console.log('mid: ' + match.params.mid);
-        // console.log('__BEFORE_ action::createGroup');
-        
-        // let edit = false;
-        // groupId != 0 ? (edit = true) : (edit = false);
-        createGroup(formData, history, true);
+        addGroup(formData, history, true);
         window.scrollTo(0, 0);
     };
     return (
@@ -105,13 +90,6 @@ const EditGroup = ({
                     <header className='grpHeader'>
                         <h2>Open Share Group</h2>
                     </header>
-                    {/* <div>
-                        <input
-                            type='hidden'
-                            name='meetingId'
-                            value={meetingId}
-                        />
-                    </div> */}
                     <div className='grpTitle'>
                         <TextField
                             id='title'
@@ -124,16 +102,12 @@ const EditGroup = ({
                         />
                     </div>
                     <div className='grpButtons'>
-                        {/* <Button
-                            variant='contained'
-                            color='primary'
-                            size='small'
-                            className='pl10 py-2'
-                        >
-                            Save
-                        </Button> */}
-                        <input type='submit' className='btn btn-primary my-1' />
-                        {'      '}
+                        {activeStatus == 'approved' && activeRole != 'guest' ? (
+                            <input
+                                type='submit'
+                                className='btn btn-primary my-1'
+                            />
+                        ) : null}
                         <Link
                             className='btn btn-light my-1'
                             to={`/editGathering/${match.params.mid}`}
@@ -245,29 +219,31 @@ const EditGroup = ({
         // return [<div>GROUP:{match.params.gid}</div>];
         return 'T';
     }
-    function giveRequestDetails() {
-        return [
-            <div>
-                BURP
-                {/* Meeting:{match.params.mid}
-                <br />
-                Group: {match.params.gid} */}
-            </div>,
-        ];
-    }
+    // function giveRequestDetails() {
+    //     return [
+    //         <div>
+    //             BURP
+    //             {/* Meeting:{match.params.mid}
+    //             <br />
+    //             Group: {match.params.gid} */}
+    //         </div>,
+    //     ];
+    // }
 };
 
 EditGroup.propTypes = {
     group: PropTypes.object.isRequired,
-    createGroup: PropTypes.func.isRequired,
+    auth: PropTypes.object.isRequired,
+    addGroup: PropTypes.func.isRequired,
     getGroup: PropTypes.func.isRequired,
     deleteGroup: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
     group: state.group,
+    auth: state.auth,
 });
 
-export default connect(mapStateToProps, { createGroup, getGroup, deleteGroup })(
+export default connect(mapStateToProps, { addGroup, getGroup, deleteGroup })(
     withRouter(EditGroup)
 );

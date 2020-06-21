@@ -12,7 +12,7 @@ const Register = ({ setAlert, register, isAuthenticated }) => {
         email: '',
         password: '',
         password2: '',
-        defaultClient: 'cpv',
+        defaultClient: '',
     });
 
     const { name, email, password, password2, defaultClient } = formData;
@@ -25,7 +25,21 @@ const Register = ({ setAlert, register, isAuthenticated }) => {
         if (password !== password2) {
             setAlert('Passwords do not match', 'danger');
         } else {
-            register({ name, email, password, defaultClient });
+            //now verify that client code is acceptable
+            switch (defaultClient) {
+                case 'wbc':
+                case 'cpv':
+                case 'ccc':
+                case 'vpc':
+                    register({ name, email, password, defaultClient });
+                    break;
+                default:
+                    setAlert(
+                        'Invalid client code, please get assistance',
+                        'danger'
+                    );
+                    break;
+            }
         }
     };
 
@@ -58,8 +72,7 @@ const Register = ({ setAlert, register, isAuthenticated }) => {
                         onChange={(e) => onChange(e)}
                     />
                     <small className='form-text'>
-                        This site uses Gravatar so if you want a profile image,
-                        use a Gravatar email
+                        Enter your email, this will also be your login value
                     </small>
                 </div>
                 <div className='form-group'>
@@ -89,7 +102,9 @@ const Register = ({ setAlert, register, isAuthenticated }) => {
                         value={defaultClient}
                         onChange={onChange}
                     />
-                    <small className='form-text'>Client Code</small>
+                    <small className='form-text'>
+                        Get specific code from manager or admin
+                    </small>
                 </div>
                 <input
                     type='submit'

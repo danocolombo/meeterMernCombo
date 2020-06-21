@@ -9,14 +9,26 @@ const Meeting = require('../../models/Meeting');
 const User = require('../../models/User');
 const Post = require('../../models/Post');
 
-//==========================================
-//  _____   ____   _____ _______       __
-// |  __ \ / __ \ / ____|__   __|     / /
-// | |__) | |  | | (___    | |       / /
-// |  ___/| |  | |\___ \   | |      / /
-// | |    | |__| |____) |  | |     / /
-// |_|     \____/|_____/   |_|    /_/
-//==========================================
+// // @route    GET api/profile/me
+// // @desc     Get current users profile
+// // @access   Private
+// router.get('/me', auth, async (req, res) => {
+//   try {
+//     const profile = await Profile.findOne({
+//       user: req.user.id
+//     }).populate('user', ['name', 'avatar']);
+
+//     if (!profile) {
+//       return res.status(400).json({ msg: 'There is no profile for this user' });
+//     }
+
+//     res.json(profile);
+//   } catch (err) {
+//     console.error(err.message);
+//     res.status(500).send('Server Error');
+//   }
+// });
+
 // @route    POST api/meeting
 // @desc     Create or update a meeting
 // @access   Private
@@ -42,6 +54,7 @@ router.post(
             meetingDate,
             facilitator,
             meetingType,
+            tenantId,
             title,
             supportRole,
             worship,
@@ -58,12 +71,12 @@ router.post(
             notes,
         } = req.body;
 
-        console.table(req.body);
         const meetingFields = {};
         //first two are required, no need to check.
         meetingFields.meetingDate = meetingDate;
         meetingFields.meetingType = meetingType;
         if (meetingId) meetingFields.meetingId = meetingId;
+        if (tenantId) meetingFields.tenantId = tenantId;
         if (facilitator) meetingFields.facilitator = facilitator;
         if (title) meetingFields.title = title;
         if (supportRole) {
@@ -118,12 +131,8 @@ router.post(
         }
         try {
             // Using upsert option (creates new doc if no match is found):
-            console.log('this is going to findOneAndUpdate');
-            console.table(meetingFields);
             if (meetingId) {
-                //try closing Meeting and recreating on the fly
-
-                let meeting = await Meeting().findOneAndUpdate(
+                let meeting = await Meeting.findOneAndUpdate(
                     { _id: meetingId },
                     { $set: meetingFields },
                     { new: true, upsert: true }
@@ -131,19 +140,13 @@ router.post(
                 res.json(meeting);
             } else {
                 // we are going to do insert...
-                let meeting2 = await Meeting().findOneAndUpdate(
+                let meeting2 = await Meeting.findOneAndUpdate(
                     { facilitator: 'aBrandNewEntry' },
                     { $set: meetingFields },
                     { new: true, upsert: true, returnNewDocument: true }
                 );
                 res.json(meeting2);
             }
-            // console.clear;
-            // console.log(meetingId);
-            // console.log(JSON.stringify(meetingFields));
-            // res.json(meeting2);
-            // console.log(JSON.stringify(meetingFields));
-            // res.json('there we are...');
         } catch (err) {
             console.error(err.message);
             res.status(500).send('Server Error');
@@ -151,39 +154,21 @@ router.post(
         // }
     }
 );
-//===============================================
-//   _____ ______ _______       __
-//  / ____|  ____|__   __|     / /
-// | |  __| |__     | |       / /
-// | | |_ |  __|    | |      / /
-// | |__| | |____   | |     / /
-//  \_____|______|  |_|    /_/
-//===============================================
 
 // @route    GET api/meeting
 // @desc     Get all meetings
 // @access   Public
 router.get('/', async (req, res) => {
     try {
-        const meetings = await Meeting()
-            .find()
+        const meetings = await Meeting.find()
             .sort({ meetingDate: 1 })
-            .populate('people', ['name']);
+            .populate('humans', ['name']);
         res.json(meetings);
     } catch (err) {
         console.error(err.message);
         res.status(500).send('Server Error');
     }
 });
-//================================================================
-//   _____ ______ _______       ____       _
-//  / ____|  ____|__   __|     / / _|     | |
-// | |  __| |__     | |       / / |_ _   _| |_ _   _ _ __ ___
-// | | |_ |  __|    | |      / /|  _| | | | __| | | | '__/ _ \
-// | |__| | |____   | |     / / | | | |_| | |_| |_| | | |  __/
-// \_____|______|  |_|    /_/  |_|  \__,_|\__|\__,_|_|  \___|
-//================================================================
-
 // @route    GET api/meeting/future
 // @desc     Get all meetings today and future
 // @access   Public
@@ -191,59 +176,113 @@ router.get('/future', async (req, res) => {
     try {
         var tDay = new Date();
         console.log('tDay:' + tDay);
-        const meetings = await Meeting()
-            .find({
-                meetingDate: { $gte: tDay },
-            })
-            .sort({ meetingDate: 0 });
+        const meetings = await Meeting.find({
+            meetingDate: { $gte: tDay },
+        }).sort({ meetingDate: 0 });
         res.json(meetings);
     } catch (err) {
         console.error(err.message);
         res.status(500).send('Server Error');
     }
 });
-//================================================================
-//   _____ ______ _______       ___     _     _
-//  / ____|  ____|__   __|     / / |   (_)   | |
-// | |  __| |__     | |       / /| |__  _ ___| |_ ___  _ __ _   _
-// | | |_ |  __|    | |      / / | '_ \| / __| __/ _ \| '__| | | |
-// | |__| | |____   | |     / /  | | | | \__ \ || (_) | |  | |_| |
-//  \_____|______|  |_|    /_/   |_| |_|_|___/\__\___/|_|   \__, |
-//                                                           __/ |
-//                                                          |___/
-//================================================================
+// @route    GET api/meeting/future
+// @desc     Get all meetings today and future
+// @access   Public
+router.get('/future/:cid', async (req, res) => {
+    try {
+        // need to create the tenant value
+        let client = 'meeting-' + req.params.cid;
+
+        // need to create special date for today starting at T00:00:00.000Z
+        let tDate = new Date();
+        let numMonth = tDate.getMonth() + 1;
+        let tmpMonth = numMonth.toString();
+        let tmpDay = tDate.getDate().toString();
+        let tMonth = '';
+        let tDay = '';
+        if (tmpMonth.length < 2) {
+            tMonth = '0' + tmpMonth;
+        } else {
+            tMonth = tmpMonth;
+        }
+        if (tmpDay.length < 2) {
+            tDay = '0' + tmpDay;
+        } else {
+            tDay = tmpDay;
+        }
+        let tYear = tDate.getFullYear();
+        let target = tYear + '-' + tMonth + '-' + tDay + 'T00:00:00.000Z';
+
+        const meetings = await Meeting.find({
+            meetingDate: { $gte: target },
+            tenantId: client,
+        }).sort({ meetingDate: 0 });
+        res.json(meetings);
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Server Error');
+    }
+});
 // @route    GET api/meeting/history
 // @desc     Get all meetings today and future
 // @access   Public
 router.get('/history', async (req, res) => {
     try {
         var tDay = new Date();
-        const meetings = await Meeting()
-            .find({
-                meetingDate: { $lt: tDay },
-            })
-            .sort({ meetingDate: -1 });
+        const meetings = await Meeting.find({
+            meetingDate: { $lt: tDay },
+        }).sort({ meetingDate: -1 });
         res.json(meetings);
     } catch (err) {
         console.error(err.message);
         res.status(500).send('Server Error');
     }
 });
-//====================================================================
-//   _____ ______ _______       __ _     _
-//  / ____|  ____|__   __|     / /(_)   | |
-// | |  __| |__     | |       / (_)_  __| |
-// | | |_ |  __|    | |      / /  | |/ _` |
-// | |__| | |____   | |     / /  _| | (_| |
-//  \_____|______|  |_|    /_/  (_)_|\__,_|
-//====================================================================
+// @route    GET api/meeting/history
+// @desc     Get all meetings today and future
+// @access   Public
+router.get('/history/:cid', async (req, res) => {
+    try {
+        // console.log('/history/:cid');
+        let client = 'meeting-' + req.params.cid;
+
+        // need to create special date for today starting at T00:00:00.000Z
+        let tDate = new Date();
+        let numMonth = tDate.getMonth() + 1;
+        let tmpMonth = numMonth.toString();
+        let tmpDay = tDate.getDate().toString();
+        let tMonth = '';
+        let tDay = '';
+        if (tmpMonth.length < 2) {
+            tMonth = '0' + tmpMonth;
+        } else {
+            tMonth = tmpMonth;
+        }
+        if (tmpDay.length < 2) {
+            tDay = '0' + tmpDay;
+        } else {
+            tDay = tmpDay;
+        }
+        let tYear = tDate.getFullYear();
+        let target = tYear + '-' + tMonth + '-' + tDay + 'T00:00:00.000Z';
+
+        const meetings = await Meeting.find({
+            meetingDate: { $lt: target },
+            tenantId: client,
+        }).sort({ meetingDate: -1 });
+        res.json(meetings);
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Server Error');
+    }
+});
 // new inline getMeeting....
 // @route    GET api/meeting/:id
 // @desc     Get meeting by ID
 // @access   Private
 router.get('/:id', auth, async (req, res) => {
     try {
-        const meeting = await Meeting().findById(req.params.id);
+        const meeting = await Meeting.findById(req.params.id);
 
         // Check for ObjectId format and post
         if (!req.params.id.match(/^[0-9a-fA-F]{24}$/) || !meeting) {
@@ -257,21 +296,34 @@ router.get('/:id', auth, async (req, res) => {
         res.status(500).send('Server Error');
     }
 });
-//====================================================================
-//  _____  ______ _      ______ _______ ______       __ _     _
-// |  __ \|  ____| |    |  ____|__   __|  ____|     / /(_)   | |
-// | |  | | |__  | |    | |__     | |  | |__       / (_)_  __| |
-// | |  | |  __| | |    |  __|    | |  |  __|     / /  | |/ _` |
-// | |__| | |____| |____| |____   | |  | |____   / /  _| | (_| |
-// |_____/|______|______|______|  |_|  |______| /_/  (_)_|\__,_|
-//====================================================================
-// @route    DELETE api/profile
-// @desc     Delete profile, user & posts
+
+// @route    GET api/meeting/:meetingId
+// @desc     Get profile by user ID
+// @access   Public
+// router.get('/:meetingId', async (req, res) => {
+//   try {
+//     const meeting = await Meeting.findOne({
+//       _id: req.params.meetingId
+
+//     if (!meeting) return res.status(400).json({ msg: 'Meeting not found' });
+
+//     res.json(meeting);
+//   } catch (err) {
+//     console.error(err.message);
+//     if (err.kind == 'ObjectId') {
+//       return res.status(400).json({ msg: 'Profile not found' });
+//     }
+//     res.status(500).send('Server Error');
+//   }
+// });
+
+// @route    DELETE api/meeting
+// @desc     Delete meeting
 // @access   Private
 router.delete('/:id', auth, async (req, res) => {
     try {
         // Remove profile
-        await Meeting().findOneAndRemove({ _id: req.params.id });
+        await Meeting.findOneAndRemove({ _id: req.params.id });
         const feedback = 'Meeting deleted (' + req.params.id + ')';
         res.json({ msg: feedback });
     } catch (err) {
@@ -280,15 +332,6 @@ router.delete('/:id', auth, async (req, res) => {
     }
 });
 
-//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-//  __    _  _______  _______    __   __  _______  _______  ______
-// |  |  | ||       ||       |  |  | |  ||       ||       ||      |
-// |   |_| ||   _   ||_     _|  |  | |  ||  _____||    ___||  _    |
-// |       ||  | |  |  |   |    |  |_|  || |_____ |   |___ | | |   |
-// |  _    ||  |_|  |  |   |    |       ||_____  ||    ___|| |_|   |
-// | | |   ||       |  |   |    |       | _____| ||   |___ |       |
-// |_|  |__||_______|  |___|    |_______||_______||_______||______|
-//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 // @route    PUT api/profile/experience
 // @desc     Add profile experience
 // @access   Private
@@ -342,15 +385,7 @@ router.put(
         }
     }
 );
-//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-//  __    _  _______  _______    __   __  _______  _______  ______
-// |  |  | ||       ||       |  |  | |  ||       ||       ||      |
-// |   |_| ||   _   ||_     _|  |  | |  ||  _____||    ___||  _    |
-// |       ||  | |  |  |   |    |  |_|  || |_____ |   |___ | | |   |
-// |  _    ||  |_|  |  |   |    |       ||_____  ||    ___|| |_|   |
-// | | |   ||       |  |   |    |       | _____| ||   |___ |       |
-// |_|  |__||_______|  |___|    |_______||_______||_______||______|
-//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
 // @route    DELETE api/profile/experience/:exp_id
 // @desc     Delete experience from profile
 // @access   Private
@@ -373,15 +408,7 @@ router.put(
 //     res.status(500).send('Server Error');
 //   }
 // });
-//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-//  __    _  _______  _______    __   __  _______  _______  ______
-// |  |  | ||       ||       |  |  | |  ||       ||       ||      |
-// |   |_| ||   _   ||_     _|  |  | |  ||  _____||    ___||  _    |
-// |       ||  | |  |  |   |    |  |_|  || |_____ |   |___ | | |   |
-// |  _    ||  |_|  |  |   |    |       ||_____  ||    ___|| |_|   |
-// | | |   ||       |  |   |    |       | _____| ||   |___ |       |
-// |_|  |__||_______|  |___|    |_______||_______||_______||______|
-//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
 router.delete('/experience/:exp_id', auth, async (req, res) => {
     try {
         //const foundProfile = await Profile.findOneAndUpdate( { user: req.user.id },
@@ -402,15 +429,7 @@ router.delete('/experience/:exp_id', auth, async (req, res) => {
         return res.status(500).json({ msg: 'Server error' });
     }
 });
-//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-//  __    _  _______  _______    __   __  _______  _______  ______
-// |  |  | ||       ||       |  |  | |  ||       ||       ||      |
-// |   |_| ||   _   ||_     _|  |  | |  ||  _____||    ___||  _    |
-// |       ||  | |  |  |   |    |  |_|  || |_____ |   |___ | | |   |
-// |  _    ||  |_|  |  |   |    |       ||_____  ||    ___|| |_|   |
-// | | |   ||       |  |   |    |       | _____| ||   |___ |       |
-// |_|  |__||_______|  |___|    |_______||_______||_______||______|
-//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
 // @route    PUT api/meeting/group
 // @desc     Add meeting group
 // @access   Private
@@ -450,7 +469,7 @@ router.put(
         };
 
         try {
-            const meeting = await Meeting().findOne({ _id: req.meetingId });
+            const meeting = await Meeting.findOne({ _id: req.meetingId });
 
             meeting.groups.unshift(newGroup);
 
@@ -464,15 +483,7 @@ router.put(
     }
 );
 // end PUT Group
-//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-//  __    _  _______  _______    __   __  _______  _______  ______
-// |  |  | ||       ||       |  |  | |  ||       ||       ||      |
-// |   |_| ||   _   ||_     _|  |  | |  ||  _____||    ___||  _    |
-// |       ||  | |  |  |   |    |  |_|  || |_____ |   |___ | | |   |
-// |  _    ||  |_|  |  |   |    |       ||_____  ||    ___|| |_|   |
-// | | |   ||       |  |   |    |       | _____| ||   |___ |       |
-// |_|  |__||_______|  |___|    |_______||_______||_______||______|
-//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
 // @route    PUT api/profile/education
 // @desc     Add profile education
 // @access   Private
@@ -527,15 +538,7 @@ router.put(
         }
     }
 );
-//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-//  __    _  _______  _______    __   __  _______  _______  ______
-// |  |  | ||       ||       |  |  | |  ||       ||       ||      |
-// |   |_| ||   _   ||_     _|  |  | |  ||  _____||    ___||  _    |
-// |       ||  | |  |  |   |    |  |_|  || |_____ |   |___ | | |   |
-// |  _    ||  |_|  |  |   |    |       ||_____  ||    ___|| |_|   |
-// | | |   ||       |  |   |    |       | _____| ||   |___ |       |
-// |_|  |__||_______|  |___|    |_______||_______||_______||______|
-//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
 // @route    DELETE api/profile/education/:edu_id
 // @desc     Delete education from profile
 // @access   Private
@@ -559,15 +562,7 @@ router.put(
   }
 });
 */
-//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-//  __    _  _______  _______    __   __  _______  _______  ______
-// |  |  | ||       ||       |  |  | |  ||       ||       ||      |
-// |   |_| ||   _   ||_     _|  |  | |  ||  _____||    ___||  _    |
-// |       ||  | |  |  |   |    |  |_|  || |_____ |   |___ | | |   |
-// |  _    ||  |_|  |  |   |    |       ||_____  ||    ___|| |_|   |
-// | | |   ||       |  |   |    |       | _____| ||   |___ |       |
-// |_|  |__||_______|  |___|    |_______||_______||_______||______|
-//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
 router.delete('/education/:edu_id', auth, async (req, res) => {
     try {
         const foundProfile = await Profile.findOne({ user: req.user.id });
@@ -594,15 +589,6 @@ router.delete('/education/:edu_id', auth, async (req, res) => {
         return res.status(500).json({ msg: 'Server error' });
     }
 });
-//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-//  __    _  _______  _______    __   __  _______  _______  ______
-// |  |  | ||       ||       |  |  | |  ||       ||       ||      |
-// |   |_| ||   _   ||_     _|  |  | |  ||  _____||    ___||  _    |
-// |       ||  | |  |  |   |    |  |_|  || |_____ |   |___ | | |   |
-// |  _    ||  |_|  |  |   |    |       ||_____  ||    ___|| |_|   |
-// | | |   ||       |  |   |    |       | _____| ||   |___ |       |
-// |_|  |__||_______|  |___|    |_______||_______||_______||______|
-//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 // @route    GET api/profile/github/:username
 // @desc     Get user repos from Github
 // @access   Public
@@ -634,15 +620,6 @@ router.get('/github/:username', (req, res) => {
         res.status(500).send('Server Error');
     }
 });
-//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-//  __    _  _______  _______    __   __  _______  _______  ______
-// |  |  | ||       ||       |  |  | |  ||       ||       ||      |
-// |   |_| ||   _   ||_     _|  |  | |  ||  _____||    ___||  _    |
-// |       ||  | |  |  |   |    |  |_|  || |_____ |   |___ | | |   |
-// |  _    ||  |_|  |  |   |    |       ||_____  ||    ___|| |_|   |
-// | | |   ||       |  |   |    |       | _____| ||   |___ |       |
-// |_|  |__||_______|  |___|    |_______||_______||_______||______|
-//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 // @route    PUT api/meeting/groups
 // @desc     Get groups for a meeting
 // @access   Private

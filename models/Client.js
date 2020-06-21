@@ -24,6 +24,22 @@ const ClientSchema = new mongoose.Schema({
             },
         },
     ],
+    defaultGroups: [
+        {
+            gender: {
+                type: String,
+            },
+            title: {
+                type: String,
+            },
+            location: {
+                type: String,
+            },
+            facilitator: {
+                type: String,
+            },
+        },
+    ],
     date: {
         type: Date,
         default: Date.now,

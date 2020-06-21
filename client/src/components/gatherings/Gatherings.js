@@ -10,13 +10,24 @@ import { getGatherings } from '../../actions/gathering';
 const Gatherings = ({
     getGatherings,
     gathering: { gatherings, hatherings, loading },
+    auth: { activeClient, activeRole, activeStatus },
     match,
-    historyView
+    historyView,
 }) => {
     useEffect(() => {
-        // console.log('SKylar: ' + match.params.options);
-
-        getGatherings();
+        if (activeClient) {
+            checkActives();
+            console.log(
+                'actives: ' +
+                    activeClient +
+                    ' ' +
+                    activeRole +
+                    ' ' +
+                    activeStatus
+            );
+            getGatherings({ activeClient });
+        }
+        // getGatherings();
     }, [getGatherings]);
     return loading ? (
         <Spinner />
@@ -36,15 +47,25 @@ const Gatherings = ({
     function throwList() {
         if (match.params.options === 'historyView') {
             return [
-                hatherings.map(hathering => (
-                    <GatheringItem key={hathering._id} gathering={hathering} />
-                ))
+                hatherings.map((hathering) => (
+                    <GatheringItem
+                        key={hathering._id}
+                        gathering={hathering}
+                        activeRole={activeRole}
+                        activeStatus={activeStatus}
+                    />
+                )),
             ];
         } else {
             return [
-                gatherings.map(gathering => (
-                    <GatheringItem key={gathering._id} gathering={gathering} />
-                ))
+                gatherings.map((gathering) => (
+                    <GatheringItem
+                        key={gathering._id}
+                        gathering={gathering}
+                        activeRole={activeRole}
+                        activeStatus={activeStatus}
+                    />
+                )),
             ];
         }
     }
@@ -56,38 +77,53 @@ const Gatherings = ({
                         Active Meetings
                     </span>
                 </Link>,
-                <p className='lead'>Your historical list of meetings...</p>
+                <p className='lead'>Your historical list of meetings...</p>,
             ];
         } else {
-            return [
-                <Link to='/gatherings/historyView'>HISTORY</Link>,
-                <p className='lead'>List of upcoming meetings...</p>,
-                <Link to='/EditGathering/0'>
-                    <a class='waves-effect waves-light btn'>
-                        <i class='material-icons left green'>
-                            add_circle_outline
-                        </i>
-                        <span className='meeterNavTextHighlight'>
-                            {'  '}NEW
-                        </span>
-                    </a>
-                </Link>
-            ];
+            if (activeStatus == 'approved' && activeRole != 'guest') {
+                return [
+                    <Link to='/gatherings/historyView'>HISTORY</Link>,
+                    <p className='lead'>List of upcoming meetings...</p>,
+                    <div>
+                        <Link to='/EditGathering/0' visible='false'>
+                            <a class='waves-effect waves-light btn'>
+                                <i class='material-icons left green'>
+                                    add_circle_outline
+                                </i>
+                                <span className='meeterNavTextHighlight'>
+                                    {' '}
+                                    NEW
+                                </span>
+                            </a>
+                        </Link>
+                    </div>,
+                ];
+            } else {
+                return [
+                    <Link to='/gatherings/historyView'>HISTORY</Link>,
+                    <p className='lead'>List of upcoming meetings...</p>,
+                ];
+            }
         }
         return null;
+    }
+    function checkActives() {
+        console.log('CHECK-CHECK-CHECK');
     }
 };
 
 Gatherings.defaultProps = {
-    historyView: false
+    historyView: false,
 };
 Gatherings.propTypes = {
     getGatherings: PropTypes.func.isRequired,
-    gathering: PropTypes.object.isRequired
+    gathering: PropTypes.object.isRequired,
+    auth: PropTypes.object.isRequired,
     // hathering: PropTypes.object.isRequired
 };
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
     gathering: state.gathering,
-    hathering: state.hathering
+    hathering: state.hathering,
+    auth: state.auth,
 });
 export default connect(mapStateToProps, { getGatherings })(Gatherings);

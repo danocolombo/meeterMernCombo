@@ -2,7 +2,7 @@ import React, { Fragment } from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { deletePerson } from '../../actions/person';
+import { deletePerson } from '../../actions/people';
 
 const PersonItem = ({ deletePerson, person: { _id, name, email, phone } }) => (
     <div className='PersonBox'>
@@ -44,7 +44,7 @@ const PersonItem = ({ deletePerson, person: { _id, name, email, phone } }) => (
 
 PersonItem.propTypes = {
     person: PropTypes.object.isRequired,
-    deletePerson: PropTypes.func.isRequired
+    deletePerson: PropTypes.func.isRequired,
 };
 
 export default connect(null, { deletePerson })(PersonItem);

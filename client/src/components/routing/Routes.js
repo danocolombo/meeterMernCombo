@@ -10,9 +10,12 @@ import AddExperience from '../profile-forms/AddExperience';
 import AddEducation from '../profile-forms/AddEducation';
 import Profiles from '../profiles/Profiles';
 import Profile from '../profile/Profile';
+import UserProfile from '../profile/UserProfile';
 import Posts from '../posts/Posts';
 import Post from '../post/Post';
 import People from '../people/People';
+import Admin from '../admin/Admin';
+import Security from '../admin/DisplaySecurity';
 // import Gathering from '../gatherings/Gathering';
 import Gatherings from '../gatherings/Gatherings';
 import EditGathering from '../gatherings/EditGathering';
@@ -89,6 +92,17 @@ const Routes = () => {
                     path='/EditPerson/:id'
                     component={EditPerson}
                 />
+                <PrivateRoute
+                    exact
+                    path='/UserProfile'
+                    component={UserProfile}
+                />
+                <PrivateRoute
+                    exact
+                    path='/DisplaySecurity'
+                    component={Security}
+                />
+                <PrivateRoute exact path='/admin' component={Admin} />
                 <Route component={NotFound} />
             </Switch>
         </section>

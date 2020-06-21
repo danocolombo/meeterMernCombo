@@ -45,7 +45,7 @@ function showFuture(meetings) {
     let gotIt = false;
     let theNext = (
         <ul>
-            <li>yep</li>
+            <li>There are no meetings planned in the system.</li>
         </ul>
     );
 
@@ -54,34 +54,103 @@ function showFuture(meetings) {
         // there are future gatherings in store
         //=======================================
         console.log('meeting[0].meetingDate:' + meetings[0].meetingDate);
+        console.log('we are in NextGatherings :: showFuture(meetings)');
         let mCnt = meetings.length;
         for (let index = 0; index < mCnt; index++) {
             // const element = array[index];
             console.log(
                 index +
                     ' - ' +
-                    meetings[index].meetingDate +
+                    returnSmallDate(meetings[index].meetingDate) +
                     meetings[index].meetingType
             );
             if (meetings[index].meetingType === 'Lesson') {
-                mDate = meetings[index].meetingDate;
+                mDate = returnSmallDate(meetings[index].meetingDate);
                 mTitle = 'Lesson:' + meetings[index].title;
                 mPeep = meetings[index].supportRole;
                 mCnt = index;
                 theNext = (
                     <div>
-                        {mDate} {mTitle} {mPeep}{' '}
+                        <table>
+                            <tr>
+                                <td className='.p-3'>{mDate}</td>
+                                <td>&nbsp;&nbsp;</td>
+                                <td>{mTitle}</td>
+                                <td>{mPeep}</td>
+                            </tr>
+                        </table>
                     </div>
                 );
             }
             if (meetings[index].meetingType === 'Testimony') {
-                mDate = meetings[index].meetingDate;
+                mDate = returnSmallDate(meetings[index].meetingDate);
                 mTitle = meetings[index].meetingType;
                 mPeep = meetings[index].title;
                 mCnt = index;
                 theNext = (
                     <div>
-                        {mDate} {mTitle} {mPeep}{' '}
+                        <table>
+                            <tr>
+                                <td className='.p-3'>{mDate}</td>
+                                <td>&nbsp;&nbsp;</td>
+                                <td>{mTitle}</td>
+                                <td>{mPeep}</td>
+                            </tr>
+                        </table>
+                    </div>
+                );
+            }
+            if (meetings[index].meetingType === 'Special') {
+                mDate = returnSmallDate(meetings[index].meetingDate);
+                mTitle = 'Special:' + meetings[index].title;
+                mPeep = meetings[index].supportRole;
+                mCnt = index;
+                theNext = (
+                    <div>
+                        <table>
+                            <tr>
+                                <td className='.p-3'>{mDate}</td>
+                                <td>&nbsp;&nbsp;</td>
+                                <td>{mTitle}</td>
+                                <td>{mPeep}</td>
+                            </tr>
+                        </table>
+                    </div>
+                );
+            }
+            if (meetings[index].meetingType === 'Other') {
+                mDate = returnSmallDate(meetings[index].meetingDate);
+                mTitle = 'Other:' + meetings[index].title;
+                mPeep = meetings[index].supportRole;
+                mCnt = index;
+                theNext = (
+                    <div>
+                        <table>
+                            <tr>
+                                <td className='.p-3'>{mDate}</td>
+                                <td>&nbsp;&nbsp;</td>
+                                <td>{mTitle}</td>
+                                <td>{mPeep}</td>
+                            </tr>
+                        </table>
+                    </div>
+                );
+            }
+            if (meetings[index].meetingType === 'Training') {
+                mDate = meetings[index].meetingDate;
+                mTitle = 'Training:' + meetings[index].title;
+                mPeep = meetings[index].supportRole;
+                mCnt = index;
+                theNext = (
+                    <div>
+                        <table>
+                            <tr>
+                                <td className='.p-3'>{mDate}</td>
+                                <td>&nbsp;&nbsp;</td>
+                                <td>{mTitle}</td>
+                                <td>{mPeep}</td>
+                            </tr>
+                        </table>
                     </div>
                 );
             }
@@ -93,8 +162,12 @@ function showFuture(meetings) {
         }
         // we have the next testimony/lesson defined (if available)
         return [<>{theNext}</>];
-    } else {
-        return [<h4>We have no future</h4>];
+    }
+    function returnSmallDate(d) {
+        // this strips the junk and returns just the month/day/year
+        // from this: 2020-06-16T00:00:00.000Z
+        // to this: 2020-06-16
+        return d.substr(0, 10);
     }
 }
 function showDate(d) {
