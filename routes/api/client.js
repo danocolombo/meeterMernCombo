@@ -488,4 +488,47 @@ router.get('/meetingConfigs/:code', auth, async (req, res) => {
         res.status(500).send('Server Error');
     }
 });
+// @route    PUT api/client/user
+// @desc     Add or Update default group setting
+// @access   Private
+router.put(
+    '/meetingConfigs/toggle/:code',
+    auth,
+    [
+        check('config', 'Config value is required').not().isEmpty(),
+    ],
+    async (req, res) => {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            //if we got errors
+            return res.status(400).json({ errors: errors.array() });
+        }
+        // destructure req
+        const { config } = req.body;
+        
+        try {
+            //first thing, find the client entry, then check for config
+            const clientEntry = await Client.findOne({code: req.params.code});
+            let configResponse = [];
+            if(config in clientEntry.meetingConfig){
+                //configResponse.push({msg: config+': true'})
+                //config exists, remove it
+                let configTarget = 'meetingConfig.' + config;
+                console.log('configTarget: ' + configTarget);
+                configResponse =  await Client.update({code: req.params.code},
+                    {$uset: [config]});
+
+            }else{
+                configResponse.push({msg: config+': false'})
+                //config does not exist, add it.
+            }
+            
+
+            res.json(configResponse);
+        } catch (err) {
+            console.error('admin [put:meetingConfigs/toggle error.]: ' + err.message);
+            res.status(500).send('Server Error');
+        }
+    }
+);
 module.exports = router;
