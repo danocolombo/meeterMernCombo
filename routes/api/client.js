@@ -471,17 +471,8 @@ router.get('/meetingConfigs/:code', auth, async (req, res) => {
         if (!client) {
             return res
                 .status(400)
-                .json({ msg: 'No user info for client request' });
+                .json({ msg: 'No config info for client request' });
         }
-        console.log('meetingConfig #: ' + client.meetingConfig);
-
-        // let configs = [];
-        // client.meetingConfig.forEach((c) => {
-        //     configs.push({
-        //         config: c.keyword,
-        //         value: c.value,
-        //     });
-        // });
         res.json(client.meetingConfig);
     } catch (err) {
         console.error(err.message);
@@ -494,9 +485,7 @@ router.get('/meetingConfigs/:code', auth, async (req, res) => {
 router.put(
     '/meetingConfigs/toggle/:code',
     auth,
-    [
-        check('config', 'Config value is required').not().isEmpty(),
-    ],
+    [check('config', 'Config value is required').not().isEmpty()],
     async (req, res) => {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
@@ -505,28 +494,63 @@ router.put(
         }
         // destructure req
         const { config } = req.body;
-        
+        let configResponse = [];
         try {
             //first thing, find the client entry, then check for config
-            const clientEntry = await Client.findOne({code: req.params.code});
-            let configResponse = [];
-            if(config in clientEntry.meetingConfig){
-                //configResponse.push({msg: config+': true'})
-                //config exists, remove it
-                let configTarget = 'meetingConfig.' + config;
-                console.log('configTarget: ' + configTarget);
-                configResponse =  await Client.update({code: req.params.code},
-                    {$uset: [config]});
+            const clientEntry = await Client.findOne({ code: req.params.code });
+            let newConfigs = [];
+            //-------------------------------
+            // get old configs
+            //-------------------------------
+            const currentSettings = clientEntry.meetingConfig;
+            const configSettings = Object.keys(currentSettings);
 
-            }else{
-                configResponse.push({msg: config+': false'})
+            if (config in clientEntry.meetingConfig) {
+                // loop through settings, skip config and create new settings
+                // NOTE: we start at 1, because 0 has $init back from mongo (skip)
+                let x = '';
+                for (let i = 1; i < configSettings.length; i++) {
+                    console.log(configSettings[i]);
+                    // x = configSettings[i];
+                    if (configSettings[i] != config) {
+                        newConfigs[configSettings[i]] = true;
+                    }
+                }
+                console.log('resulting in...');
+                console.table(newConfigs);
+            } else {
                 //config does not exist, add it.
+                // loop through settings, add config to list
+                // NOTE: we start at 1, because 0 has $init back from mongo (skip)
+                let x = '';
+                for (let i = 1; i < configSettings.length; i++) {
+                    console.log(configSettings[i]);
+                    // x = configSettings[i];
+                    if (configSettings[i] != config) {
+                        newConfigs[configSettings[i]] = true;
+                    }
+                }
+                newConfigs[config] = true;
+                console.log('resulting in...');
+                console.table(newConfigs);
             }
-            
-
-            res.json(configResponse);
+            const configResults = await Client.update(
+                { code: req.params.code },
+                {
+                    $set: {
+                        meetingConfig: {
+                            cafe: true,
+                            transportation: true,
+                        },
+                    },
+                }
+            );
+            // configResponse.push({ msg: 'check console' });
+            res.json(configResults);
         } catch (err) {
-            console.error('admin [put:meetingConfigs/toggle error.]: ' + err.message);
+            console.error(
+                'admin [put:meetingConfigs/toggle error.]: ' + err.message
+            );
             res.status(500).send('Server Error');
         }
     }

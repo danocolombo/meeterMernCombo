@@ -21,6 +21,7 @@ const initialState = {
     worship: '',
     title: '',
     meal: '',
+    avContact: '',
     mealCoordinator: 'TBD',
     cafeCoordinator: 'TBD',
     mealCount: 0,
@@ -75,6 +76,7 @@ const EditGathering = ({
         supportRole,
         title,
         worship,
+        avContact,
         meal,
         mealCoordinator,
         mealCount,
@@ -208,6 +210,21 @@ const EditGathering = ({
                         </small>
                     </Fragment>
                 )}
+                {/* SHOW AVContact TEXTBOX IF CONFIGURED        */}
+                {/* --- ???????????????????????????? ----- */}
+                {mtgConfigs.avContact ? (
+                    <div className='form-group'>
+                        <h4>Audio/Visual Contact</h4>
+                        <input
+                            type='text'
+                            placeholder='who is doing tech?'
+                            name='avContact'
+                            value={avContact}
+                            onChange={onChange}
+                        />
+                        <small className='form-text'>Tech contact</small>
+                    </div>
+                ) : null}
                 <div className='form-group'>
                     <h4>Worship</h4>
                     <input
@@ -245,8 +262,8 @@ const EditGathering = ({
                     onChange={(e) => onChange(e)}
                 />
                 <small className='form-text'>Number of newcomers?</small>
-                {console.log('mtgConfigs.donations: ' + mtgConfigs.donations)}
-                {console.table(mtgConfigs)}
+                {/* SHOW DONATIONS IF CONFIGURED        */}
+                {/* --- ???????????????????????????? ----- */}
                 {mtgConfigs.donations ? (
                     <div className='form-group'>
                         <h4>Donations</h4>
@@ -265,57 +282,67 @@ const EditGathering = ({
                         </small>
                     </div>
                 ) : null}
-                <div className='form-group'>
-                    <h4>Meal</h4>
-                    <input
-                        type='text'
-                        placeholder='Dinner plans...'
-                        name='meal'
-                        value={meal}
-                        onChange={onChange}
-                    />
-                    <small className='form-text'>Dinner provided</small>
-                </div>
-                <h4>Meal Coordinator</h4>
-                <input
-                    type='text'
-                    placeholder=''
-                    name='mealCoordinator'
-                    value={mealCoordinator}
-                    onChange={onChange}
-                />
-                {/* <select
-                    value={mealCoordinator ? mealCoordinator : 'pick someone'}
-                    name='mealCoordinator'
-                    onChange={onChange}
-                >
-                    {servants.map((s) => (
-                        <option key={s.name} value={s.name}>
-                            {s.name}
-                        </option>
-                    ))}
-                </select> */}
-                <br />
-                <h4>Individuals Fed</h4>
-                <input
-                    type='number'
-                    id='mealCount'
-                    name='mealCount'
-                    value={mealCount}
-                    min='0'
-                    max='200'
-                    onChange={(e) => onChange(e)}
-                />
-                <small className='form-text'>Number of people served?</small>
-                <h4>Cafe Coordinator</h4>
-                <input
-                    type='text'
-                    placeholder=''
-                    name='cafeCoordinator'
-                    value={cafeCoordinator}
-                    onChange={onChange}
-                />
-                {/* <select
+                {/* SHOW MEAL TEXTBOX IF CONFIGURED        */}
+                {/* --- ???????????????????????????? ----- */}
+                {mtgConfigs.meal ? (
+                    <div className='form-group'>
+                        <h4>Meal</h4>
+                        <input
+                            type='text'
+                            placeholder='Dinner plans...'
+                            name='meal'
+                            value={meal}
+                            onChange={onChange}
+                        />
+                        <small className='form-text'>Dinner provided</small>
+                    </div>
+                ) : null}
+                {/* SHOW MEAL COORDINATOR IF CONFIGURED        */}
+                {/* --- ???????????????????????????? ----- */}
+                {mtgConfigs.mealContact ? (
+                    <div className='form-group'>
+                        <h4>Meal Contact</h4>
+                        <input
+                            type='text'
+                            placeholder=''
+                            name='mealCoordinator'
+                            value={mealCoordinator}
+                            onChange={onChange}
+                        />
+                    </div>
+                ) : null}
+                {/* SHOW MEAL COORDINATOR IF CONFIGURED        */}
+                {/* --- ???????????????????????????? ----- */}
+                {mtgConfigs.mealContact ? (
+                    <div className='form-group'>
+                        <h4>Individuals Fed</h4>
+                        <input
+                            type='number'
+                            id='mealCount'
+                            name='mealCount'
+                            value={mealCount}
+                            min='0'
+                            max='200'
+                            onChange={(e) => onChange(e)}
+                        />
+                        <small className='form-text'>
+                            Number of people served?
+                        </small>
+                    </div>
+                ) : null}
+                {/* SHOW CAFE COORDINATOR IF CONFIGURED        */}
+                {/* --- ???????????????????????????? ----- */}
+                {mtgConfigs.mealContact ? (
+                    <div className='form-group'>
+                        <h4>Cafe Coordinator</h4>
+                        <input
+                            type='text'
+                            placeholder=''
+                            name='cafeCoordinator'
+                            value={cafeCoordinator}
+                            onChange={onChange}
+                        />
+                        {/* <select
                     value={cafeCoordinator ? cafeCoordinator : 'pick someone'}
                     name='cafeCoordinator'
                     onChange={onChange}
@@ -326,8 +353,10 @@ const EditGathering = ({
                         </option>
                     ))}
                 </select> */}
-                <small className='form-text'>Cafe coordinator</small>
-                <br />
+                        <small className='form-text'>Cafe coordinator</small>
+                        <br />
+                    </div>
+                ) : null}
                 <h4>Nursery Count</h4>
                 <input
                     type='number'

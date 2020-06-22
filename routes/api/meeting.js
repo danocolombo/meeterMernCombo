@@ -60,6 +60,7 @@ router.post(
             worship,
             attendance,
             donations,
+            avContact,
             meal,
             mealCoordinator,
             mealCount,
@@ -89,6 +90,9 @@ router.post(
             meetingFields.attendance = attendance;
         } else {
             meetingFields.attendance = 0;
+        }
+        if (avContact) {
+            meetingFields.avConcact = avContact;
         }
         if (donations) {
             meetingFields.donations = donations;
