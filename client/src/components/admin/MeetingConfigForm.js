@@ -29,7 +29,7 @@ const MeetingConfig = ({
                         checked={mtgConfigs.donations}
                         onChange={handleChange}
                         color='primary'
-                        name='checkedA'
+                        name='donations'
                         inputProps={{ 'aria-label': 'primary checkbox' }}
                     />
                     Donations
