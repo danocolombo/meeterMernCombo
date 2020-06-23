@@ -118,10 +118,10 @@ const EditGathering = ({
         // }
         <Fragment>
             <h1 className='large text-primary'>Your Meeting</h1>
-            <p className='lead'>
+            {/* <p className='lead'>
                 <i className='fas fa-user' /> Have at it...
                 <br />
-            </p>
+            </p> */}
 
             <small>* = required field</small>
             <form className='form' onSubmit={onSubmit}>

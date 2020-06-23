@@ -988,3 +988,11 @@ button {
 .formLabellLeft {
     padding-right: 20px;
 }
+/* slider controls */
+.switch {
+    position: relative;
+    display: block;
+    width: 90px;
+    height: 55px;
+    margin-bottom: 10px;
+}

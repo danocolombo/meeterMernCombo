@@ -111,7 +111,12 @@ export const deleteClientUser = (cid, uid) => async (dispatch) => {
         });
     }
 };
-
+export const updateMeetingConfigs = (
+    formData,
+    history,
+    cid,
+    edit = false
+) => async (dispatch) => {};
 export const approveClientUser = (id) => async (dispatch) => {
     //this updates the status of the user (id) in client
     //users in database to approved and updates

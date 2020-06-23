@@ -4,10 +4,10 @@ import {
     GET_GROUPS,
     GROUP_ERROR,
     DELETE_GROUP,
+    CLEAR_GROUP,
     ADD_GROUP,
     GET_GROUP,
 
-    // CLEAR_GROUP,
     // UPDATE_GROUP,
     // CLEAR_GROUPS,
     // SET_GROUP,
@@ -25,6 +25,25 @@ export const getGroups = (mid) => async (dispatch) => {
     } catch (err) {
         dispatch({
             //actions:getGroups
+            type: GROUP_ERROR,
+            payload: {
+                msg: err.response.statusText,
+                status: err.response.status,
+            },
+        });
+    }
+};
+// Clear REDUX group
+export const clearGroup = () => async (dispatch) => {
+    try {
+        await dispatch({
+            type: CLEAR_GROUP,
+            payload: 'Clear temp group info',
+        });
+        dispatch(setAlert('Group removed', 'success'));
+    } catch (err) {
+        dispatch({
+            //actions:clearGroup
             type: GROUP_ERROR,
             payload: {
                 msg: err.response.statusText,
