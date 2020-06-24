@@ -55,12 +55,17 @@ const EditGroup = ({
         }
         if (match.params.gid > 0)
             setFormData({ ...formData, groupId: match.params.gid });
-    }, [loading, getGroup, group, formData, match.params.gid, match.params.mid]);
+    }, [
+        loading,
+        getGroup,
+        group,
+        formData,
+        match.params.gid,
+        match.params.mid,
+    ]);
 
     const {
-        _id,
         title,
-        mid,
         gender,
         location,
         facilitator,
@@ -111,7 +116,8 @@ const EditGroup = ({
                         />
                     </div>
                     <div className='grpButtons'>
-                        {activeStatus === 'approved' && activeRole !== 'guest' ? (
+                        {activeStatus === 'approved' &&
+                        activeRole !== 'guest' ? (
                             <input
                                 type='submit'
                                 className='btn btn-primary my-1'

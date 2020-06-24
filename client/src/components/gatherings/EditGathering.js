@@ -5,7 +5,6 @@ import { connect } from 'react-redux';
 import { createGathering, getGathering } from '../../actions/gathering';
 import { getGroups } from '../../actions/group';
 import GroupListItem from './GroupListItem';
-import { deleteGroup } from '../../actions/group';
 import { getMtgConfigs } from '../../actions/admin';
 // import ServantSelect from './ServantSelect';
 // import GroupList from './GroupList';
@@ -51,7 +50,7 @@ const EditGathering = ({
         getGroups(match.params.id);
         getMtgConfigs(activeClient);
         // console.log('just ran getGroups');
-    }, [deleteGroup]);
+    }, [activeClient, getGroups, getMtgConfigs, match.params.id]);
     useEffect(() => {
         if (!gathering) {
             getGathering(match.params.id);
@@ -66,7 +65,7 @@ const EditGathering = ({
         }
 
         if (_id) setFormData({ ...formData, meetingId: _id });
-    }, [loading, getGathering, gathering]);
+    }, [loading, gathering, activeClient]);
 
     const {
         _id,
@@ -407,9 +406,9 @@ const EditGathering = ({
                 <hr />
                 <h2>
                     Open-Share Groups
-                    {activeStatus == 'approved' && activeRole != 'guest' ? (
+                    {activeStatus === 'approved' && activeRole !== 'guest' ? (
                         <Link to={`/EditGroup/${_id}/0`}>
-                            <a class='waves-effect waves-light btn'>
+                            <div class='waves-effect waves-light btn'>
                                 <i class='material-icons left green'>
                                     add_circle_outline
                                 </i>
@@ -417,7 +416,7 @@ const EditGathering = ({
                                 <span className='meeterNavTextHighlight'>
                                     {'  '}NEW
                                 </span>
-                            </a>
+                            </div>
                         </Link>
                     ) : null}
                 </h2>
@@ -439,10 +438,10 @@ const EditGathering = ({
         switch (meetingType) {
             case 'Lesson':
                 return <h4>Lesson</h4>;
-                break;
+
             case 'Testimony':
                 return <h4>Who's Testimony?</h4>;
-                break;
+
             default:
                 return <h4>Description</h4>;
         }
@@ -452,10 +451,10 @@ const EditGathering = ({
         switch (meetingType) {
             case 'Lesson':
                 return 'What is the lesson?';
-                break;
+
             case 'Testimony':
                 return "Who's testimony?";
-                break;
+
             default:
                 return <h4>Description</h4>;
         }
@@ -464,10 +463,10 @@ const EditGathering = ({
         switch (meetingType) {
             case 'Lesson':
                 return 'Which lesson is being given?';
-                break;
+
             case 'Testimony':
                 return "Who's testimony is being shared?";
-                break;
+
             default:
                 return 'Please provide a description of the event';
         }
@@ -481,7 +480,7 @@ const EditGathering = ({
         console.log('today:' + today);
         if (mDate >= today) {
             console.log('greater than or equal');
-            if (activeStatus == 'approved' && activeRole != 'guest') {
+            if (activeStatus === 'approved' && activeRole !== 'guest') {
                 returnValue = [
                     <>
                         <input type='submit' className='btn btn-primary my-1' />
@@ -519,48 +518,48 @@ const EditGathering = ({
             </>,
         ];
     }
-    function checkForTeacher() {}
-    function displayTeacher() {
-        if (meetingType === 'Lesson') {
-            return [
-                <h4>Teacher</h4>,
-                <input
-                    type='text'
-                    placeholder='teacher...'
-                    name='title'
-                    value={supportRole}
-                    onChange={onChange}
-                />,
-                <small className='form-text'>Who taught the lesson?</small>,
-            ];
-        }
-        return null;
-    }
-    function displayFacilitator() {
-        {
-            console.log(servants.length);
-            var peeps = '';
-            servants.forEach((peep) => {
-                peeps = peeps + peep;
-            });
-            const sample =
-                "<option value='Junior Developer'>Junior Developer</option>";
-            console.log(peeps);
-            return [
-                <div className='form-group'>
-                    ,
-                    <select name='status' value='{status}' onChange={onChange}>
-                        ,<option>* Select Professional Status</option>,{sample},
-                    </select>
-                    ,
-                    <small className='form-text'>
-                        , 'Give us an idea of where you are at in your career',
-                    </small>
-                    ,
-                </div>,
-            ];
-        }
-    }
+
+    // function displayTeacher() {
+    //     if (meetingType === 'Lesson') {
+    //         return [
+    //             <h4>Teacher</h4>,
+    //             <input
+    //                 type='text'
+    //                 placeholder='teacher...'
+    //                 name='title'
+    //                 value={supportRole}
+    //                 onChange={onChange}
+    //             />,
+    //             <small className='form-text'>Who taught the lesson?</small>,
+    //         ];
+    //     }
+    //     return null;
+    // }
+    // function displayFacilitator() {
+    //     {
+    //         console.log(servants.length);
+    //         var peeps = '';
+    //         servants.forEach((peep) => {
+    //             peeps = peeps + peep;
+    //         });
+    //         const sample =
+    //             "<option value='Junior Developer'>Junior Developer</option>";
+    //         console.log(peeps);
+    //         return [
+    //             <div className='form-group'>
+    //                 ,
+    //                 <select name='status' value='{status}' onChange={onChange}>
+    //                     ,<option>* Select Professional Status</option>,{sample},
+    //                 </select>
+    //                 ,
+    //                 <small className='form-text'>
+    //                     , 'Give us an idea of where you are at in your career',
+    //                 </small>
+    //                 ,
+    //             </div>,
+    //         ];
+    //     }
+    // }
 };
 
 EditGathering.propTypes = {

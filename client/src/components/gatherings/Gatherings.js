@@ -79,13 +79,13 @@ const Gatherings = ({
                 <p className='lead'>Your historical list of meetings...</p>,
             ];
         } else {
-            if (activeStatus == 'approved' && activeRole != 'guest') {
+            if (activeStatus === 'approved' && activeRole !== 'guest') {
                 return [
                     <Link to='/gatherings/historyView'>HISTORY</Link>,
                     <p className='lead'>List of upcoming meetings...</p>,
                     <div>
                         <Link to='/EditGathering/0' visible='false'>
-                            <a class='waves-effect waves-light btn'>
+                            <div class='waves-effect waves-light btn'>
                                 <i class='material-icons left green'>
                                     add_circle_outline
                                 </i>
@@ -93,7 +93,7 @@ const Gatherings = ({
                                     {' '}
                                     NEW
                                 </span>
-                            </a>
+                            </div>
                         </Link>
                     </div>,
                 ];

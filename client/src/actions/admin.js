@@ -10,6 +10,8 @@ import {
 
 // GET CLIENT INFO
 export const getClientUsers = (client) => async (dispatch) => {
+    console.log('getClientUsers(' + client + ')');
+    console.log('/api/client/userstatus/' + client);
     try {
         const res = await axios.get(`/api/client/userstatus/${client}`);
         dispatch({
@@ -17,6 +19,7 @@ export const getClientUsers = (client) => async (dispatch) => {
             payload: res.data,
         });
     } catch (err) {
+        console.log('actions/admin.js getClientUsers ADMIN_ERROR');
         dispatch({
             type: ADMIN_ERROR,
             payload: {
@@ -31,6 +34,7 @@ export const getClientInfo = (cid) => async (dispatch) => {
         console.log('@@@@@@@@@@@@@@@@@@@@@@@@@');
         console.log('actions/admin :: getClientInfo (' + cid + ')');
     } catch (err) {
+        console.log('actions/admin.js getClientInfo ADMIN_ERROR');
         dispatch({
             type: ADMIN_ERROR,
         });
@@ -39,6 +43,8 @@ export const getClientInfo = (cid) => async (dispatch) => {
 export const getDefGroups = (cid) => async (dispatch) => {
     //this loads all the default groups for cid
     //into meeter.defaultGroups
+    console.log('getDefGroups(' + cid + ')');
+    console.log('/api/client/defaultgroups/' + cid);
     try {
         const res = await axios.get(`/api/client/defaultgroups/${cid}`);
         if (res) {
@@ -50,6 +56,7 @@ export const getDefGroups = (cid) => async (dispatch) => {
             console.log('NO DEFAULT GROUPS RETURNED');
         }
     } catch (err) {
+        console.log('actions/admin.js getDefGroups ADMIN_ERROR');
         dispatch({
             type: ADMIN_ERROR,
             // payload: {
@@ -62,6 +69,9 @@ export const getDefGroups = (cid) => async (dispatch) => {
 export const getMtgConfigs = (cid) => async (dispatch) => {
     //this loads all the default groups for cid
     //into meeter.defaultGroups
+    if (!cid) return;
+    console.log('getMtgConfigs(' + cid + ')');
+    console.log('/api/client/meetingConfigs/' + cid);
     try {
         const res = await axios.get(`/api/client/meetingConfigs/${cid}`);
         if (res) {
@@ -73,6 +83,7 @@ export const getMtgConfigs = (cid) => async (dispatch) => {
             console.log('NO CLIENT MEETING CONFIGS');
         }
     } catch (err) {
+        console.log('actions/admin.js getMtgConfigs ADMIN_ERROR');
         dispatch({
             type: ADMIN_ERROR,
             payload: {
@@ -99,6 +110,7 @@ export const deleteClientUser = (cid, uid) => async (dispatch) => {
 
         dispatch(setAlert('Client User Removed', 'success'));
     } catch (err) {
+        console.log('actions/admin.js deleteClientUser ADMIN_ERROR');
         dispatch({
             type: ADMIN_ERROR,
             payload: {

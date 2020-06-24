@@ -2,6 +2,7 @@ import React, { Fragment, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Spinner from '../layout/Spinner';
+
 import DashLogo from '../../img/MMeeterLogo.png';
 import NextGathering from '../gatherings/NextGathering';
 // import CheckPrivs from './CheckPrivs';
@@ -36,13 +37,13 @@ const Dashboard = ({
         if (gatherings.length === 0) {
             getGatherings({ activeClient });
         }
-    }, [activeClient, gatherings, getCurrentProfile, getGatherings]);
+    }, [activeClient]);
     useEffect(() => {
         getCurrentProfile();
-        // if (activeClient) {
-        //     getGatherings({ activeClient });
-        // }
-    }, [getGatherings, getCurrentProfile, activeClient]);
+        if (activeClient) {
+            getGatherings({ activeClient });
+        }
+    }, [getGatherings, getCurrentProfile]);
 
     return loading ? (
         <Spinner />
@@ -65,7 +66,6 @@ const Dashboard = ({
                     <DashboardActions />
                     <Experience experience={profile.experience} />
                     <Education education={profile.education} />
-
                     <div className='my-2'>
                         <button
                             className='btn btn-danger'
@@ -97,7 +97,7 @@ const Dashboard = ({
                             <strong>What's happening...</strong>
                         </u>
                     </div> */}
-                    <NextGathering />
+                    <NextGathering gatherings={gatherings} />
                 </Fragment>,
             ];
         } else {

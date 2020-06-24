@@ -23,9 +23,9 @@ import {
 } from '../../actions/admin';
 
 const DisplaySecurity = ({
-    getClientUsers,
     getDefGroups,
     getMtgConfigs,
+    getClientUsers,
     auth: { activeClient, activeRole, activeStatus },
     meeter: { defaultGroups, clientUsers, loading },
     historyView,
@@ -82,7 +82,7 @@ const DisplaySecurity = ({
                                     </tr>
                                 </table>
                             ) : null}
-                            {activeRole === 'superuser' ? (
+                            {/* {activeRole === 'superuser' ? (
                                 <DefaultGroupForm />
                             ) : (
                                 <Fragment>
@@ -90,7 +90,7 @@ const DisplaySecurity = ({
                                     <br />
                                     <br />
                                 </Fragment>
-                            )}
+                            )} */}
                         </div>
                     </ExpansionPanelDetails>
                 </ExpansionPanel>
