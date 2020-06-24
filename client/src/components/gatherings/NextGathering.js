@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 //-----------------------------------------------------
 //this displays the next gathering coming up. which is
 // gathering.gatherings[0] which is already loaded in
@@ -29,20 +29,20 @@ const NextGathering = ({ gatherings }) => {
         </>,
     ];
 };
-function allFutureGatherings(gatherings) {
-    const theList = gatherings.map((g) => (
-        <li>
-            {g.meetingDate} - {g.meetingType}
-        </li>
-    ));
-    return <ul>{theList}</ul>;
-}
+// function allFutureGatherings(gatherings) {
+//     const theList = gatherings.map((g) => (
+//         <li>
+//             {g.meetingDate} - {g.meetingType}
+//         </li>
+//     ));
+//     return <ul>{theList}</ul>;
+// }
 function showFuture(meetings) {
     console.log('SIZE:' + meetings.length);
     let mDate = null;
     let mTitle = '';
     let mPeep = '';
-    let gotIt = false;
+    
     let theNext = (
         <ul>
             <li>There are no meetings planned in the system.</li>
@@ -158,7 +158,7 @@ function showFuture(meetings) {
         if (mDate != null) {
             console.log('===============================');
             console.log('our next meeting');
-            console.log(mDate + '  ' + ' - ' + mTitle + '  ' + ' - ' + mPeep);
+            // console.log(mDate + '  ' + ' - ' + mTitle + '  ' + ' - ' + mPeep);
         }
         // we have the next testimony/lesson defined (if available)
         return [<>{theNext}</>];
@@ -170,15 +170,15 @@ function showFuture(meetings) {
         return d.substr(0, 10);
     }
 }
-function showDate(d) {
-    //return 'mm/dd/yyyy';
-    let date = new Date(d);
-    let year = date.getFullYear();
-    let month = date.getMonth() + 1;
-    let dt = date.getDate() + 1;
-    let nDate = month + '/' + dt + '/' + year;
-    return nDate;
-}
+// function showDate(d) {
+//     //return 'mm/dd/yyyy';
+//     let date = new Date(d);
+//     let year = date.getFullYear();
+//     let month = date.getMonth() + 1;
+//     let dt = date.getDate() + 1;
+//     let nDate = month + '/' + dt + '/' + year;
+//     return nDate;
+// }
 
 NextGathering.propTypes = {
     gatherings: PropTypes.array.isRequired,

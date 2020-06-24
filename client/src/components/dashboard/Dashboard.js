@@ -1,10 +1,7 @@
 import React, { Fragment, useEffect } from 'react';
-import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Spinner from '../layout/Spinner';
-import DashboardActions from './DashboardActions';
-import DashboardPic from '../../img/Dashboard1-200.png';
 import DashLogo from '../../img/MMeeterLogo.png';
 import NextGathering from '../gatherings/NextGathering';
 // import CheckPrivs from './CheckPrivs';
@@ -36,16 +33,16 @@ const Dashboard = ({
 
             getCurrentProfile();
         }
-        if (gatherings.length == 0) {
+        if (gatherings.length === 0) {
             getGatherings({ activeClient });
         }
-    }, []);
+    }, [activeClient, gatherings, getCurrentProfile, getGatherings]);
     useEffect(() => {
         getCurrentProfile();
-        if (activeClient) {
-            getGatherings({ activeClient });
-        }
-    }, [getGatherings, getCurrentProfile]);
+        // if (activeClient) {
+        //     getGatherings({ activeClient });
+        // }
+    }, [getGatherings, getCurrentProfile, activeClient]);
 
     return loading ? (
         <Spinner />

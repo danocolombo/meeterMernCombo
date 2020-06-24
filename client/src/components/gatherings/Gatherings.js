@@ -2,7 +2,7 @@ import React, { Fragment, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import Button from '@material-ui/core/Button';
+// import Button from '@material-ui/core/Button';
 import Spinner from '../layout/Spinner';
 import GatheringItem from './GatheringItem';
 import { getGatherings } from '../../actions/gathering';
@@ -27,7 +27,7 @@ const Gatherings = ({
             getGatherings({ activeClient });
         }
         // getGatherings();
-    }, [getGatherings]);
+    }, [getGatherings, activeClient]);
     return loading ? (
         <Spinner />
     ) : (

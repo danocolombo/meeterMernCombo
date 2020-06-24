@@ -3,7 +3,7 @@ import { Link, withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { FormControlLabel } from '@material-ui/core';
-import { components } from 'react-select';
+// import { components } from 'react-select';
 import { RadioGroup, Radio, FormLabel } from '@material-ui/core';
 import { createPerson, getPerson } from '../../actions/people';
 const initialState = {

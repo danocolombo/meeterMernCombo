@@ -1,5 +1,4 @@
 import React, { Fragment, useEffect } from 'react';
-import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Spinner from '../layout/Spinner';
@@ -16,7 +15,7 @@ import DefaultGroup from './DefaultGroup';
 import ClientUser from './ClientUser';
 import DefaultGroupForm from './DefaultGroupForm';
 import MeetingConfigForm from './MeetingConfigForm';
-import Button from '@material-ui/core/Button';
+
 import {
     getClientUsers,
     getDefGroups,
@@ -37,7 +36,7 @@ const DisplaySecurity = ({
             getDefGroups(activeClient);
             getMtgConfigs(activeClient);
         }
-    }, []);
+    }, [activeClient, getClientUsers, getDefGroups, getMtgConfigs]);
     // const classes = useStyles();
     const [expanded, setExpanded] = React.useState(false);
     const handleChange = (panel) => (event, isExpanded) => {
@@ -83,7 +82,7 @@ const DisplaySecurity = ({
                                     </tr>
                                 </table>
                             ) : null}
-                            {activeRole == 'superuser' ? (
+                            {activeRole === 'superuser' ? (
                                 <DefaultGroupForm />
                             ) : (
                                 <Fragment>
@@ -138,7 +137,7 @@ const DisplaySecurity = ({
 
                     <ExpansionPanelDetails>
                         <div className='posts'>
-                            {activeRole == 'superuser' ? (
+                            {activeRole === 'superuser' ? (
                                 <MeetingConfigForm />
                             ) : (
                                 <Fragment>

@@ -1,5 +1,5 @@
 import React, { Fragment, useState, useEffect } from 'react';
-import { Link, withRouter } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { FormLabel } from '@material-ui/core';
@@ -41,7 +41,7 @@ const EditGroup = ({
 
     useEffect(() => {
         if (!group) {
-            if (match.params.gid != 0) {
+            if (match.params.gid !== 0) {
                 getGroup(match.params.gid);
             }
         }
@@ -55,7 +55,7 @@ const EditGroup = ({
         }
         if (match.params.gid > 0)
             setFormData({ ...formData, groupId: match.params.gid });
-    }, [loading, getGroup, group]);
+    }, [loading, getGroup, group, formData, match.params.gid, match.params.mid]);
 
     const {
         _id,
@@ -111,7 +111,7 @@ const EditGroup = ({
                         />
                     </div>
                     <div className='grpButtons'>
-                        {activeStatus == 'approved' && activeRole != 'guest' ? (
+                        {activeStatus === 'approved' && activeRole !== 'guest' ? (
                             <input
                                 type='submit'
                                 className='btn btn-primary my-1'
@@ -230,10 +230,10 @@ const EditGroup = ({
             </form>
         </Fragment>
     );
-    function getGroups() {
-        // return [<div>GROUP:{match.params.gid}</div>];
-        return 'T';
-    }
+    // function getGroups() {
+    //     // return [<div>GROUP:{match.params.gid}</div>];
+    //     return 'T';
+    // }
     // function giveRequestDetails() {
     //     return [
     //         <div>

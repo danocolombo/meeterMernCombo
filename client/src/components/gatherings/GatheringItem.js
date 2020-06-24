@@ -26,7 +26,7 @@ const GatheringItem = ({
         <div className={meetingType !== 'Other' ? 'PersonBox' : 'OtherBox'}>
             <Fragment>
                 <div className='DeleteTarget'>
-                    {activeStatus == 'approved' && activeRole != 'guest' ? (
+                    {activeStatus === 'approved' && activeRole !== 'guest' ? (
                         <a
                             id='deleteGathering'
                             title='-'
@@ -67,7 +67,7 @@ const GatheringItem = ({
                 )}
                 <br />
                 <Link to={`/EditGathering/${_id}`}>
-                    {activeStatus == 'approved' && activeRole != 'guest' ? (
+                    {activeStatus === 'approved' && activeRole !== 'guest' ? (
                         <i className='fas fa-pen'></i>
                     ) : (
                         <i className='fas fa-search'></i>
@@ -83,11 +83,11 @@ function deleteEvent(_id) {
     deleteGathering(_id);
     
 }
-function displayNewcomers(newcomers) {
-    if (newcomers > 0) {
-        return ['newcomers:', newcomers, <br />];
-    }
-}
+// function displayNewcomers(newcomers) {
+//     if (newcomers > 0) {
+//         return ['newcomers:', newcomers, <br />];
+//     }
+// }
 GatheringItem.propTypes = {
     gathering: PropTypes.object.isRequired,
     deleteGathering: PropTypes.func.isRequired,

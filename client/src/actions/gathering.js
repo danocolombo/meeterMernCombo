@@ -8,8 +8,6 @@ import {
     CLEAR_GATHERINGS,
     CLEAR_GATHERING,
     UPDATE_GATHERING,
-    CLEAR_SERVANTS,
-    GET_SERVANTS,
     GET_HATHERINGS,
     CLEAR_HATHERINGS,
     // CLEAR_GROUPS
@@ -227,7 +225,7 @@ export const getGathering = (id) => async (dispatch) => {
             type: GET_GATHERING,
             payload: res.data,
         });
-        const tmp = await axios.get(`/api/meeting/${id}`);
+        await axios.get(`/api/meeting/${id}`);
         // console.log('res.data [AFTER]' + res.data);
     } catch (err) {
         dispatch({

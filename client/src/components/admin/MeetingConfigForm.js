@@ -115,6 +115,7 @@ const MeetingConfig = ({
     return loading ? (
         <Spinner />
     ) : (
+        <Fragment>
         <div className='post-form'>
             {/* <div className='bg-primary p'>
                 <h3>Meeting Configurations</h3>
@@ -371,6 +372,7 @@ const MeetingConfig = ({
                 </div>
             </form>
         </div>
+        </Fragment>
     );
 };
 

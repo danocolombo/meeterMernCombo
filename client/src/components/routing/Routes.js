@@ -14,7 +14,7 @@ import UserProfile from '../profile/UserProfile';
 import Posts from '../posts/Posts';
 import Post from '../post/Post';
 import People from '../people/People';
-import Admin from '../admin/Admin';
+// import Admin from '../admin/Admin';
 import Security from '../admin/DisplaySecurity';
 // import Gathering from '../gatherings/Gathering';
 import Gatherings from '../gatherings/Gatherings';
@@ -102,7 +102,7 @@ const Routes = () => {
                     path='/DisplaySecurity'
                     component={Security}
                 />
-                <PrivateRoute exact path='/admin' component={Admin} />
+                {/* <PrivateRoute exact path='/admin' component={Admin} /> */}
                 <Route component={NotFound} />
             </Switch>
         </section>

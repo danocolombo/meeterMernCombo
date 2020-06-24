@@ -104,30 +104,6 @@ export const deleteGroupsByMeeting = (mid) => async (dispatch) => {
     }
 };
 
-// Get group associated with groupID
-export const getGroupNoRedux = (gid) => async (dispatch) => {
-    console.log('actions/group: getGroup: gid:' + gid);
-    try {
-        // dispatch({ type: CLEAR_GROUPS });
-        const res = await axios.get(`/api/groups/${gid}`);
-        return await axios.get(`/api/groups/${gid}`).then((response) => {
-            return response.data;
-        });
-        return res.data;
-        // return;
-    } catch (err) {
-        dispatch({
-            //actions:getGroupNoRedux
-            type: GROUP_ERROR,
-            payload: {
-                msg: err.response.statusText,
-                status: err.response.status,
-            },
-        });
-
-        // return resMsg;
-    }
-};
 // export const getGroups2 = mid => async dispatch => {
 //     try {
 //         // dispatch({ type: CLEAR_GROUPS });

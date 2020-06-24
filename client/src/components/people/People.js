@@ -25,7 +25,7 @@ const People = ({
             // );
             getPeople(activeClient);
         }
-    }, [getPeople]);
+    }, [getPeople, activeClient]);
 
     return loading ? (
         <Spinner />
