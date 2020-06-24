@@ -24,6 +24,8 @@ export const getGroups = (mid) => async (dispatch) => {
             payload: res.data,
         });
     } catch (err) {
+        console.log('actions/group.js getGroups');
+        console.log('GET /api/groups/meeting/' + mid);
         dispatch({
             //actions:getGroups
             type: GROUP_ERROR,
@@ -43,6 +45,8 @@ export const clearGroup = () => async (dispatch) => {
         });
         // dispatch(setAlert('Group removed', 'success'));
     } catch (err) {
+        console.log('actions/group.js clearGroup');
+        console.log('DISPATCH TO CLEAR REDUX');
         dispatch({
             //actions:clearGroup
             type: GROUP_ERROR,
@@ -70,6 +74,10 @@ export const deleteGroup = (groupId, mid) => async (dispatch) => {
         });
         dispatch(setAlert('Group removed', 'success'));
     } catch (err) {
+        console.log('actions/group.js deleteGroup');
+        console.log('DELETE /api/groups/' + groupId);
+        console.log('GET /api/groups/meeting/' + mid);
+        console.log('DISPATCH TO RELOAD GROUPS IN REDUX');
         dispatch({
             //actions:deleteGroup
             type: GROUP_ERROR,
@@ -93,6 +101,8 @@ export const deleteGroupsByMeeting = (mid) => async (dispatch) => {
         // const res = await axios.get(`/api/groups/meeting/${mid}`);
         // dispatch(setAlert('Groups removed', 'success'));
     } catch (err) {
+        console.log('actions/group.js deleteGroupsByMeeting');
+        console.log('DELETE /api/groups/bymeeting/' + mid);
         dispatch({
             //actions:deleteGroupsByMeeting
             type: GROUP_ERROR,
@@ -133,6 +143,8 @@ export const getGroup = (groupId) => async (dispatch) => {
             payload: res.data,
         });
     } catch (err) {
+        console.log('actions/group.js getGroup');
+        console.log('DELETE /api/groups/' + groupId);
         dispatch({
             //getGroup
             type: GROUP_ERROR,
@@ -189,6 +201,7 @@ export const addGroup = (formData, history, edit = false) => async (
         history.push(target);
         // history.push('/gatherings');
     } catch (err) {
+        console.log('actions/group.js addGroup');
         return err;
     }
 };

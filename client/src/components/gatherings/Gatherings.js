@@ -104,7 +104,6 @@ const Gatherings = ({
                 ];
             }
         }
-        return null;
     }
 };
 

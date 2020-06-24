@@ -47,7 +47,9 @@ const EditGathering = ({
 }) => {
     const [formData, setFormData] = useState(initialState);
     useEffect(() => {
-        getGroups(match.params.id);
+        if (match.params.id > 0) {
+            getGroups(match.params.id);
+        }
         getMtgConfigs(activeClient);
         // console.log('just ran getGroups');
     }, [activeClient, getGroups, getMtgConfigs, match.params.id]);
@@ -476,8 +478,8 @@ const EditGathering = ({
         var today = new Date();
         today.setHours(0, 0, 0, 0);
         var mDate = new Date(meetingDate.slice(0, 10));
-        console.log('mDate:' + mDate);
-        console.log('today:' + today);
+        // console.log('mDate:' + mDate);
+        // console.log('today:' + today);
         if (mDate >= today) {
             console.log('greater than or equal');
             if (activeStatus === 'approved' && activeRole !== 'guest') {
@@ -499,7 +501,6 @@ const EditGathering = ({
                 ];
             }
         } else {
-            console.log('less than today');
             returnValue = [
                 <>
                     <input type='submit' className='btn btn-primary my-1' />
