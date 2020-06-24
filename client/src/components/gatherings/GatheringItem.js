@@ -4,9 +4,11 @@ import moment from 'moment';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { deleteGathering } from '../../actions/gathering';
+import { deleteGroupsByMeeting } from '../../actions/group';
 
 const GatheringItem = ({
     deleteGathering,
+    deleteGroupsByMeeting,
     gathering: {
         _id,
         meetingDate,
@@ -29,7 +31,8 @@ const GatheringItem = ({
                             id='deleteGathering'
                             title='-'
                             href='/#'
-                            onClick={() => deleteGathering(_id)}
+                            onClick={deleteEvent(_id)}
+                            // onClick={() => deleteGathering(_id)}
                         >
                             <i className='fas fa-minus-circle'></i>
                         </a>
@@ -74,7 +77,12 @@ const GatheringItem = ({
         </div>
     </Fragment>
 );
-
+function deleteEvent(_id) {
+    // alert('we can do this');
+    deleteGroupsByMeeting(_id);
+    deleteGathering(_id);
+    
+}
 function displayNewcomers(newcomers) {
     if (newcomers > 0) {
         return ['newcomers:', newcomers, <br />];
@@ -83,9 +91,10 @@ function displayNewcomers(newcomers) {
 GatheringItem.propTypes = {
     gathering: PropTypes.object.isRequired,
     deleteGathering: PropTypes.func.isRequired,
+    deleteGroupsByMeeting: PropTypes.func.isRequired,
     activeRole: PropTypes.string.isRequired,
     activeStatus: PropTypes.string.isRequired,
 };
 
-export default connect(null, { deleteGathering })(GatheringItem);
+export default connect(null, { deleteGathering, deleteGroupsByMeeting })(GatheringItem);
 //post bg-white p-1 my-1

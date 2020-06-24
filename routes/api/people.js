@@ -173,7 +173,7 @@ router.get('/all', async (req, res) => {
 router.get('/client/:cid', async (req, res) => {
     // need to create the tenant value
     let client = 'people-' + req.params.cid;
-    console.log('client: ' + client);
+    // console.log('client: ' + client);
     try {
         const people = await People.find({
             tenantId: client,

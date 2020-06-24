@@ -104,7 +104,7 @@ const EditGroup = ({
                             id='title'
                             name='title'
                             label='Group title'
-                            variant='outlined'
+                            // variant='outlined'
                             fullWidth
                             value={title}
                             onChange={(e) => onChange(e)}
@@ -157,7 +157,7 @@ const EditGroup = ({
                             name='location'
                             fullWidth
                             value={location}
-                            variant='outlined'
+                            // variant='outlined'
                             onChange={(e) => onChange(e)}
                         />
                     </div>
@@ -198,7 +198,7 @@ const EditGroup = ({
                             name='facilitator'
                             value={facilitator}
                             fullWidth
-                            variant='outlined'
+                            // variant='outlined'
                             onChange={(e) => onChange(e)}
                         />
                     </div>
@@ -209,7 +209,7 @@ const EditGroup = ({
                             value={cofacilitator}
                             fullWidth
                             label='Co-Facilitator'
-                            variant='outlined'
+                            // variant='outlined'
                             onChange={(e) => onChange(e)}
                         />
                     </div>
@@ -222,7 +222,7 @@ const EditGroup = ({
                             fullWidth
                             multiline
                             rows='2'
-                            variant='outlined'
+                            // variant='outlined'
                             onChange={(e) => onChange(e)}
                         />
                     </div>

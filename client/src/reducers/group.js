@@ -2,6 +2,7 @@ import {
     GET_GROUPS,
     GROUP_ERROR,
     DELETE_GROUP,
+    DELETE_GROUPS,
     ADD_GROUP,
     GET_GROUP,
     CLEAR_GROUP,
@@ -44,6 +45,12 @@ export default function (state = initialState, action) {
                 group: null,
                 groupLoading: false,
             };
+        case DELETE_GROUPS:
+            return {
+                ...state,
+                // groups: state.groups.filter((group) => group.id !== payload),
+                groupLoading: false,
+            };   
         case DELETE_GROUP:
             return {
                 ...state,

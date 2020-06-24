@@ -52,8 +52,8 @@ export const getGatherings = (cid) => async (dispatch) => {
             type: GET_HATHERINGS,
             payload: res1.data,
         });
-        dispatch({ type: CLEAR_SERVANTS });
-        const res2 = await axios.get('/api/person/servants');
+        // dispatch({ type: CLEAR_SERVANTS });
+        // const res2 = await axios.get('/api/person/servants');
         // console.log('servants: results are...', typeof res2);
         // console.log(JSON.stringify(res2));
         //==========================================
@@ -82,10 +82,10 @@ export const getGatherings = (cid) => async (dispatch) => {
         // //    return dest;
         // console.log(JSON.stringify(newList));
 
-        dispatch({
-            type: GET_SERVANTS,
-            payload: res2.data,
-        });
+        // dispatch({
+        //     type: GET_SERVANTS,
+        //     payload: res2.data,
+        // });
     } catch (err) {
         dispatch({
             type: GATHERING_ERROR,
@@ -114,8 +114,8 @@ export const getGatherings1 = () => async (dispatch) => {
             type: GET_HATHERINGS,
             payload: res1.data,
         });
-        dispatch({ type: CLEAR_SERVANTS });
-        const res2 = await axios.get('/api/person/servants');
+        // dispatch({ type: CLEAR_SERVANTS });
+        // const res2 = await axios.get('/api/person/servants');
         // console.log('servants: results are...', typeof res2);
         // console.log(JSON.stringify(res2));
         //==========================================
@@ -144,10 +144,10 @@ export const getGatherings1 = () => async (dispatch) => {
         // //    return dest;
         // console.log(JSON.stringify(newList));
 
-        dispatch({
-            type: GET_SERVANTS,
-            payload: res2.data,
-        });
+        // dispatch({
+        //     type: GET_SERVANTS,
+        //     payload: res2.data,
+        // });
     } catch (err) {
         dispatch({
             type: GATHERING_ERROR,
@@ -242,6 +242,8 @@ export const getGathering = (id) => async (dispatch) => {
 // Delete GATHERING
 export const deleteGathering = (id) => async (dispatch) => {
     try {
+        //need to delete any groups that might be associated with meeting
+        await axios.delete(`/api/groups/bymeeting/${id}`);
         await axios.delete(`/api/meeting/${id}`);
 
         dispatch({

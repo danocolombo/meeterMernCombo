@@ -4,6 +4,7 @@ import {
     GET_GROUPS,
     GROUP_ERROR,
     DELETE_GROUP,
+    DELETE_GROUPS,
     CLEAR_GROUP,
     ADD_GROUP,
     GET_GROUP,
@@ -40,7 +41,7 @@ export const clearGroup = () => async (dispatch) => {
             type: CLEAR_GROUP,
             payload: 'Clear temp group info',
         });
-        dispatch(setAlert('Group removed', 'success'));
+        // dispatch(setAlert('Group removed', 'success'));
     } catch (err) {
         dispatch({
             //actions:clearGroup
@@ -79,6 +80,30 @@ export const deleteGroup = (groupId, mid) => async (dispatch) => {
         });
     }
 };
+// deleteGroupsByMeeting
+// this is used to remove all the groups associated with a meeting
+export const deleteGroupsByMeeting = (mid) => async (dispatch) => {
+    try {
+        await axios.delete(`/api/groups/bymeeting/${mid}`);
+        dispatch({
+            type: DELETE_GROUPS,
+            payload: mid,
+        });
+        // reload the groups
+        // const res = await axios.get(`/api/groups/meeting/${mid}`);
+        // dispatch(setAlert('Groups removed', 'success'));
+    } catch (err) {
+        dispatch({
+            //actions:deleteGroupsByMeeting
+            type: GROUP_ERROR,
+            payload: {
+                msg: err.response.statusText,
+                status: err.response.status,
+            },
+        });
+    }
+};
+
 // Get group associated with groupID
 export const getGroupNoRedux = (gid) => async (dispatch) => {
     console.log('actions/group: getGroup: gid:' + gid);

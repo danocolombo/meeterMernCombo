@@ -16,15 +16,14 @@ const Gatherings = ({
 }) => {
     useEffect(() => {
         if (activeClient) {
-            checkActives();
-            console.log(
-                'actives: ' +
-                    activeClient +
-                    ' ' +
-                    activeRole +
-                    ' ' +
-                    activeStatus
-            );
+            // console.log(
+            //     'actives: ' +
+            //         activeClient +
+            //         ' ' +
+            //         activeRole +
+            //         ' ' +
+            //         activeStatus
+            // );
             getGatherings({ activeClient });
         }
         // getGatherings();
@@ -106,9 +105,6 @@ const Gatherings = ({
             }
         }
         return null;
-    }
-    function checkActives() {
-        console.log('CHECK-CHECK-CHECK');
     }
 };
 

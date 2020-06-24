@@ -7,7 +7,7 @@ import { getGroups } from '../../actions/group';
 import GroupListItem from './GroupListItem';
 import { deleteGroup } from '../../actions/group';
 import { getMtgConfigs } from '../../actions/admin';
-import ServantSelect from './ServantSelect';
+// import ServantSelect from './ServantSelect';
 // import GroupList from './GroupList';
 import Spinner from '../layout/Spinner';
 
