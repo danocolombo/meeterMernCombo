@@ -47,9 +47,9 @@ const EditGathering = ({
 }) => {
     const [formData, setFormData] = useState(initialState);
     useEffect(() => {
-        if (match.params.id > 0) {
+    
             getGroups(match.params.id);
-        }
+        
         getMtgConfigs(activeClient);
         // console.log('just ran getGroups');
     }, [activeClient, getGroups, getMtgConfigs, match.params.id]);

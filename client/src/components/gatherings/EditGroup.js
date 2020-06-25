@@ -1,5 +1,5 @@
 import React, { Fragment, useState, useEffect } from 'react';
-import { withRouter } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { FormLabel } from '@material-ui/core';
@@ -9,12 +9,7 @@ import { Button } from '@material-ui/core';
 import { Input } from '@material-ui/core';
 import { RadioGroup } from '@material-ui/core';
 import { Radio } from '@material-ui/core';
-import {
-    addGroup,
-    getGroup,
-    deleteGroup,
-    clearGroup,
-} from '../../actions/group';
+import { addGroup, getGroup, deleteGroup } from '../../actions/group';
 const initialState = {
     _id: '',
     title: '',
@@ -32,8 +27,6 @@ const EditGroup = ({
     addGroup,
     auth: { activeRole, activeStatus },
     getGroup,
-    deleteGroup,
-    clearGroup,
     match,
     history,
 }) => {
@@ -41,7 +34,7 @@ const EditGroup = ({
 
     useEffect(() => {
         if (!group) {
-            if (match.params.gid !== 0) {
+            if (match.params.gid != 0) {
                 getGroup(match.params.gid);
             }
         }
@@ -55,17 +48,12 @@ const EditGroup = ({
         }
         if (match.params.gid > 0)
             setFormData({ ...formData, groupId: match.params.gid });
-    }, [
-        loading,
-        getGroup,
-        group,
-        formData,
-        match.params.gid,
-        match.params.mid,
-    ]);
+    }, [loading, getGroup, group]);
 
     const {
+        _id,
         title,
+        mid,
         gender,
         location,
         facilitator,
@@ -88,10 +76,7 @@ const EditGroup = ({
             [e.target.name]: e.target.value,
         });
     };
-    const handleGoBack = () => {
-        clearGroup();
-        history.goBack();
-    };
+
     const onSubmit = (e) => {
         e.preventDefault();
         addGroup(formData, history, true);
@@ -116,25 +101,18 @@ const EditGroup = ({
                         />
                     </div>
                     <div className='grpButtons'>
-                        {activeStatus === 'approved' &&
-                        activeRole !== 'guest' ? (
+                        {activeStatus == 'approved' && activeRole != 'guest' ? (
                             <input
                                 type='submit'
                                 className='btn btn-primary my-1'
                             />
                         ) : null}
-                        {/* <Link
+                        <Link
                             className='btn btn-light my-1'
                             to={`/editGathering/${match.params.mid}`}
                         >
                             Go Back
-                        </Link> */}
-                        <Button
-                            className='btn btn-light my-1'
-                            onClick={handleGoBack}
-                        >
-                            Go Back
-                        </Button>
+                        </Link>
                     </div>
                     <div className='grpAttendance'>
                         <div className='input-field inline'>
@@ -236,10 +214,10 @@ const EditGroup = ({
             </form>
         </Fragment>
     );
-    // function getGroups() {
-    //     // return [<div>GROUP:{match.params.gid}</div>];
-    //     return 'T';
-    // }
+    function getGroups() {
+        // return [<div>GROUP:{match.params.gid}</div>];
+        return 'T';
+    }
     // function giveRequestDetails() {
     //     return [
     //         <div>
@@ -258,7 +236,6 @@ EditGroup.propTypes = {
     addGroup: PropTypes.func.isRequired,
     getGroup: PropTypes.func.isRequired,
     deleteGroup: PropTypes.func.isRequired,
-    clearGroup: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -266,9 +243,6 @@ const mapStateToProps = (state) => ({
     auth: state.auth,
 });
 
-export default connect(mapStateToProps, {
-    addGroup,
-    getGroup,
-    deleteGroup,
-    clearGroup,
-})(withRouter(EditGroup));
+export default connect(mapStateToProps, { addGroup, getGroup, deleteGroup })(
+    withRouter(EditGroup)
+);
