@@ -110,7 +110,10 @@ const MeetingConfig = ({
     };
     const onSubmit = (e) => {
         e.preventDefault();
-        updateMeetingConfigs(formData, history, activeClient, true);
+        const theConfigs = updateMeetingConfigs(formData, history, activeClient, true);
+        console.log('backfrom updateMeetingConfigs call');
+        console.table(theConfigs);
+        window.scrollTo(0, 0);
     };
     return loading ? (
         <Spinner />
@@ -365,7 +368,7 @@ const MeetingConfig = ({
                             }
                             label='Youth Contact'
                         />
-                        <Button variant='contained' color='secondary'>
+                        <Button variant='contained' color='secondary' onClick={onSubmit}>
                             Save Configurations
                         </Button>
                     </FormGroup>
@@ -379,12 +382,13 @@ const MeetingConfig = ({
 MeetingConfig.propTypes = {
     toggleConfig: PropTypes.func.isRequired,
     getMtgConfigs: PropTypes.func.isRequired,
+    updateMeetingConfigs: PropTypes.func.isRequired,
 };
 const mapStateToProps = (state) => ({
     auth: state.auth,
     meeter: state.meeter,
 });
 
-export default connect(mapStateToProps, { toggleConfig, getMtgConfigs })(
+export default connect(mapStateToProps, { toggleConfig, getMtgConfigs, updateMeetingConfigs })(
     MeetingConfig
 );

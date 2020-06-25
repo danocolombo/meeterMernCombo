@@ -125,7 +125,19 @@ export const updateMeetingConfigs = (
     history,
     cid,
     edit = false
-) => async (dispatch) => {};
+) => async (dispatch) => {
+    console.table(formData);
+
+    const config = {
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    };
+    const res = await axios.put('/api/client/updateconfigs', formData, config);
+    dispatch(setAlert('Would have saved the values.', 'success'));
+
+
+};
 export const approveClientUser = (id) => async (dispatch) => {
     //this updates the status of the user (id) in client
     //users in database to approved and updates
