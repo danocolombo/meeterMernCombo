@@ -376,77 +376,174 @@ router.put(
 // @route    PUT api/client/updateconfigs
 // @desc     Add or Update default group setting
 // @access   Private
-router.put(
-    '/updateconfigs',
-    auth,
-    async (req, res) => {
-        // destructure req
-        const { 
-            setup,
-            transportation,
-            avContact,
-            greeterContact1,
-            greeterContact2,
-            resourceContact,
-            announcementsContact,
-            closingContact,
-            mealCnt,
-            meal,
-            mealContact,
-            cafeCnt,
-            cafeContact,
-            nurseryCnt,
-            nurseryContact,
-            childrenCnt,
-            childrenContact,
-            youthCnt,
-            youthContact,
-            donations,
-            securityContact,
-            cleanup,
-        } = req.body;
-        // create a body to pass from the data received
-        const configInfo = {};
-        if (setup) {configInfo.setup = true;}else{configInfo.setup = false;}
-        if (transportation) {configInfo.transportation = true;}else{configInfo.transportation = false;}
-        if (avContact) {configInfo.avContact = true;}else{configInfo.avContact = false;}
-        if (greeterContact1) {configInfo.greeterContact1 = true;}else{configInfo.greeterContact1 = false;}
-        if (greeterContact2) {configInfo.greeterContact2 = true;}else{configInfo.greeterContact2 = false;}
-        if (resourceContact) {configInfo.resourceContact = true;}else{configInfo.resourceContact = false;}
-        if (announcementsContact) {configInfo.announcementsContact = true;}else{configInfo.announcementsContact = false;}
-        if (closingContact) {configInfo.closingContact = true;}else{configInfo.closingContact = false;}
-        if (mealCnt) {configInfo.mealCnt = true;}else{configInfo.mealCnt = false;}
-        if (meal) {configInfo.meal = true;}else{configInfo.meal = false;}
-        if (mealContact) {configInfo.mealContact = true;}else{configInfo.mealContact = false;}
-        if (cafeCnt) {configInfo.cafeCnt = true;}else{configInfo.cafeCnt = false;}
-        if (cafeContact) {configInfo.cafeContact = true;}else{configInfo.cafeContact = false;}
-        if (nurseryCnt) {configInfo.nurseryCnt = true;}else{configInfo.nurseryCnt = false;}
-        if (nurseryContact) {configInfo.nurseryContact = true;}else{configInfo.nurseryContact = false;}
-        if (childrenCnt) {configInfo.childrenCnt = true;}else{configInfo.childrenCnt = false;}
-        if (childrenContact) {configInfo.childrenContact = true;}else{configInfo.childrenContact = false;}
-        if (youthCnt) {configInfo.youthCnt = true;}else{configInfo.youthCnt = false;}
-        if (youthContact) {configInfo.youthContact = true;}else{configInfo.youthContact = false;}
-        if (donations) {configInfo.donations = true;}else{configInfo.donations = false;}
-        if (securityContact) {configInfo.securityContact = true;}else{configInfo.securityContact = false;}
-        if (cleanup) {configInfo.cafeCnt = true;}else{configInfo.cafeCnt = false;}
-        // the following was an attempt to dynamically define the data, but does not work.
-        //---------------------------------------------------------------------------------
-        // const configData = {};
-        //     for (const key in req.body) {
-        //         if (key in configData) configData[key] = req.body[key];
-        //     }
-        //     // groupData['mid'] = match.params.mid;
-        // console.log('build configData structure...');
-        // console.table(configData);
+router.put('/updateconfigs/:cid', auth, async (req, res) => {
+    // destructure req
+    const {
+        setup,
+        transportation,
+        avContact,
+        greeterContact1,
+        greeterContact2,
+        resourceContact,
+        announcementsContact,
+        closingContact,
+        mealCnt,
+        meal,
+        mealContact,
+        cafeCnt,
+        cafeContact,
+        nurseryCnt,
+        nurseryContact,
+        childrenCnt,
+        childrenContact,
+        youthCnt,
+        youthContact,
+        donations,
+        securityContact,
+        cleanup,
+    } = req.body;
+    // create a body to pass from the data received
+    const configInfo = {};
+    if (setup) {
+        configInfo.setup = true;
+    } else {
+        configInfo.setup = false;
+    }
+    if (transportation) {
+        configInfo.transportation = true;
+    } else {
+        configInfo.transportation = false;
+    }
+    if (avContact) {
+        configInfo.avContact = true;
+    } else {
+        configInfo.avContact = false;
+    }
+    if (greeterContact1) {
+        configInfo.greeterContact1 = true;
+    } else {
+        configInfo.greeterContact1 = false;
+    }
+    if (greeterContact2) {
+        configInfo.greeterContact2 = true;
+    } else {
+        configInfo.greeterContact2 = false;
+    }
+    if (resourceContact) {
+        configInfo.resourceContact = true;
+    } else {
+        configInfo.resourceContact = false;
+    }
+    if (announcementsContact) {
+        configInfo.announcementsContact = true;
+    } else {
+        configInfo.announcementsContact = false;
+    }
+    if (closingContact) {
+        configInfo.closingContact = true;
+    } else {
+        configInfo.closingContact = false;
+    }
+    if (mealCnt) {
+        configInfo.mealCnt = true;
+    } else {
+        configInfo.mealCnt = false;
+    }
+    if (meal) {
+        configInfo.meal = true;
+    } else {
+        configInfo.meal = false;
+    }
+    if (mealContact) {
+        configInfo.mealContact = true;
+    } else {
+        configInfo.mealContact = false;
+    }
+    if (cafeCnt) {
+        configInfo.cafeCnt = true;
+    } else {
+        configInfo.cafeCnt = false;
+    }
+    if (cafeContact) {
+        configInfo.cafeContact = true;
+    } else {
+        configInfo.cafeContact = false;
+    }
+    if (nurseryCnt) {
+        configInfo.nurseryCnt = true;
+    } else {
+        configInfo.nurseryCnt = false;
+    }
+    if (nurseryContact) {
+        configInfo.nurseryContact = true;
+    } else {
+        configInfo.nurseryContact = false;
+    }
+    if (childrenCnt) {
+        configInfo.childrenCnt = true;
+    } else {
+        configInfo.childrenCnt = false;
+    }
+    if (childrenContact) {
+        configInfo.childrenContact = true;
+    } else {
+        configInfo.childrenContact = false;
+    }
+    if (youthCnt) {
+        configInfo.youthCnt = true;
+    } else {
+        configInfo.youthCnt = false;
+    }
+    if (youthContact) {
+        configInfo.youthContact = true;
+    } else {
+        configInfo.youthContact = false;
+    }
+    if (donations) {
+        configInfo.donations = true;
+    } else {
+        configInfo.donations = false;
+    }
+    if (securityContact) {
+        configInfo.securityContact = true;
+    } else {
+        configInfo.securityContact = false;
+    }
+    if (cleanup) {
+        configInfo.cafeCnt = true;
+    } else {
+        configInfo.cafeCnt = false;
+    }
+    // the following was an attempt to dynamically define the data, but does not work.
+    //---------------------------------------------------------------------------------
+    // const configData = {};
+    //     for (const key in req.body) {
+    //         if (key in configData) configData[key] = req.body[key];
+    //     }
+    //     // groupData['mid'] = match.params.mid;
+    // console.log('build configData structure...');
+    // console.table(configData);
 
-
-
-        console.table(request.body);
-        console.log('equals......');
-        console.table(configInfo);
-        console.log(JSON.stringify(configInfo));
-        res.json(JSON.stringify(configInfo));
-    });
+    //-----------------------------------
+    // now the configInfo contains the settings, update client
+    // the data we have:
+    console.table(configInfo);
+    try {
+        let theClient = await Client.updateOne(
+            {
+                code: req.params.cid,
+            },
+            { $set: { meetingConfig: configInfo } },
+            { upsert: true }
+        );
+        console.table(JSON.stringify(theClient));
+        res.json(JSON.stringify(theClient));
+    } catch (err) {
+        console.log('api/client/updateconfigs');
+        console.error(err.message);
+        res.status(500).send('Server Error');
+    }
+});
 router.delete('/defaultgroup', auth, async (req, res) => {
     try {
         const { cid, gender, title, location, facilitator } = req.body;

@@ -38,6 +38,7 @@ const EditGathering = ({
     auth: { activeClient, activeRole, activeStatus },
     group: { groups, groupLoading },
     meeter: { mtgConfigs },
+    // mtgConfigs,
     createGathering,
     getGathering,
     getGroups,
@@ -48,7 +49,7 @@ const EditGathering = ({
     const [formData, setFormData] = useState(initialState);
     useEffect(() => {
         getGroups(match.params.id);
-        
+
         getMtgConfigs(activeClient);
         // console.log('just ran getGroups');
     }, [activeClient, getGroups, getMtgConfigs, match.params.id]);
@@ -109,7 +110,14 @@ const EditGathering = ({
         createGathering(formData, history, activeClient, true);
         window.scrollTo(0, 0);
     };
-
+    console.log('donations: ' + mtgConfigs['donations']);
+    console.log('type of mtgConfigs: ' + typeof mtgConfigs);
+    console.table(mtgConfigs);
+    const util = require('util');
+    console.log(
+        'mtgConfigs: ' +
+            util.inspect(mtgConfigs, { showHidden: false, depth: null })
+    );
     return loading ? (
         <Spinner />
     ) : (
@@ -122,7 +130,7 @@ const EditGathering = ({
                 <i className='fas fa-user' /> Have at it...
                 <br />
             </p> */}
-
+            <div>Donations configuration:{mtgConfigs['donations']}</div>
             <small>* = required field</small>
             <form className='form' onSubmit={onSubmit}>
                 <div>
@@ -212,7 +220,7 @@ const EditGathering = ({
                 )}
                 {/* SHOW AVContact TEXTBOX IF CONFIGURED        */}
                 {/* --- ???????????????????????????? ----- */}
-                {mtgConfigs.avContact ? (
+                {mtgConfigs.avContact !== false ? (
                     <div className='form-group'>
                         <h4>Audio/Visual Contact</h4>
                         <input
@@ -571,6 +579,7 @@ EditGathering.propTypes = {
     group: PropTypes.object.isRequired,
     auth: PropTypes.object.isRequired,
     meeter: PropTypes.object.isRequired,
+    // mtgConfigs: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -579,6 +588,7 @@ const mapStateToProps = (state) => ({
     group: state.group,
     auth: state.auth,
     meeter: state.meeter,
+    // mtgConfigs: state.meeter.mtgConfigs,
 });
 
 export default connect(mapStateToProps, {

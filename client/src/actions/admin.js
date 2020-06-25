@@ -133,10 +133,12 @@ export const updateMeetingConfigs = (
             'Content-Type': 'application/json',
         },
     };
-    const res = await axios.put('/api/client/updateconfigs', formData, config);
+    const res = await axios.put(
+        `/api/client/updateconfigs/${cid}`,
+        formData,
+        config
+    );
     dispatch(setAlert('Would have saved the values.', 'success'));
-
-
 };
 export const approveClientUser = (id) => async (dispatch) => {
     //this updates the status of the user (id) in client

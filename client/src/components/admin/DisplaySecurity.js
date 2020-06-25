@@ -137,7 +137,8 @@ const DisplaySecurity = ({
 
                     <ExpansionPanelDetails>
                         <div className='posts'>
-                            {activeRole === 'superuser' ? (
+                            {activeRole === 'superuser' ||
+                            activeRole === 'owner' ? (
                                 <MeetingConfigForm />
                             ) : (
                                 <Fragment>
