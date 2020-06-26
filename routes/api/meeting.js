@@ -68,10 +68,19 @@ router.post(
             newcomers,
             nursery,
             children,
+            greeter1,
+            greeter2,
+            resources,
+            announcements,
+            closing,
+            setup,
+            cleanup,
+            transportation,
+            security,
             youth,
             notes,
         } = req.body;
-
+        console.table(req.body);
         const meetingFields = {};
         //first two are required, no need to check.
         meetingFields.meetingDate = meetingDate;
@@ -85,7 +94,11 @@ router.post(
         } else {
             meetingFields.supportRole = '';
         }
-        if (worship) meetingFields.worship = worship;
+        if (worship) {
+            meetingFields.worship = worship;
+        }else{
+            meetingFields.worship = '';
+        }
         if (attendance) {
             meetingFields.attendance = attendance;
         } else {
@@ -93,21 +106,79 @@ router.post(
         }
         if (avContact) {
             meetingFields.avConcact = avContact;
+        }else{
+            meetingFields.avContact = '';
         }
         if (donations) {
             meetingFields.donations = donations;
         } else {
             meetingFields.donations = 0;
         }
-        if (meal) meetingFields.meal = meal;
-        if (mealCoordinator) meetingFields.mealCoordinator = mealCoordinator;
+        if (meal) {
+            meetingFields.meal = meal;
+        }else{
+            meetingFields.meal = '';
+        }
+        if (mealCoordinator) {
+            meetingFields.mealCoordinator = mealCoordinator;
+        }else{
+            meetingFields.mealCoordinator = '';
+        }
         if (mealCount) {
             meetingFields.mealCount = mealCount;
         } else {
             meetingFields.mealCount = 0;
         }
-        if (cafeCoordinator) meetingFields.cafeCoordinator = cafeCoordinator;
-
+        if (cafeCoordinator) {
+            meetingFields.cafeCoordinator = cafeCoordinator;
+        }else{
+            meetingFields.cafeCoordinator = '';
+        }
+        if (greeter1) {
+            meetingFields.greeterContact1 = greeter1;
+        }else{
+            meetingFields.greeterContact1 = '';
+        }
+        if (greeter2) {
+            meetingFields.greeterContact2 = greeter2;
+        }else{
+            meetingFields.greeterContact2 = '';
+        }
+        if (resources) {
+            meetingFields.resourceContact = resources;
+        }else{
+            meetingFields.resourceContact = '';
+        }
+        if (announcements) {
+            meetingFields.announcementsContact = announcements;
+        }else{
+            meetingFields.announcementsContact = '';
+        }
+        if (security) {
+            meetingFields.securityContact = security;
+        }else{
+            meetingFields.securityContact = '';
+        }
+        if (closing) {
+            meetingFields.closingContact = closing;
+        }else{
+            meetingFields.closingContact = '';
+        }
+        if (setup) {
+            meetingFields.setupContact = setup;
+        }else{
+            meetingFields.setupContact = '';
+        }
+        if (cleanup) {
+            meetingFields.cleanupContact = cleanup;
+        }else{
+            meetingFields.cleanupContact = '';
+        }
+        if (transportation) {
+            meetingFields.transportationContact = transportation;
+        }else{
+            meetingFields.transportationContact = '';
+        }
         if (notes) {
             meetingFields.notes = notes;
         } else {
@@ -133,6 +204,8 @@ router.post(
         } else {
             meetingFields.youth = 0;
         }
+        console.log('going to db...');
+        console.table(meetingFields);
         try {
             // Using upsert option (creates new doc if no match is found):
             if (meetingId) {

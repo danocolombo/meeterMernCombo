@@ -157,8 +157,7 @@ const EditGathering = ({
                 <i className='fas fa-user' /> Have at it...
                 <br />
             </p> */}
-            <div>mealCnt configuration:{mtgConfigs['mealCnt']}</div>
-            <small>* = required field</small>
+             <small>* = required field</small>
             <form className='form' onSubmit={onSubmit}>
                 <div>
                     <h4>Meeting Date **</h4>
@@ -365,9 +364,24 @@ const EditGathering = ({
                         </small>
                     </div>
                 ) : null)}
+                {/* SHOW CAFE COORDINATOR IF CONFIGURED        */}
+                {/* --- ???????????????????????????? ----- */}
+                {(mtgConfigs['cafeContact'] === true ? (
+                    <div className='form-group'>
+                        <h4>Cafe Coordinator</h4>
+                        <input
+                            type='text'
+                            placeholder=''
+                            name='cafeCoordinator'
+                            value={cafeCoordinator}
+                            onChange={onChange}
+                        />
+                        <small className='form-text'>Cafe coordinator</small>
+                    </div>
+                ) : null)}
                 {/* SHOW CAFE COUNT IF CONFIGURED        */}
                 {/* --- ???????????????????????????? ----- */}
-                {(mtgConfigs['cafeCount'] === true ? (
+                {(mtgConfigs['cafeCnt'] === true ? (
                     <div className='form-group'>
                         <h4>Cafe Attendees</h4>
                         <input
@@ -382,21 +396,6 @@ const EditGathering = ({
                         <small className='form-text'>
                             Number of people served?
                         </small>
-                    </div>
-                ) : null)}
-                {/* SHOW CAFE COORDINATOR IF CONFIGURED        */}
-                {/* --- ???????????????????????????? ----- */}
-                {(mtgConfigs['cafeContact'] === true ? (
-                    <div className='form-group'>
-                        <h4>Cafe Coordinator</h4>
-                        <input
-                            type='text'
-                            placeholder=''
-                            name='cafeCoordinator'
-                            value={cafeCoordinator}
-                            onChange={onChange}
-                        />
-                        <small className='form-text'>Cafe coordinator</small>
                     </div>
                 ) : null)}
                 {/* SHOW GREETER 1 IF CONFIGURED        */}
@@ -576,7 +575,7 @@ const EditGathering = ({
                 {/* --- ???????????????????????????? ----- */}
                 {(mtgConfigs['setup'] === true ? (
                     <div className='form-group'>
-                        <h4>Transportation Coordinator</h4>
+                        <h4>Setup Coordinator</h4>
                         <input
                             type='text'
                             placeholder=''
