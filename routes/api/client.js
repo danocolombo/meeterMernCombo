@@ -389,9 +389,9 @@ router.put('/updateconfigs/:cid', auth, async (req, res) => {
         closingContact,
         mealCnt,
         meal,
-        mealContact,
+        mealCoordinator,
         cafeCnt,
-        cafeContact,
+        cafeCoordinator,
         nurseryCnt,
         nurseryContact,
         childrenCnt,
@@ -454,20 +454,20 @@ router.put('/updateconfigs/:cid', auth, async (req, res) => {
     } else {
         configInfo.meal = false;
     }
-    if (mealContact) {
-        configInfo.mealContact = true;
+    if (mealCoordinator) {
+        configInfo.mealCoordinator = true;
     } else {
-        configInfo.mealContact = false;
+        configInfo.mealCoordinator = false;
     }
     if (cafeCnt) {
         configInfo.cafeCnt = true;
     } else {
         configInfo.cafeCnt = false;
     }
-    if (cafeContact) {
-        configInfo.cafeContact = true;
+    if (cafeCoordinator) {
+        configInfo.cafeCoordinator = true;
     } else {
-        configInfo.cafeContact = false;
+        configInfo.cafeCoordinator = false;
     }
     if (nurseryCnt) {
         configInfo.nurseryCnt = true;
