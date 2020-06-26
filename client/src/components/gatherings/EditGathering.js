@@ -26,10 +26,23 @@ const initialState = {
     mealCount: 0,
     attendance: 0,
     donations: 0,
+    greeter1: '',
+    greeter2: '',
+    resources: '',
+    announcements: '',
+    closing: '',
+    security: '',
     newcomers: 0,
     nursery: 0,
+    nurseryCoordinator: '',
     children: 0,
+    childrenCoordinator: '',
     youth: 0,
+    youthCoordinator: '',
+    setup: '',
+    cleanup: '',
+    transportation: '',
+    security: '',
     notes: '',
 };
 
@@ -84,10 +97,22 @@ const EditGathering = ({
         cafeCoordinator,
         attendance,
         donations,
+        greeter1,
+        greeter2,
+        resources,
+        announcements,
+        closing,
         newcomers,
         nursery,
+        nurseryCoordinator,
         children,
+        childrenCoordinator,
         youth,
+        youthCoordinator,
+        setup,
+        cleanup,
+        transportation,
+        security,
         notes,
     } = formData;
 
@@ -110,6 +135,8 @@ const EditGathering = ({
         createGathering(formData, history, activeClient, true);
         window.scrollTo(0, 0);
     };
+
+    // DANO
     console.log('donations: ' + mtgConfigs['donations']);
     console.log('type of mtgConfigs: ' + typeof mtgConfigs);
     console.table(mtgConfigs);
@@ -130,7 +157,7 @@ const EditGathering = ({
                 <i className='fas fa-user' /> Have at it...
                 <br />
             </p> */}
-            <div>Donations configuration:{mtgConfigs['donations']}</div>
+            <div>mealCnt configuration:{mtgConfigs['mealCnt']}</div>
             <small>* = required field</small>
             <form className='form' onSubmit={onSubmit}>
                 <div>
@@ -220,7 +247,7 @@ const EditGathering = ({
                 )}
                 {/* SHOW AVContact TEXTBOX IF CONFIGURED        */}
                 {/* --- ???????????????????????????? ----- */}
-                {mtgConfigs.avContact !== false ? (
+                {(mtgConfigs['avContact'] === true ? (
                     <div className='form-group'>
                         <h4>Audio/Visual Contact</h4>
                         <input
@@ -232,7 +259,7 @@ const EditGathering = ({
                         />
                         <small className='form-text'>Tech contact</small>
                     </div>
-                ) : null}
+                ) : null)}
                 <div className='form-group'>
                     <h4>Worship</h4>
                     <input
@@ -272,7 +299,7 @@ const EditGathering = ({
                 <small className='form-text'>Number of newcomers?</small>
                 {/* SHOW DONATIONS IF CONFIGURED        */}
                 {/* --- ???????????????????????????? ----- */}
-                {mtgConfigs.donations ? (
+                {(mtgConfigs['donations'] === true ? (
                     <div className='form-group'>
                         <h4>Donations</h4>
                         <input
@@ -289,10 +316,10 @@ const EditGathering = ({
                             Amount of donations received?
                         </small>
                     </div>
-                ) : null}
-                {/* SHOW MEAL TEXTBOX IF CONFIGURED        */}
+                ) : null)}
+                {/* SHOW MEAL DESCRIPTION IF CONFIGURED        */}
                 {/* --- ???????????????????????????? ----- */}
-                {mtgConfigs.meal ? (
+                {(mtgConfigs['meal'] === true ? (
                     <div className='form-group'>
                         <h4>Meal</h4>
                         <input
@@ -304,10 +331,10 @@ const EditGathering = ({
                         />
                         <small className='form-text'>Dinner provided</small>
                     </div>
-                ) : null}
+                ) : null)}
                 {/* SHOW MEAL COORDINATOR IF CONFIGURED        */}
                 {/* --- ???????????????????????????? ----- */}
-                {mtgConfigs.mealContact ? (
+                {(mtgConfigs['mealContact'] === true ? (
                     <div className='form-group'>
                         <h4>Meal Contact</h4>
                         <input
@@ -318,12 +345,12 @@ const EditGathering = ({
                             onChange={onChange}
                         />
                     </div>
-                ) : null}
-                {/* SHOW MEAL COORDINATOR IF CONFIGURED        */}
+                ) : null)}
+                {/* SHOW MEAL COUNT IF CONFIGURED        */}
                 {/* --- ???????????????????????????? ----- */}
-                {mtgConfigs.mealContact ? (
+                {(mtgConfigs['mealCnt'] === true ? (
                     <div className='form-group'>
-                        <h4>Individuals Fed</h4>
+                        <h4>Meal Count</h4>
                         <input
                             type='number'
                             id='mealCount'
@@ -337,10 +364,29 @@ const EditGathering = ({
                             Number of people served?
                         </small>
                     </div>
-                ) : null}
+                ) : null)}
+                {/* SHOW CAFE COUNT IF CONFIGURED        */}
+                {/* --- ???????????????????????????? ----- */}
+                {(mtgConfigs['cafeCount'] === true ? (
+                    <div className='form-group'>
+                        <h4>Cafe Attendees</h4>
+                        <input
+                            type='number'
+                            id='cafeCount'
+                            name='cafeCount'
+                            value={mealCount}
+                            min='0'
+                            max='200'
+                            onChange={(e) => onChange(e)}
+                        />
+                        <small className='form-text'>
+                            Number of people served?
+                        </small>
+                    </div>
+                ) : null)}
                 {/* SHOW CAFE COORDINATOR IF CONFIGURED        */}
                 {/* --- ???????????????????????????? ----- */}
-                {mtgConfigs.mealContact ? (
+                {(mtgConfigs['cafeContact'] === true ? (
                     <div className='form-group'>
                         <h4>Cafe Coordinator</h4>
                         <input
@@ -350,67 +396,253 @@ const EditGathering = ({
                             value={cafeCoordinator}
                             onChange={onChange}
                         />
-                        {/* <select
-                    value={cafeCoordinator ? cafeCoordinator : 'pick someone'}
-                    name='cafeCoordinator'
-                    onChange={onChange}
-                >
-                    {servants.map((s) => (
-                        <option key={s.name} value={s.name}>
-                            {s.name}
-                        </option>
-                    ))}
-                </select> */}
                         <small className='form-text'>Cafe coordinator</small>
-                        <br />
                     </div>
-                ) : null}
-                <h4>Nursery Count</h4>
-                <input
-                    type='number'
-                    id='nursery'
-                    name='nursery'
-                    value={nursery}
-                    min='0'
-                    max='200'
-                    onChange={(e) => onChange(e)}
-                />
-                <small className='form-text'>Number of kids in nursery?</small>
-                <br />
-                <h4>Children Count</h4>
-                <input
-                    type='number'
-                    id='children'
-                    name='children'
-                    value={children}
-                    min='0'
-                    max='200'
-                    onChange={(e) => onChange(e)}
-                />
-                <small className='form-text'>
-                    Number of kids in childcare?
-                </small>
-                <br />
-                <h4>Youth Count</h4>
-                <input
-                    type='number'
-                    id='youth'
-                    name='youth'
-                    value={youth}
-                    min='0'
-                    max='200'
-                    onChange={(e) => onChange(e)}
-                />
-                <small className='form-text'>Number of kids in youth?</small>
-                <div className='form-group'>
-                    <textarea
-                        placeholder='Description and notes for meeting'
-                        name='notes'
-                        value={notes}
+                ) : null)}
+                {/* SHOW GREETER 1 IF CONFIGURED        */}
+                {/* --- ???????????????????????????? ----- */}
+                {(mtgConfigs['greeterContact1'] === true ? (
+                    <div className='form-group'>
+                        <h4>Greeter</h4>
+                        <input
+                            type='text'
+                            placeholder=''
+                            name='greeter1'
+                            value={greeter1}
+                            onChange={onChange}
+                        />
+                        <small className='form-text'>Greeter</small>
+                    </div>
+                ) : null)}
+                {/* SHOW GREETER 2 IF CONFIGURED        */}
+                {/* --- ???????????????????????????? ----- */}
+                {(mtgConfigs['greeterContact2'] === true ? (
+                    <div className='form-group'>
+                        <h4>Greeter</h4>
+                        <input
+                            type='text'
+                            placeholder=''
+                            name='greeter2'
+                            value={greeter2}
+                            onChange={onChange}
+                        />
+                        <small className='form-text'>Greeter</small>
+                    </div>
+                ) : null)}
+                {/* SHOW RESOURCES CONTACT IF CONFIGURED        */}
+                {/* --- ???????????????????????????? ----- */}
+                {(mtgConfigs['resourceContact'] === true ? (
+                    <div className='form-group'>
+                        <h4>Resources Contact</h4>
+                        <input
+                            type='text'
+                            placeholder=''
+                            name='resources'
+                            value={resources}
+                            onChange={onChange}
+                        />
+                        <small className='form-text'>Resources Contact</small>
+                    </div>
+                ) : null)}
+                {/* SHOW ANNOUNCEMENTS CONTACT IF CONFIGURED        */}
+                {/* --- ???????????????????????????? ----- */}
+                {(mtgConfigs['announcementsContact'] === true ? (
+                    <div className='form-group'>
+                        <h4>Announcements Contact</h4>
+                        <input
+                            type='text'
+                            placeholder=''
+                            name='announcements'
+                            value={announcements}
+                            onChange={onChange}
+                        />
+                        <small className='form-text'>Announcements Contact</small>
+                    </div>
+                ) : null)}
+                {/* SHOW CLOSING CONTACT IF CONFIGURED        */}
+                {/* --- ???????????????????????????? ----- */}
+                {(mtgConfigs['closingContact'] === true ? (
+                    <div className='form-group'>
+                        <h4>Closing Contact</h4>
+                        <input
+                            type='text'
+                            placeholder=''
+                            name='closing'
+                            value={closing}
+                            onChange={onChange}
+                        />
+                        <small className='form-text'>Closing Contact</small>
+                    </div>
+                ) : null)}
+                {/* SHOW NURSERY COUNT IF CONFIGURED        */}
+                {/* --- ???????????????????????????? ----- */}
+                {(mtgConfigs['nurseryCnt'] === true ? (
+                    <div className='form-group'>
+                    <h4>Nursery Count</h4>
+                    <input
+                        type='number'
+                        id='nursery'
+                        name='nursery'
+                        value={nursery}
+                        min='0'
+                        max='200'
                         onChange={(e) => onChange(e)}
-                    ></textarea>
-                    <small className='form-text'>Things to remember</small>
-                </div>
+                    />
+                    <small className='form-text'>Number of kids in nursery?</small>
+                    </div>
+                ) : null )}
+                {/* SHOW NURSERY COORDINATOR IF CONFIGURED        */}
+                {/* --- ???????????????????????????? ----- */}
+                {(mtgConfigs['nurseryContact'] === true ? (
+                    <div className='form-group'>
+                        <h4>Nursery Contact</h4>
+                        <input
+                            type='text'
+                            placeholder=''
+                            name='nurseryCoordinator'
+                            value={nurseryCoordinator}
+                            onChange={onChange}
+                        />
+                        <small className='form-text'>Nursery Contact</small>
+                    </div>
+                ) : null)}
+                {/* SHOW CHILDREN COUNT IF CONFIGURED        */}
+                {/* --- ???????????????????????????? ----- */}
+                {(mtgConfigs['childrenCnt'] === true ? (
+                    <div className='form-group'>
+                        <h4>Children Count</h4>
+                        <input
+                            type='number'
+                            id='children'
+                            name='children'
+                            value={children}
+                            min='0'
+                            max='200'
+                            onChange={(e) => onChange(e)}
+                        />
+                        <small className='form-text'>
+                            Number of kids in childcare?
+                        </small>
+                    </div>
+                ): null )}
+                {/* SHOW CHILDREN COORDINATOR IF CONFIGURED        */}
+                {/* --- ???????????????????????????? ----- */}
+                {(mtgConfigs['childrenContact'] === true ? (
+                    <div className='form-group'>
+                        <h4>Childern Contact</h4>
+                        <input
+                            type='text'
+                            placeholder=''
+                            name='childrenCoordinator'
+                            value={childrenCoordinator}
+                            onChange={onChange}
+                        />
+                        <small className='form-text'>Children Contact</small>
+                    </div>
+                ) : null)}
+                {/* SHOW YOUTH COUNT IF CONFIGURED        */}
+                {/* --- ???????????????????????????? ----- */}
+                {(mtgConfigs['youthCnt'] === true ? (
+                    <div className='form-group'>
+                        <h4>Youth Count</h4>
+                        <input
+                            type='number'
+                            id='youth'
+                            name='youth'
+                            value={youth}
+                            min='0'
+                            max='200'
+                            onChange={(e) => onChange(e)}
+                        />
+                        <small className='form-text'>Number of kids in youth?</small>
+                    </div>
+                ) : null )}
+                {/* SHOW YOUTH COORDINATOR IF CONFIGURED        */}
+                {/* --- ???????????????????????????? ----- */}
+                {(mtgConfigs['youthContact'] === true ? (
+                    <div className='form-group'>
+                        <h4>Youth Contact</h4>
+                        <input
+                            type='text'
+                            placeholder=''
+                            name='youthCoordinator'
+                            value={youthCoordinator}
+                            onChange={onChange}
+                        />
+                        <small className='form-text'>Youth Contact</small>
+                    </div>
+                ) : null)}
+                {/* SHOW SETUP IF CONFIGURED        */}
+                {/* --- ???????????????????????????? ----- */}
+                {(mtgConfigs['setup'] === true ? (
+                    <div className='form-group'>
+                        <h4>Transportation Coordinator</h4>
+                        <input
+                            type='text'
+                            placeholder=''
+                            name='setup'
+                            value={setup}
+                            onChange={onChange}
+                        />
+                        <small className='form-text'>Setup Coordinator</small>
+                    </div>
+                ):null )}
+                {/* SHOW CLEANUP IF CONFIGURED        */}
+                {/* --- ???????????????????????????? ----- */}
+                {(mtgConfigs['cleanup'] === true ? (
+                    <div className='form-group'>
+                        <h4>Clean-up Coordinator</h4>
+                        <input
+                            type='text'
+                            placeholder=''
+                            name='cleanup'
+                            value={cleanup}
+                            onChange={onChange}
+                        />
+                        <small className='form-text'>Clean-up point of contact</small>
+                    </div>
+                ):null )}
+                {/* SHOW TRANSPORTATION IF CONFIGURED        */}
+                {/* --- ???????????????????????????? ----- */}
+                {(mtgConfigs['transportation'] === true ? (
+                    <div className='form-group'>
+                        <h4>Transportation Coordinator</h4>
+                        <input
+                            type='text'
+                            placeholder=''
+                            name='transportation'
+                            value={transportation}
+                            onChange={onChange}
+                        />
+                        <small className='form-text'>Transportation</small>
+                    </div>
+                ):null )}
+                {/* SHOW SECURITY IF CONFIGURED        */}
+                {/* --- ???????????????????????????? ----- */}
+                {(mtgConfigs['securityContact'] === true ? (
+                    <div className='form-group'>
+                        <h4>Security Coordinator</h4>
+                        <input
+                            type='text'
+                            placeholder=''
+                            name='security'
+                            value={security}
+                            onChange={onChange}
+                        />
+                        <small className='form-text'>Security point of contact</small>
+                    </div>
+                ):null )}
+                <div className='form-group'>
+                        <div className='form-group'>
+                            <h4>Notes</h4>
+                            <textarea
+                                placeholder='Description and notes for meeting'
+                                name='notes'
+                                value={notes}
+                                onChange={(e) => onChange(e)}
+                            ></textarea>
+                        </div>
+                    </div>
                 {FormButtons()}
                 <hr />
                 <h2>
