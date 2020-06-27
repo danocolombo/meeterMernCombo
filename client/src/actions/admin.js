@@ -6,6 +6,7 @@ import {
     SET_DEFAULT_GROUPS,
     REMOVE_CLIENT_USER,
     SET_MTG_CONFIGS,
+    TOGGLE_CONFIG,
 } from './types';
 
 // GET CLIENT INFO

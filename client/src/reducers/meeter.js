@@ -5,6 +5,7 @@ import {
     REMOVE_CLIENT_USER,
     ADMIN_ERROR,
     SET_MTG_CONFIGS,
+    TOGGLE_CONFIG,
 } from '../actions/types';
 
 const initialState = {
@@ -55,6 +56,17 @@ export default function (state = initialState, action) {
                 defaultGroups: payload,
                 loading: false,
             };
+        case TOGGLE_CONFIG:
+            return state;
+        // return {
+        //     ...state,
+        //     mtgConfigs: state.mtgConfigs.filter(
+        //         (mtgConfigs) => mtgConfigs.UNK !== payload
+        //     ),
+        //     loading: false,
+
+        // };
+
         // case CLEAR_DEFAULT_GROUPS:
         //     return {
         //         ...state,
