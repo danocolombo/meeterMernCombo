@@ -12,8 +12,9 @@ import {
 import { SET_DEFAULT_GROUPS } from '../../actions/types';
 
 const initialState = {
-    setup: true,
-    transportation: true,
+    setupContact: true,
+    transportationContact: true,
+    transportationCnt: true,
     avContact: true,
     greeterContact1: true,
     greeterContact2: true,
@@ -25,15 +26,15 @@ const initialState = {
     mealCoordinator: true,
     cafeCnt: true,
     cafeCoordinator: true,
-    nurseryCnt: true,
+    nursery: true,
     nurseryContact: true,
-    childrenCnt: true,
+    children: true,
     childrenContact: true,
-    youthCnt: true,
+    youth: true,
     youthContact: true,
     donations: true,
     securityContact: true,
-    cleanup: true,
+    cleanupContact: true,
 };
 const MeetingConfig = ({
     toggleConfig,
@@ -49,8 +50,9 @@ const MeetingConfig = ({
         //now update formData from redux
         setFormData({
             ...formData,
-            setup: mtgConfigs.setup ? 1 : 0,
-            transportation: mtgConfigs.transportation ? 1 : 0,
+            setupContact: mtgConfigs.setupContact ? 1 : 0,
+            transportationContact: mtgConfigs.transportationContact ? 1 : 0,
+            transportationCnt: mtgConfigs.transportationCnt ? 1 : 0,
             avContact: mtgConfigs.avContact ? 1 : 0,
             greeterContact1: mtgConfigs.greeterContact1 ? 1 : 0,
             greeterContact2: mtgConfigs.greeterContact2 ? 1 : 0,
@@ -62,15 +64,15 @@ const MeetingConfig = ({
             mealCoordinator: mtgConfigs.mealCoordinator ? 1 : 0,
             cafeCnt: mtgConfigs.cafeCnt ? 1 : 0,
             cafeCoordinator: mtgConfigs.cafeCoordinator ? 1 : 0,
-            nurseryCnt: mtgConfigs.nurseryCnt ? 1 : 0,
+            nursery: mtgConfigs.nursery ? 1 : 0,
             nurseryContact: mtgConfigs.nurseryContact ? 1 : 0,
-            childrenCnt: mtgConfigs.childrenCnt ? 1 : 0,
+            children: mtgConfigs.children ? 1 : 0,
             childrenContact: mtgConfigs.childrenContact ? 1 : 0,
-            youthCnt: mtgConfigs.youthCnt ? 1 : 0,
+            youth: mtgConfigs.youth ? 1 : 0,
             youthContact: mtgConfigs.youthContact ? 1 : 0,
             donations: mtgConfigs.donations ? 1 : 0,
             securityContact: mtgConfigs.securityContact ? 1 : 0,
-            cleanup: mtgConfigs.cleanup ? 1 : 0,
+            cleanupContact: mtgConfigs.cleanupContact ? 1 : 0,
         });
     }, [loading, getMtgConfigs, mtgConfigs]);
     // const [formData, setFormData] = useState(initialState);
@@ -78,8 +80,9 @@ const MeetingConfig = ({
 
     //create intial formData
     const {
-        setup,
-        transportation,
+        setupContact,
+        transportationContact,
+        transportationCnt,
         avContact,
         greeterContact1,
         greeterContact2,
@@ -91,15 +94,15 @@ const MeetingConfig = ({
         mealCoordinator,
         cafeCnt,
         cafeCoordinator,
-        nurseryCnt,
+        nursery,
         nurseryContact,
-        childrenCnt,
+        children,
         childrenContact,
-        youthCnt,
+        youth,
         youthContact,
         donations,
         securityContact,
-        cleanup,
+        cleanupContact,
     } = formData;
 
     // const onChange = (e) => {
@@ -107,6 +110,8 @@ const MeetingConfig = ({
     // };
     const handleChange = (event) => {
         setFormData({ ...formData, [event.target.name]: event.target.checked });
+        toggleConfig(event.target.name, event.target.checked, activeClient);
+        alert('changing ' + event.target.name + ':' + event.target.checked);
     };
     const onSubmit = (e) => {
         e.preventDefault();
@@ -145,9 +150,9 @@ const MeetingConfig = ({
                             <FormControlLabel
                                 control={
                                     <Switch
-                                        checked={setup}
+                                        checked={setupContact}
                                         onChange={handleChange}
-                                        name='setup'
+                                        name='setupContact'
                                         color='primary'
                                     />
                                 }
@@ -156,9 +161,9 @@ const MeetingConfig = ({
                             <FormControlLabel
                                 control={
                                     <Switch
-                                        checked={cleanup}
+                                        checked={cleanupContact}
                                         onChange={handleChange}
-                                        name='cleanup'
+                                        name='cleanupContact'
                                         color='primary'
                                     />
                                 }
@@ -167,13 +172,24 @@ const MeetingConfig = ({
                             <FormControlLabel
                                 control={
                                     <Switch
-                                        checked={transportation}
+                                        checked={transportationContact}
                                         onChange={handleChange}
-                                        name='transportation'
+                                        name='transportationContact'
                                         color='primary'
                                     />
                                 }
                                 label='Transportation Contact'
+                            />
+                            <FormControlLabel
+                                control={
+                                    <Switch
+                                        checked={transportationCnt}
+                                        onChange={handleChange}
+                                        name='transportationCnt'
+                                        color='primary'
+                                    />
+                                }
+                                label='Transportation Count/Usage'
                             />
                             <FormControlLabel
                                 control={
@@ -305,14 +321,14 @@ const MeetingConfig = ({
                                         color='primary'
                                     />
                                 }
-                                label='Cafe Contact'
+                                label='Cafe Coordinator'
                             />
                             <FormControlLabel
                                 control={
                                     <Switch
-                                        checked={nurseryCnt}
+                                        checked={nursery}
                                         onChange={handleChange}
-                                        name='nurseryCnt'
+                                        name='nursery'
                                         color='primary'
                                     />
                                 }
@@ -332,9 +348,9 @@ const MeetingConfig = ({
                             <FormControlLabel
                                 control={
                                     <Switch
-                                        checked={childrenCnt}
+                                        checked={children}
                                         onChange={handleChange}
-                                        name='childrenCnt'
+                                        name='children'
                                         color='primary'
                                     />
                                 }
@@ -354,9 +370,9 @@ const MeetingConfig = ({
                             <FormControlLabel
                                 control={
                                     <Switch
-                                        checked={youthCnt}
+                                        checked={youth}
                                         onChange={handleChange}
-                                        name='youthCnt'
+                                        name='youth'
                                         color='primary'
                                     />
                                 }

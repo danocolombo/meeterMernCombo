@@ -150,8 +150,41 @@ export const suspendClientUser = (id) => async (dispatch) => {
     //users in database to suspended and updates
     //meeter.clientUsers status
 };
-export const toggleConfig = (cid, config) => async (dispatch) => {
+export const toggleConfig = (config, value, cid) => async (dispatch) => {
     // this gets the client and configuration value
     // if the value exists, we remove it, if it does
     // not exist, we add it.
+    let theChange = {};
+    theChange.cid = cid;
+    theChange.config = config;
+    theChange.value = value;
+    console.table(theChange);
+    try {
+        const config = {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        };
+        const res = await axios.post(
+            '/api/client/toggleconfig',
+            theChange,
+            config
+        );
+
+        dispatch({
+            type: TOGGLE_CONFIG,
+            payload: res,
+        });
+
+        dispatch(setAlert('Client User Removed', 'success'));
+    } catch (err) {
+        console.log('actions/admin.js deleteClientUser ADMIN_ERROR');
+        dispatch({
+            type: ADMIN_ERROR,
+            payload: {
+                msg: err.response.statusText,
+                status: err.response.status,
+            },
+        });
+    }
 };

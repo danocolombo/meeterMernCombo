@@ -65,7 +65,7 @@ router.post(
             donations,
             meal,
             mealCoordinator,
-            mealCount,
+            mealCnt,
             cafeCoordinator,
             cafeCount,
             greeterContact1,
@@ -135,10 +135,10 @@ router.post(
         } else {
             meetingFields.mealCoordinator = '';
         }
-        if (mealCount) {
-            meetingFields.mealCount = mealCount;
+        if (mealCnt) {
+            meetingFields.mealCnt = mealCnt;
         } else {
-            meetingFields.mealCount = 0;
+            meetingFields.mealCnt = 0;
         }
         if (cafeCoordinator) {
             meetingFields.cafeCoordinator = cafeCoordinator;

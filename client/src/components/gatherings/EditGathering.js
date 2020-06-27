@@ -27,7 +27,7 @@ const initialState = {
     donations: 0,
     meal: '',
     mealCoordinator: 'TBD',
-    mealCount: 0,
+    mealCnt: 0,
     cafeCoordinator: 'TBD',
     cafeCount: 0,
     greeterContact1: '',
@@ -101,7 +101,7 @@ const EditGathering = ({
         donations,
         meal,
         mealCoordinator,
-        mealCount,
+        mealCnt,
         cafeCoordinator,
         cafeCount,
         greeterContact1,
@@ -362,14 +362,14 @@ const EditGathering = ({
                 ) : null}
                 {/* SHOW MEAL COUNT IF CONFIGURED        */}
                 {/* --- ???????????????????????????? ----- */}
-                {mtgConfigs['mealCount'] === true ? (
+                {mtgConfigs['mealCnt'] === true ? (
                     <div className='form-group'>
                         <h4>Meal Count</h4>
                         <input
                             type='number'
-                            id='mealCount'
-                            name='mealCount'
-                            value={mealCount}
+                            id='mealCnt'
+                            name='mealCnt'
+                            value={mealCnt}
                             min='0'
                             max='200'
                             onChange={(e) => onChange(e)}

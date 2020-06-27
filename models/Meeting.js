@@ -37,7 +37,7 @@ const MeetingSchema = new mongoose.Schema({
     meal: {
         type: String,
     },
-    mealCount: {
+    mealCnt: {
         type: Number,
     },
     mealCoordinator: {
