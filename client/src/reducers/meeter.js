@@ -57,6 +57,7 @@ export default function (state = initialState, action) {
                 loading: false,
             };
         case TOGGLE_CONFIG:
+            console.log('payload: ' + payload);
             return state;
         // return {
         //     ...state,

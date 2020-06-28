@@ -111,20 +111,19 @@ const MeetingConfig = ({
     const handleChange = (event) => {
         setFormData({ ...formData, [event.target.name]: event.target.checked });
         toggleConfig(event.target.name, event.target.checked, activeClient);
-        alert('changing ' + event.target.name + ':' + event.target.checked);
     };
-    const onSubmit = (e) => {
-        e.preventDefault();
-        const theConfigs = updateMeetingConfigs(
-            formData,
-            history,
-            activeClient,
-            true
-        );
-        console.log('backfrom updateMeetingConfigs call');
-        console.table(theConfigs);
-        window.scrollTo(0, 0);
-    };
+    // const onSubmit = (e) => {
+    //     e.preventDefault();
+    //     const theConfigs = updateMeetingConfigs(
+    //         formData,
+    //         history,
+    //         activeClient,
+    //         true
+    //     );
+    //     console.log('backfrom updateMeetingConfigs call');
+    //     console.table(theConfigs);
+    //     window.scrollTo(0, 0);
+    // };
     return loading ? (
         <Spinner />
     ) : (
@@ -389,13 +388,6 @@ const MeetingConfig = ({
                                 }
                                 label='Youth Contact'
                             />
-                            <Button
-                                variant='contained'
-                                color='secondary'
-                                onClick={onSubmit}
-                            >
-                                Save Configurations
-                            </Button>
                         </FormGroup>
                     </div>
                 </form>

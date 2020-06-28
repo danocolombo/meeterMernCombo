@@ -110,6 +110,34 @@ router.get('/users/:code', auth, async (req, res) => {
         res.status(500).send('Server Error');
     }
 });
+// @route    GET api/client/mconfigs/:code
+// @desc     get the configs for client code ordered
+//           - pending
+//           - suspended
+//           - approved
+// @access   Private
+router.get('/mconfigs/:code', auth, async (req, res) => {
+    try {
+        const client = await Client.findOne({ code: req.params.code });
+        if (!client) {
+            return res
+                .status(400)
+                .json({ msg: 'No config info for client request' });
+        }
+        let cEntry = [];
+
+        client.mConfigs.forEach((u) => {
+            let k = u.config;
+            let v = u.value;
+            cEntry = { ...cEntry, [k]: v };
+        });
+        res.json(cEntry);
+    } catch (err) {
+        // routes/api/client.js :: GET /mconfigs/:code
+        console.error(err.message);
+        res.status(500).send('Server Error');
+    }
+});
 
 // @route    GET api/client/userstatus/:code
 // @desc     get the users for client code ordered
