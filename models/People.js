@@ -46,5 +46,8 @@ const PeopleSchema = new mongoose.Schema({
             },
         },
     ],
+    notes: {
+        type: String,
+    },
 });
 module.exports = People = mongoose.model('people', PeopleSchema);

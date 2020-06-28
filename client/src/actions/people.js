@@ -83,7 +83,7 @@ export const createPerson = (
             },
         };
         //need to add tentantId to formData
-        formData.tenaantId = 'people-' + activeClient;
+        formData.tenantId = 'people-' + activeClient;
         const res = await axios.post('/api/people', formData, config);
 
         dispatch({

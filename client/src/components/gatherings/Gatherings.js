@@ -2,7 +2,7 @@ import React, { Fragment, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import Button from '@material-ui/core/Button';
+// import Button from '@material-ui/core/Button';
 import Spinner from '../layout/Spinner';
 import GatheringItem from './GatheringItem';
 import { getGatherings } from '../../actions/gathering';
@@ -16,19 +16,18 @@ const Gatherings = ({
 }) => {
     useEffect(() => {
         if (activeClient) {
-            checkActives();
-            console.log(
-                'actives: ' +
-                    activeClient +
-                    ' ' +
-                    activeRole +
-                    ' ' +
-                    activeStatus
-            );
+            // console.log(
+            //     'actives: ' +
+            //         activeClient +
+            //         ' ' +
+            //         activeRole +
+            //         ' ' +
+            //         activeStatus
+            // );
             getGatherings({ activeClient });
         }
         // getGatherings();
-    }, [getGatherings]);
+    }, [getGatherings, activeClient]);
     return loading ? (
         <Spinner />
     ) : (
@@ -80,13 +79,13 @@ const Gatherings = ({
                 <p className='lead'>Your historical list of meetings...</p>,
             ];
         } else {
-            if (activeStatus == 'approved' && activeRole != 'guest') {
+            if (activeStatus === 'approved' && activeRole !== 'guest') {
                 return [
                     <Link to='/gatherings/historyView'>HISTORY</Link>,
                     <p className='lead'>List of upcoming meetings...</p>,
                     <div>
                         <Link to='/EditGathering/0' visible='false'>
-                            <a class='waves-effect waves-light btn'>
+                            <div class='waves-effect waves-light btn'>
                                 <i class='material-icons left green'>
                                     add_circle_outline
                                 </i>
@@ -94,7 +93,7 @@ const Gatherings = ({
                                     {' '}
                                     NEW
                                 </span>
-                            </a>
+                            </div>
                         </Link>
                     </div>,
                 ];
@@ -105,10 +104,6 @@ const Gatherings = ({
                 ];
             }
         }
-        return null;
-    }
-    function checkActives() {
-        console.log('CHECK-CHECK-CHECK');
     }
 };
 

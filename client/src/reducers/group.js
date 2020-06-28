@@ -2,8 +2,10 @@ import {
     GET_GROUPS,
     GROUP_ERROR,
     DELETE_GROUP,
+    DELETE_GROUPS,
     ADD_GROUP,
     GET_GROUP,
+    CLEAR_GROUP,
 } from '../actions/types';
 
 const initialState = {
@@ -21,6 +23,7 @@ export default function (state = initialState, action) {
         case GET_GROUPS:
             return {
                 ...state,
+                group: null,
                 groups: payload,
                 groupLoading: false,
             };
@@ -36,6 +39,18 @@ export default function (state = initialState, action) {
                 groups: [payload, ...state.groups],
                 groupLoading: false,
             };
+        case CLEAR_GROUP:
+            return {
+                ...state,
+                group: null,
+                groupLoading: false,
+            };
+        case DELETE_GROUPS:
+            return {
+                ...state,
+                // groups: state.groups.filter((group) => group.id !== payload),
+                groupLoading: false,
+            };   
         case DELETE_GROUP:
             return {
                 ...state,
@@ -54,12 +69,6 @@ export default function (state = initialState, action) {
         //     return {
         //         ...state,
         //         groups: null,
-        //         groupLoading: false,
-        //     };
-        // case CLEAR_GROUP:
-        //     return {
-        //         ...state,
-        //         group: null,
         //         groupLoading: false,
         //     };
 

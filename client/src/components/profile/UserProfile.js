@@ -1,8 +1,8 @@
-import React, { Fragment, useEffect } from 'react';
+import React, { Fragment} from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import Spinner from '../layout/Spinner';
+// import Spinner from '../layout/Spinner';
 import UserProfileClients from './UserProfileClients';
 // import ClientDef from './UserProfileClients';
 const UserProfile = ({
@@ -28,13 +28,7 @@ const UserProfile = ({
         </Fragment>
     );
 };
-function greetings(u) {
-    return [
-        <Fragment>
-            <dif>Greetings {u && u.name}</dif>
-        </Fragment>,
-    ];
-}
+
 UserProfile.propTypes = {
     auth: PropTypes.object.isRequired,
 };

@@ -1,6 +1,5 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
 // import Moment from 'react-moment';
 import { connect } from 'react-redux';
 import { deleteDefGroup } from '../../actions/admin';
@@ -13,9 +12,9 @@ const DefaultGroups = ({
 }) => (
     <Fragment>
         <div className={'adminDefaultGroupBox bg-white p my'}>
-            {gender == 'f' && <div>women</div>}
-            {gender == 'm' && <div>men</div>}
-            {gender == 'x' && <div>mixed</div>}
+            {gender === 'f' && <div>women</div>}
+            {gender === 'm' && <div>men</div>}
+            {gender === 'x' && <div>mixed</div>}
             <div>{title}</div>
             <div>{location}</div>
             <div>{facilitator}</div>

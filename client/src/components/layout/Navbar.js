@@ -31,7 +31,7 @@ const Navbar = ({ auth: { isAuthenticated, loading, user }, auth, logout }) => {
                         <li></li>
                     </Fragment>
                 )}
-                {auth.activeRole != 'guest' &&
+                {auth.activeRole !== 'guest' &&
                 auth.activeStatus === 'approved' ? (
                     <Fragment>
                         <li>

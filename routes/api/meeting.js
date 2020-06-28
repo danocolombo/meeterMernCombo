@@ -50,27 +50,43 @@ router.post(
             return res.status(400).json({ errors: errors.array() });
         }
         const {
+            _id,
+            tenantId,
             meetingId,
             meetingDate,
             facilitator,
             meetingType,
-            tenantId,
-            title,
             supportRole,
+            title,
             worship,
+            avContact,
             attendance,
+            newcomers,
             donations,
             meal,
             mealCoordinator,
-            mealCount,
+            mealCnt,
             cafeCoordinator,
-            newcomers,
+            cafeCount,
+            greeterContact1,
+            greeterContact2,
+            resourceContact,
+            announcementsContact,
+            closingContact,
+            securityContact,
+            setupContact,
+            cleanupContact,
+            transportationContact,
+            transportationCount,
+            nurseryContact,
             nursery,
+            childrenContact,
             children,
+            youthContact,
             youth,
             notes,
         } = req.body;
-
+        // console.table(req.body);
         const meetingFields = {};
         //first two are required, no need to check.
         meetingFields.meetingDate = meetingDate;
@@ -78,65 +94,159 @@ router.post(
         if (meetingId) meetingFields.meetingId = meetingId;
         if (tenantId) meetingFields.tenantId = tenantId;
         if (facilitator) meetingFields.facilitator = facilitator;
-        if (title) meetingFields.title = title;
         if (supportRole) {
             meetingFields.supportRole = supportRole;
         } else {
             meetingFields.supportRole = '';
         }
-        if (worship) meetingFields.worship = worship;
+        if (title) meetingFields.title = title;
+        if (worship) {
+            meetingFields.worship = worship;
+        } else {
+            meetingFields.worship = '';
+        }
+        if (avContact) {
+            meetingFields.avContact = avContact;
+        } else {
+            meetingFields.avContact = '';
+        }
         if (attendance) {
             meetingFields.attendance = attendance;
         } else {
             meetingFields.attendance = 0;
-        }
-        if (donations) {
-            meetingFields.donations = donations;
-        } else {
-            meetingFields.donations = 0;
-        }
-        if (meal) meetingFields.meal = meal;
-        if (mealCoordinator) meetingFields.mealCoordinator = mealCoordinator;
-        if (mealCount) {
-            meetingFields.mealCount = mealCount;
-        } else {
-            meetingFields.mealCount = 0;
-        }
-        if (cafeCoordinator) meetingFields.cafeCoordinator = cafeCoordinator;
-
-        if (notes) {
-            meetingFields.notes = notes;
-        } else {
-            meetingFields.notes = '';
         }
         if (newcomers) {
             meetingFields.newcomers = newcomers;
         } else {
             meetingFields.newcomers = 0;
         }
+        if (donations) {
+            meetingFields.donations = donations;
+        } else {
+            meetingFields.donations = 0;
+        }
+        if (meal) {
+            meetingFields.meal = meal;
+        } else {
+            meetingFields.meal = '';
+        }
+        if (mealCoordinator) {
+            meetingFields.mealCoordinator = mealCoordinator;
+        } else {
+            meetingFields.mealCoordinator = '';
+        }
+        if (mealCnt) {
+            meetingFields.mealCnt = mealCnt;
+        } else {
+            meetingFields.mealCnt = 0;
+        }
+        if (cafeCoordinator) {
+            meetingFields.cafeCoordinator = cafeCoordinator;
+        } else {
+            meetingFields.cafeCoordinator = '';
+        }
+        if (cafeCount) {
+            meetingFields.cafeCount = cafeCount;
+        } else {
+            meetingFields.cafeCount = 0;
+        }
+        if (greeterContact1) {
+            meetingFields.greeterContact1 = greeterContact1;
+        } else {
+            meetingFields.greeterContact1 = '';
+        }
+        if (greeterContact2) {
+            meetingFields.greeterContact2 = greeterContact2;
+        } else {
+            meetingFields.greeterContact2 = '';
+        }
+        if (resourceContact) {
+            meetingFields.resourceContact = resourceContact;
+        } else {
+            meetingFields.resourceContact = '';
+        }
+        if (announcementsContact) {
+            meetingFields.announcementsContact = announcementsContact;
+        } else {
+            meetingFields.announcementsContact = '';
+        }
+        if (closingContact) {
+            meetingFields.closingContact = closingContact;
+        } else {
+            meetingFields.closingContact = '';
+        }
+        if (securityContact) {
+            meetingFields.securityContact = securityContact;
+        } else {
+            meetingFields.securityContact = '';
+        }
+        if (setupContact) {
+            meetingFields.setupContact = setupContact;
+        } else {
+            meetingFields.setupContact = '';
+        }
+        if (cleanupContact) {
+            meetingFields.cleanupContact = cleanupContact;
+        } else {
+            meetingFields.cleanupContact = '';
+        }
+        if (transportationContact) {
+            meetingFields.transportationContact = transportationContact;
+        } else {
+            meetingFields.transportationContact = '';
+        }
+        if (transportationCount) {
+            meetingFields.transportationCount = transportationCount;
+        } else {
+            meetingFields.transportationCount = 0;
+        }
+        if (nurseryContact) {
+            meetingFields.nurseryContact = nurseryContact;
+        } else {
+            meetingFields.nurseryContact = '';
+        }
         if (nursery) {
             meetingFields.nursery = nursery;
         } else {
             meetingFields.nursery = 0;
+        }
+        if (childrenContact) {
+            meetingFields.childrenContact = childrenContact;
+        } else {
+            meetingFields.childrenContact = '';
         }
         if (children) {
             meetingFields.children = children;
         } else {
             meetingFields.children = 0;
         }
+        if (youthContact) {
+            meetingFields.youthContact = youthContact;
+        } else {
+            meetingFields.youthContact = '';
+        }
         if (youth) {
             meetingFields.youth = youth;
         } else {
             meetingFields.youth = 0;
         }
+        if (notes) {
+            meetingFields.notes = notes;
+        } else {
+            meetingFields.notes = '';
+        }
+        // console.log('going to db...');
+        // console.table(meetingFields);
         try {
             // Using upsert option (creates new doc if no match is found):
             if (meetingId) {
-                let meeting = await Meeting.findOneAndUpdate(
+                let meeting = await Meeting.updateOne(
                     { _id: meetingId },
                     { $set: meetingFields },
-                    { new: true, upsert: true }
+                    { new: true, upsert: true, returnNewDocument: true }
                 );
+                console.log('response');
+                console.log(JSON.stringify(meeting));
                 res.json(meeting);
             } else {
                 // we are going to do insert...
@@ -145,6 +255,8 @@ router.post(
                     { $set: meetingFields },
                     { new: true, upsert: true, returnNewDocument: true }
                 );
+                console.log('response2');
+                // console.table(meeting2);
                 res.json(meeting2);
             }
         } catch (err) {

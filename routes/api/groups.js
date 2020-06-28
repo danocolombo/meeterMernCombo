@@ -166,23 +166,25 @@ router.post(
             notes,
         } = req.body;
         const groupFields = {};
+
         //first two are required, no need to check.
         groupFields.mid = mid;
         groupFields.title = title;
         //=====================================
         // if it is group update, they will provide
         // a group id
+        //-----------------------
         if (attendance) {
             groupFields.attendance = attendance;
         } else {
             groupFields.attendance = 0;
         }
         if (gender) groupFields.gender = gender;
-        if (location) groupFields.location = location;
-        if (facilitator) groupFields.facilitator = facilitator;
-        if (cofacilitator) groupFields.cofacilitator = cofacilitator;
-        if (notes) groupFields.notes = notes;
-
+        if (location){groupFields.location = location}else{groupFields.location='';}
+        if (facilitator){groupFields.facilitator = facilitator}else{groupFields.facilitator ='';}
+        if (cofacilitator){groupFields.cofacilitator = cofacilitator}else{groupFields.cofacilitator = '';}
+        if (notes){ groupFields.notes = notes}else{ groupFields.notes = '';}
+        
         try {
             if (req.params.gid != 0) {
                 // if we have gid, then attempt to do update, otherwise, insert
@@ -221,7 +223,7 @@ router.post(
         // }
     }
 );
-// @route    DELETE api/groups/group/:gid
+// @route    DELETE api/groups/:gid
 // @desc     Delete group by ID
 // @access   Private
 router.delete('/:gid', auth, async (req, res) => {
@@ -235,6 +237,20 @@ router.delete('/:gid', auth, async (req, res) => {
         // res.json({ msg: feedback });
         // return res.status(200).json({ msg: 'group removed' });
     } catch (error) {
+        console.error(error);
+        return res.status(500).json({ msg: 'Server error' });
+    }
+});
+// @route    DELETE api/groups/bymeeting/:mid
+// @desc     Delete all groups by meeting ID
+// @access   Private
+router.delete('/bymeeting/:mid', auth, async (req, res) => {
+    try {
+        await Groups.deleteMany({"mid": req.params.mid});
+
+        res.json({ msg: 'Groups removed' });
+    } catch (error) {
+        //routes/api/groups/
         console.error(error);
         return res.status(500).json({ msg: 'Server error' });
     }

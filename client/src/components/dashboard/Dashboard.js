@@ -1,10 +1,8 @@
 import React, { Fragment, useEffect } from 'react';
-import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Spinner from '../layout/Spinner';
-import DashboardActions from './DashboardActions';
-import DashboardPic from '../../img/Dashboard1-200.png';
+
 import DashLogo from '../../img/MMeeterLogo.png';
 import NextGathering from '../gatherings/NextGathering';
 // import CheckPrivs from './CheckPrivs';
@@ -36,10 +34,10 @@ const Dashboard = ({
 
             getCurrentProfile();
         }
-        if (gatherings.length == 0) {
+        if (gatherings.length === 0) {
             getGatherings({ activeClient });
         }
-    }, []);
+    }, [activeClient]);
     useEffect(() => {
         getCurrentProfile();
         if (activeClient) {
@@ -68,7 +66,6 @@ const Dashboard = ({
                     <DashboardActions />
                     <Experience experience={profile.experience} />
                     <Education education={profile.education} />
-
                     <div className='my-2'>
                         <button
                             className='btn btn-danger'
@@ -100,7 +97,7 @@ const Dashboard = ({
                             <strong>What's happening...</strong>
                         </u>
                     </div> */}
-                    <NextGathering />
+                    <NextGathering gatherings={gatherings} />
                 </Fragment>,
             ];
         } else {

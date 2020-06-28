@@ -15,17 +15,17 @@ const People = ({
 }) => {
     useEffect(() => {
         if (activeClient) {
-            console.log(
-                'actives: ' +
-                    activeClient +
-                    ' ' +
-                    activeRole +
-                    ' ' +
-                    activeStatus
-            );
+            // console.log(
+            //     'actives: ' +
+            //         activeClient +
+            //         ' ' +
+            //         activeRole +
+            //         ' ' +
+            //         activeStatus
+            // );
             getPeople(activeClient);
         }
-    }, [getPeople]);
+    }, [getPeople, activeClient]);
 
     return loading ? (
         <Spinner />
@@ -38,7 +38,7 @@ const People = ({
             <div>
                 <Link to='/EditPerson/0'>
                     <div class='waves-effect waves-light btn green'>
-                        <i class='material-icons left green'>
+                        <i className='material-icons left green'>
                             add_circle_outline
                         </i>
                         <span className='meeterNavTextHighlight'>

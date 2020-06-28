@@ -15,9 +15,9 @@ const GroupListItem = ({
         <div className={'GGL-Box'}>
             <div className='GGL-Gender my-1 pl-1 pr-1'>
                 <Link to={`/EditGroup/${mid}/${_id}`}>
-                    {gender == 'f' && <div>women</div>}
-                    {gender == 'm' && <div>men</div>}
-                    {gender == 'x' && <div>mixed</div>}
+                    {gender === 'f' && <div>women</div>}
+                    {gender === 'm' && <div>men</div>}
+                    {gender === 'x' && <div>mixed</div>}
                 </Link>
             </div>
 

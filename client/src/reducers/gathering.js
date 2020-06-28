@@ -10,8 +10,6 @@ import {
     GET_HATHERINGS,
     CLEAR_HATHERINGS,
     UPDATE_GATHERING,
-    GET_GATHERING_GROUPS,
-    CLEAR_GATHERING_GROUPS,
 } from '../actions/types';
 
 const initialState = {
@@ -48,12 +46,6 @@ export default function (state = initialState, action) {
                 gathering: payload,
                 loading: false,
             };
-        // case GET_GATHERING_GROUPS:
-        //     return {
-        //         ...state,
-        //         groups: payload,
-        //         loading: false,
-        //     };
         case GET_SERVANTS:
             //this inserts a blank row at the top of payload
             var newPayload = [];
@@ -89,12 +81,6 @@ export default function (state = initialState, action) {
                 gathering: null,
                 loading: false,
             };
-        // case CLEAR_GATHERING_GROUPS:
-        //     return {
-        //         ...state,
-        //         groups: null,
-        //         loading: false,
-        //     };
         case CLEAR_SERVANTS:
             return {
                 ...state,

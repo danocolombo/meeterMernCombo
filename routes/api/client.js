@@ -110,6 +110,34 @@ router.get('/users/:code', auth, async (req, res) => {
         res.status(500).send('Server Error');
     }
 });
+// @route    GET api/client/mconfigs/:code
+// @desc     get the configs for client code ordered
+//           - pending
+//           - suspended
+//           - approved
+// @access   Private
+router.get('/mconfigs/:code', auth, async (req, res) => {
+    try {
+        const client = await Client.findOne({ code: req.params.code });
+        if (!client) {
+            return res
+                .status(400)
+                .json({ msg: 'No config info for client request' });
+        }
+        let cEntry = [];
+
+        client.mConfigs.forEach((u) => {
+            let k = u.config;
+            let v = u.value;
+            cEntry = { ...cEntry, [k]: v };
+        });
+        res.json(cEntry);
+    } catch (err) {
+        // routes/api/client.js :: GET /mconfigs/:code
+        console.error(err.message);
+        res.status(500).send('Server Error');
+    }
+});
 
 // @route    GET api/client/userstatus/:code
 // @desc     get the users for client code ordered
@@ -373,6 +401,177 @@ router.put(
         }
     }
 );
+// @route    PUT api/client/updateconfigs
+// @desc     Add or Update default group setting
+// @access   Private
+router.put('/updateconfigs/:cid', auth, async (req, res) => {
+    // destructure req
+    const {
+        setup,
+        transportation,
+        avContact,
+        greeterContact1,
+        greeterContact2,
+        resourceContact,
+        announcementsContact,
+        closingContact,
+        mealCnt,
+        meal,
+        mealCoordinator,
+        cafeCnt,
+        cafeCoordinator,
+        nurseryCnt,
+        nurseryContact,
+        childrenCnt,
+        childrenContact,
+        youthCnt,
+        youthContact,
+        donations,
+        securityContact,
+        cleanup,
+    } = req.body;
+    // create a body to pass from the data received
+    const configInfo = {};
+    if (setup) {
+        configInfo.setup = true;
+    } else {
+        configInfo.setup = false;
+    }
+    if (transportation) {
+        configInfo.transportation = true;
+    } else {
+        configInfo.transportation = false;
+    }
+    if (avContact) {
+        configInfo.avContact = true;
+    } else {
+        configInfo.avContact = false;
+    }
+    if (greeterContact1) {
+        configInfo.greeterContact1 = true;
+    } else {
+        configInfo.greeterContact1 = false;
+    }
+    if (greeterContact2) {
+        configInfo.greeterContact2 = true;
+    } else {
+        configInfo.greeterContact2 = false;
+    }
+    if (resourceContact) {
+        configInfo.resourceContact = true;
+    } else {
+        configInfo.resourceContact = false;
+    }
+    if (announcementsContact) {
+        configInfo.announcementsContact = true;
+    } else {
+        configInfo.announcementsContact = false;
+    }
+    if (closingContact) {
+        configInfo.closingContact = true;
+    } else {
+        configInfo.closingContact = false;
+    }
+    if (mealCnt) {
+        configInfo.mealCnt = true;
+    } else {
+        configInfo.mealCnt = false;
+    }
+    if (meal) {
+        configInfo.meal = true;
+    } else {
+        configInfo.meal = false;
+    }
+    if (mealCoordinator) {
+        configInfo.mealCoordinator = true;
+    } else {
+        configInfo.mealCoordinator = false;
+    }
+    if (cafeCnt) {
+        configInfo.cafeCnt = true;
+    } else {
+        configInfo.cafeCnt = false;
+    }
+    if (cafeCoordinator) {
+        configInfo.cafeCoordinator = true;
+    } else {
+        configInfo.cafeCoordinator = false;
+    }
+    if (nurseryCnt) {
+        configInfo.nurseryCnt = true;
+    } else {
+        configInfo.nurseryCnt = false;
+    }
+    if (nurseryContact) {
+        configInfo.nurseryContact = true;
+    } else {
+        configInfo.nurseryContact = false;
+    }
+    if (childrenCnt) {
+        configInfo.childrenCnt = true;
+    } else {
+        configInfo.childrenCnt = false;
+    }
+    if (childrenContact) {
+        configInfo.childrenContact = true;
+    } else {
+        configInfo.childrenContact = false;
+    }
+    if (youthCnt) {
+        configInfo.youthCnt = true;
+    } else {
+        configInfo.youthCnt = false;
+    }
+    if (youthContact) {
+        configInfo.youthContact = true;
+    } else {
+        configInfo.youthContact = false;
+    }
+    if (donations) {
+        configInfo.donations = true;
+    } else {
+        configInfo.donations = false;
+    }
+    if (securityContact) {
+        configInfo.securityContact = true;
+    } else {
+        configInfo.securityContact = false;
+    }
+    if (cleanup) {
+        configInfo.cafeCnt = true;
+    } else {
+        configInfo.cafeCnt = false;
+    }
+    // the following was an attempt to dynamically define the data, but does not work.
+    //---------------------------------------------------------------------------------
+    // const configData = {};
+    //     for (const key in req.body) {
+    //         if (key in configData) configData[key] = req.body[key];
+    //     }
+    //     // groupData['mid'] = match.params.mid;
+    // console.log('build configData structure...');
+    // console.table(configData);
+
+    //-----------------------------------
+    // now the configInfo contains the settings, update client
+    // the data we have:
+    // console.table(configInfo);
+    try {
+        let theClient = await Client.updateOne(
+            {
+                code: req.params.cid,
+            },
+            { $set: { meetingConfig: configInfo } },
+            { upsert: true }
+        );
+        // console.table(JSON.stringify(theClient));
+        res.json(JSON.stringify(theClient));
+    } catch (err) {
+        console.log('api/client/updateconfigs');
+        console.error(err.message);
+        res.status(500).send('Server Error');
+    }
+});
 router.delete('/defaultgroup', auth, async (req, res) => {
     try {
         const { cid, gender, title, location, facilitator } = req.body;
@@ -461,4 +660,189 @@ router.delete('/user/:cid/:uid', auth, async (req, res) => {
         res.status(500).send('Server Error');
     }
 });
+
+// @route    GET api/client/meetingConfigs/:code
+// @desc     Get list of client meeting configuratons for client code
+// @access   Private
+router.get('/meetingConfigs/:code', auth, async (req, res) => {
+    try {
+        const client = await Client.findOne({ code: req.params.code });
+        if (!client) {
+            return res
+                .status(400)
+                .json({ msg: 'No config info for client request' });
+        }
+        res.json(client.meetingConfig);
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Server Error');
+    }
+});
+// @route    PUT api/client/user
+// @desc     Add or Update default group setting
+// @access   Private
+router.put(
+    '/meetingConfigs/toggle/:code',
+    auth,
+    [check('config', 'Config value is required').not().isEmpty()],
+    async (req, res) => {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            //if we got errors
+            return res.status(400).json({ errors: errors.array() });
+        }
+        // destructure req
+        const { config } = req.body;
+        let configResponse = [];
+        try {
+            //first thing, find the client entry, then check for config
+            const clientEntry = await Client.findOne({ code: req.params.code });
+            let newConfigs = [];
+            //-------------------------------
+            // get old configs
+            //-------------------------------
+            const currentSettings = clientEntry.meetingConfig;
+            const configSettings = Object.keys(currentSettings);
+
+            if (config in clientEntry.meetingConfig) {
+                // loop through settings, skip config and create new settings
+                // NOTE: we start at 1, because 0 has $init back from mongo (skip)
+                let x = '';
+                for (let i = 1; i < configSettings.length; i++) {
+                    console.log(configSettings[i]);
+                    // x = configSettings[i];
+                    if (configSettings[i] != config) {
+                        newConfigs[configSettings[i]] = true;
+                    }
+                }
+                console.log('resulting in...');
+                // console.table(newConfigs);
+            } else {
+                //config does not exist, add it.
+                // loop through settings, add config to list
+                // NOTE: we start at 1, because 0 has $init back from mongo (skip)
+                let x = '';
+                for (let i = 1; i < configSettings.length; i++) {
+                    console.log(configSettings[i]);
+                    // x = configSettings[i];
+                    if (configSettings[i] != config) {
+                        newConfigs[configSettings[i]] = true;
+                    }
+                }
+                newConfigs[config] = true;
+                console.log('resulting in...');
+                // console.table(newConfigs);
+            }
+            const configResults = await Client.update(
+                { code: req.params.code },
+                {
+                    $set: {
+                        meetingConfig: {
+                            cafe: true,
+                            transportation: true,
+                        },
+                    },
+                }
+            );
+            // configResponse.push({ msg: 'check console' });
+            res.json(configResults);
+        } catch (err) {
+            console.error(
+                'admin [put:meetingConfigs/toggle error.]: ' + err.message
+            );
+            res.status(500).send('Server Error');
+        }
+    }
+);
+router.post(
+    '/toggleconfig',
+    [
+        auth,
+        [
+            check('config', 'Config definition is required').not().isEmpty(),
+            check('value', 'Config value is required').not().isEmpty(),
+            check('cid', 'CID is required').not().isEmpty(),
+        ],
+    ],
+    async (req, res) => {
+        const { cid, config, value } = req.body;
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() });
+        }
+
+        try {
+            const query = { code: cid };
+            const update = {
+                $set: { name: 'Sunday Quaram' },
+            };
+            // !!!!!!!!!!!  this blew away meeting Config settings
+            // const update = {
+            //     $set: { meetingConfig: { setupConfig: false}},
+            // };
+            const options = { new: true };
+            const updateClient = await Client.findOneAndUpdate(
+                {
+                    code: cid,
+                    'mConfigs.config': config,
+                },
+                {
+                    $set: {
+                        'mConfigs.$.value': value,
+                    },
+                },
+                null,
+                (err) => {
+                    if (err) {
+                        console.log('Error: ' + err);
+                    } else {
+                        console.log('Updated: ' + config);
+                    }
+                    // process.exit(0);
+                    // res.json(updateClient);
+                }
+            );
+            res.json(updateClient);
+        } catch (err) {
+            //routes/api/client.js :: router.post(/toogleconfig)
+            console.error(err.message);
+            res.status(500).send('Server Error');
+        }
+    }
+);
+router.post(
+    '/addmconfig',
+    [
+        auth,
+        [
+            check('config', 'Config definition is required').not().isEmpty(),
+            check('value', 'Config value is required').not().isEmpty(),
+            check('cid', 'CID is required').not().isEmpty(),
+        ],
+    ],
+    async (req, res) => {
+        const { cid, config, value } = req.body;
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() });
+        }
+        const configInfo = {
+            config,
+            value,
+        };
+        try {
+            const newClientUpdate = await Client.findOne({ code: cid });
+            //push the entry onto the end of users subarray
+            newClientUpdate.mConfigs.push(configInfo);
+            //save the changes
+            await newClientUpdate.save();
+            res.json(newClientUpdate);
+        } catch (err) {
+            //routes/api/client.js :: router.post(/toogleconfig)
+            console.error(err.message);
+            res.status(500).send('Server Error');
+        }
+    }
+);
+
 module.exports = router;

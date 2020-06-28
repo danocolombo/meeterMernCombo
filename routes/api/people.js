@@ -20,8 +20,11 @@ const People = require('../../models/People');
 // @access   Public
 router.post(
     '/',
-    [check('name', 'Name is required').not().isEmpty()],
-    [check('tenantId', 'Tenant code is required').not().isEmpty()],
+    [auth],
+    [
+        check('name', 'Name is required').not().isEmpty(),
+        check('tenantId', 'Tenant code not identified').not().isEmpty(),
+    ],
     async (req, res) => {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
@@ -76,6 +79,11 @@ router.post(
             personFields.service = service;
         } else {
             personFields.service = '';
+        }
+        if (notes) {
+            personFields.notes = notes;
+        } else {
+            personFields.notes = '';
         }
         try {
             let person = await People.findOneAndUpdate(
@@ -173,7 +181,7 @@ router.get('/all', async (req, res) => {
 router.get('/client/:cid', async (req, res) => {
     // need to create the tenant value
     let client = 'people-' + req.params.cid;
-    console.log('client: ' + client);
+    // console.log('client: ' + client);
     try {
         const people = await People.find({
             tenantId: client,

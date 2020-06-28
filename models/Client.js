@@ -24,6 +24,16 @@ const ClientSchema = new mongoose.Schema({
             },
         },
     ],
+    mConfigs: [
+        {
+            config: {
+                type: String,
+            },
+            value: {
+                type: Boolean
+            }
+        }
+    ],
     defaultGroups: [
         {
             gender: {
@@ -40,6 +50,71 @@ const ClientSchema = new mongoose.Schema({
             },
         },
     ],
+    meetingConfig: {
+        setupContact: {
+            type: Boolean,
+        },
+        transportationContact: {
+            type: Boolean,
+        },
+        transportationCnt: {
+            type: Boolean,
+        },
+        avContact: {
+            type: Boolean,
+        },
+        greeterContact1: {
+            type: Boolean,
+        },
+        greeterContact2: {
+            type: Boolean,
+        },
+        resourceContact: {
+            type: Boolean,
+        },
+        announcementsContact: {
+            type: Boolean,
+        },
+        closingContact: {
+            type: Boolean,
+        },
+        mealCnt: {
+            type: Boolean,
+        },
+        meal: {
+            type: Boolean,
+        },
+        mealCoordinator: {
+            type: Boolean,
+        },
+        cafeCnt: {
+            type: Boolean,
+        },
+        cafeCoordinator: {
+            type: Boolean,
+        },
+        nursery: {
+            type: Boolean,
+        },
+        nurseryContact: {
+            type: Boolean,
+        },
+        children: {
+            type: Boolean,
+        },
+        childrenContact: {
+            type: Boolean,
+        },
+        youth: {
+            type: Boolean,
+        },
+        youthContact: {
+            type: Boolean,
+        },
+        donations: {
+            type: Boolean,
+        },
+    },
     date: {
         type: Date,
         default: Date.now,

@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
+
 // import Moment from 'react-moment';
 import { connect } from 'react-redux';
 import {
@@ -30,10 +30,10 @@ const ClientUser = ({
             <h4>{name}</h4>
         </div>
         <div>
-            {status == 'approved' && (
+            {status === 'approved' && (
                 <p className='my-1'>Current Role: {role}</p>
             )}
-            {status != 'approved' && (
+            {status !== 'approved' && (
                 <p className='my-1'>
                     Requested Role:{' '}
                     <strong>
@@ -44,7 +44,7 @@ const ClientUser = ({
 
             {showActions && (
                 <Fragment>
-                    {status != 'approved' && (
+                    {status !== 'approved' && (
                         <button
                             onClick={() => approveClientUser(_id)}
                             type='button'
@@ -53,7 +53,7 @@ const ClientUser = ({
                             <i className='fas fa-thumbs-up' />
                         </button>
                     )}
-                    {!auth.loading && role != 'superuser' && (
+                    {!auth.loading && role !== 'superuser' && (
                         <button
                             onClick={() => suspendClientUser(_id)}
                             type='button'
@@ -62,7 +62,7 @@ const ClientUser = ({
                             <i className='fas fa-ban' />
                         </button>
                     )}
-                    {!auth.loading && role != 'superuser' && (
+                    {!auth.loading && role !== 'superuser' && (
                         <button
                             onClick={() =>
                                 deleteClientUser(auth.activeClient, _id)

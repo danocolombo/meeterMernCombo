@@ -4,10 +4,11 @@ import {
     GET_GROUPS,
     GROUP_ERROR,
     DELETE_GROUP,
+    DELETE_GROUPS,
+    CLEAR_GROUP,
     ADD_GROUP,
     GET_GROUP,
 
-    // CLEAR_GROUP,
     // UPDATE_GROUP,
     // CLEAR_GROUPS,
     // SET_GROUP,
@@ -23,8 +24,31 @@ export const getGroups = (mid) => async (dispatch) => {
             payload: res.data,
         });
     } catch (err) {
+        console.log('actions/group.js getGroups');
+        console.log('GET /api/groups/meeting/' + mid);
         dispatch({
             //actions:getGroups
+            type: GROUP_ERROR,
+            payload: {
+                msg: err.response.statusText,
+                status: err.response.status,
+            },
+        });
+    }
+};
+// Clear REDUX group
+export const clearGroup = () => async (dispatch) => {
+    try {
+        await dispatch({
+            type: CLEAR_GROUP,
+            payload: 'Clear temp group info',
+        });
+        // dispatch(setAlert('Group removed', 'success'));
+    } catch (err) {
+        console.log('actions/group.js clearGroup');
+        console.log('DISPATCH TO CLEAR REDUX');
+        dispatch({
+            //actions:clearGroup
             type: GROUP_ERROR,
             payload: {
                 msg: err.response.statusText,
@@ -50,6 +74,10 @@ export const deleteGroup = (groupId, mid) => async (dispatch) => {
         });
         dispatch(setAlert('Group removed', 'success'));
     } catch (err) {
+        console.log('actions/group.js deleteGroup');
+        console.log('DELETE /api/groups/' + groupId);
+        console.log('GET /api/groups/meeting/' + mid);
+        console.log('DISPATCH TO RELOAD GROUPS IN REDUX');
         dispatch({
             //actions:deleteGroup
             type: GROUP_ERROR,
@@ -60,30 +88,34 @@ export const deleteGroup = (groupId, mid) => async (dispatch) => {
         });
     }
 };
-// Get group associated with groupID
-export const getGroupNoRedux = (gid) => async (dispatch) => {
-    console.log('actions/group: getGroup: gid:' + gid);
+// deleteGroupsByMeeting
+// this is used to remove all the groups associated with a meeting
+export const deleteGroupsByMeeting = (mid) => async (dispatch) => {
     try {
-        // dispatch({ type: CLEAR_GROUPS });
-        const res = await axios.get(`/api/groups/${gid}`);
-        return await axios.get(`/api/groups/${gid}`).then((response) => {
-            return response.data;
-        });
-        return res.data;
-        // return;
-    } catch (err) {
+        console.log('DDDDDDDDDDDDDDDDDDDDDDDDD');
+        console.log('actions/group.js :: deleteGroupsByMeeting (' + mid + ')');
+        await axios.delete(`/api/groups/bymeeting/${mid}`);
         dispatch({
-            //actions:getGroupNoRedux
+            type: DELETE_GROUPS,
+            payload: mid,
+        });
+        // reload the groups
+        // const res = await axios.get(`/api/groups/meeting/${mid}`);
+        // dispatch(setAlert('Groups removed', 'success'));
+    } catch (err) {
+        console.log('actions/group.js deleteGroupsByMeeting');
+        console.log('DELETE /api/groups/bymeeting/' + mid);
+        dispatch({
+            //actions:deleteGroupsByMeeting
             type: GROUP_ERROR,
             payload: {
                 msg: err.response.statusText,
                 status: err.response.status,
             },
         });
-
-        // return resMsg;
     }
 };
+
 // export const getGroups2 = mid => async dispatch => {
 //     try {
 //         // dispatch({ type: CLEAR_GROUPS });
@@ -113,6 +145,8 @@ export const getGroup = (groupId) => async (dispatch) => {
             payload: res.data,
         });
     } catch (err) {
+        console.log('actions/group.js getGroup');
+        console.log('DELETE /api/groups/' + groupId);
         dispatch({
             //getGroup
             type: GROUP_ERROR,
@@ -169,6 +203,7 @@ export const addGroup = (formData, history, edit = false) => async (
         history.push(target);
         // history.push('/gatherings');
     } catch (err) {
+        console.log('actions/group.js addGroup');
         return err;
     }
 };
