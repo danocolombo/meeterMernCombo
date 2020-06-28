@@ -143,10 +143,10 @@ const EditGathering = ({
         window.scrollTo(0, 0);
     };
 
-    // DANO
-    console.log('donations: ' + mtgConfigs['donations']);
-    console.log('type of mtgConfigs: ' + typeof mtgConfigs);
-    console.table(mtgConfigs);
+    // // DANO
+    // console.log('donations: ' + mtgConfigs['donations']);
+    // console.log('type of mtgConfigs: ' + typeof mtgConfigs);
+    // console.table(mtgConfigs);
     const util = require('util');
     console.log(
         'mtgConfigs: ' +

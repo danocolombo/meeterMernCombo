@@ -241,6 +241,8 @@ export const getGathering = (id) => async (dispatch) => {
 export const deleteGathering = (id) => async (dispatch) => {
     try {
         //need to delete any groups that might be associated with meeting
+        // console.log('DELETE /api/groups/bymeeting/' + id);
+        // console.log('DELETE /api/meeting/' + id);
         await axios.delete(`/api/groups/bymeeting/${id}`);
         await axios.delete(`/api/meeting/${id}`);
 

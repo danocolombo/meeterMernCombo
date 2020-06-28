@@ -92,6 +92,8 @@ export const deleteGroup = (groupId, mid) => async (dispatch) => {
 // this is used to remove all the groups associated with a meeting
 export const deleteGroupsByMeeting = (mid) => async (dispatch) => {
     try {
+        console.log('DDDDDDDDDDDDDDDDDDDDDDDDD');
+        console.log('actions/group.js :: deleteGroupsByMeeting (' + mid + ')');
         await axios.delete(`/api/groups/bymeeting/${mid}`);
         dispatch({
             type: DELETE_GROUPS,

@@ -86,7 +86,7 @@ router.post(
             youth,
             notes,
         } = req.body;
-        console.table(req.body);
+        // console.table(req.body);
         const meetingFields = {};
         //first two are required, no need to check.
         meetingFields.meetingDate = meetingDate;
@@ -235,8 +235,8 @@ router.post(
         } else {
             meetingFields.notes = '';
         }
-        console.log('going to db...');
-        console.table(meetingFields);
+        // console.log('going to db...');
+        // console.table(meetingFields);
         try {
             // Using upsert option (creates new doc if no match is found):
             if (meetingId) {
@@ -256,7 +256,7 @@ router.post(
                     { new: true, upsert: true, returnNewDocument: true }
                 );
                 console.log('response2');
-                console.table(meeting2);
+                // console.table(meeting2);
                 res.json(meeting2);
             }
         } catch (err) {

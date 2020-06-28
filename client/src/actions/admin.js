@@ -130,7 +130,7 @@ export const updateMeetingConfigs = (
     cid,
     edit = false
 ) => async (dispatch) => {
-    console.table(formData);
+    // console.table(formData);
 
     const config = {
         headers: {
@@ -162,7 +162,7 @@ export const toggleConfig = (config, value, cid) => async (dispatch) => {
     theChange.cid = cid;
     theChange.config = config;
     theChange.value = value;
-    console.table(theChange);
+    // console.table(theChange);
     try {
         const config = {
             headers: {
@@ -180,7 +180,7 @@ export const toggleConfig = (config, value, cid) => async (dispatch) => {
             payload: res,
         });
 
-        dispatch(setAlert('Client User Removed', 'success'));
+        dispatch(setAlert('System Configuration Updated', 'success'));
     } catch (err) {
         console.log('actions/admin.js deleteClientUser ADMIN_ERROR');
         dispatch({

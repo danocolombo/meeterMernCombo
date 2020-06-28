@@ -555,7 +555,7 @@ router.put('/updateconfigs/:cid', auth, async (req, res) => {
     //-----------------------------------
     // now the configInfo contains the settings, update client
     // the data we have:
-    console.table(configInfo);
+    // console.table(configInfo);
     try {
         let theClient = await Client.updateOne(
             {
@@ -564,7 +564,7 @@ router.put('/updateconfigs/:cid', auth, async (req, res) => {
             { $set: { meetingConfig: configInfo } },
             { upsert: true }
         );
-        console.table(JSON.stringify(theClient));
+        // console.table(JSON.stringify(theClient));
         res.json(JSON.stringify(theClient));
     } catch (err) {
         console.log('api/client/updateconfigs');
@@ -716,7 +716,7 @@ router.put(
                     }
                 }
                 console.log('resulting in...');
-                console.table(newConfigs);
+                // console.table(newConfigs);
             } else {
                 //config does not exist, add it.
                 // loop through settings, add config to list
@@ -731,7 +731,7 @@ router.put(
                 }
                 newConfigs[config] = true;
                 console.log('resulting in...');
-                console.table(newConfigs);
+                // console.table(newConfigs);
             }
             const configResults = await Client.update(
                 { code: req.params.code },
