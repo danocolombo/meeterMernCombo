@@ -744,86 +744,71 @@ router.post(
         }
 
         try {
-            const container = 'meetingConfig[' + config + ']';
-            // container.concat(config, ']');
-            console.log('container resulted in >> ' + container);
             const query = { code: cid };
-            // const newConfig = { container: value };
-            let obj = {};
-            obj[container] = value;
             const update = {
-                $set: { 'meetingConfig.setupContact': false },
+                $set: { name: 'Sunday Quaram' },
             };
+            // !!!!!!!!!!!  this blew away meeting Config settings
+            // const update = {
+            //     $set: { meetingConfig: { setupConfig: false}},
+            // };
             const options = { new: true };
-            console.log('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
-            console.log('query:', query);
-            console.log('update: ', update);
-            console.log('options: ', options);
-
-            // const uResponse = await Client.updateOne(
-            //     query,
-            //     update,
-            //     options
-            // ).then((result) => {
-            //     const { matchedCount, modifiedCount } = result;
-            //     if (matchedCount) {
-            //         console.log('found it');
-            //     }
-            //     if (modifiedCount) {
-            //         console.log('updated');
-            //     }
-            //     console.log('updated...???');
-            // });
-
-            // const client = await Client.findOne({ code: 'wbc' });
-            // client.meetingConfig.setupContact = false;
-            // client['justATest'] = false;
-            // console.table(JSON.stringify(client));
-            // console.log('justATest: ' + client.justATest);
-            // await client.save();
-            let client = await Client.findOne({ code: 'test' });
-
-            const clientFields = {};
-            clientFields.tryMeString = 'new value';
-            clientFields.name = 'Test Team7';
-            clientFields.code = 'test';
-            clientFields.settingA = 0;
-            // 'clientFields.meetingConf[setupContact] = 'false';
-            clientFields._id = client._id;
-            clientFields.date = client.date;
-            clientFields.tryMeString = 'new value';
-            clientFields.tryMeInt = 88;
-
-            let newClient = await Client.findOneAndUpdate(
-                { _id: client._id },
-                { $set: clientFields },
-                { new: true }
+            const updateClient = await Client.findOneAndUpdate(
+                {
+                    code: cid,
+                    'mConfigs.config': config,
+                },
+                {
+                    $set: {
+                        'mConfigs.$.value': value,
+                    },
+                },
+                null,
+                (err) => {
+                    if (err) {
+                        console.log('Error: ' + err);
+                    } else {
+                        console.log('Updated: ' + config);
+                    }
+                    // process.exit(0);
+                    // res.json(updateClient);
+                }
             );
-
-            //     { $set: { 'meetingConfig.setupContact': false } },
-            //     { new: true }
-            // );
-            // console.log('uResponse:' + uResponse);
-            // const uResponse = await Client.find(query);
-            // let newSetting = {};
-            // let setting = 'meetingConfig.' + config;
-            // console.log('cid:' + cid);
-            // console.log('config: ' + config);
-            // console.log('value: ' + value);
-            // console.log('setting: ' + setting);
-            // newSetting[setting] = value;
-            // console.log('newSeting.setting: ' + newSetting.setting);
-
-            //=====================================================
-            // this is where we are to upate the one config
-            //=====================================================
-            // const client = await Client.updateOne(
-            //     { code: cid },
-            //     { $set: { setting: value } }
-            // );
-
-            // console.log(JSON.stringify(client));
-            res.json(newClient);
+            res.json(updateClient);
+        } catch (err) {
+            //routes/api/client.js :: router.post(/toogleconfig)
+            console.error(err.message);
+            res.status(500).send('Server Error');
+        }
+    }
+);
+router.post(
+    '/addmconfig',
+    [
+        auth,
+        [
+            check('config', 'Config definition is required').not().isEmpty(),
+            check('value', 'Config value is required').not().isEmpty(),
+            check('cid', 'CID is required').not().isEmpty(),
+        ],
+    ],
+    async (req, res) => {
+        const { cid, config, value } = req.body;
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() });
+        }
+        const configInfo = {
+            config,
+            value,
+        };
+        try {
+            const newClientUpdate = await Client.findOne({ code: cid });
+            //push the entry onto the end of users subarray
+            newClientUpdate.mConfigs.push(configInfo);
+            //save the changes
+            await newClientUpdate.save();
+            res.json(newClientUpdate);
         } catch (err) {
             //routes/api/client.js :: router.post(/toogleconfig)
             console.error(err.message);

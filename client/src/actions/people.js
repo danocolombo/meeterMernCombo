@@ -84,6 +84,8 @@ export const createPerson = (
         };
         //need to add tentantId to formData
         formData.tenaantId = 'people-' + activeClient;
+        console.log('actions/people :: createPerson');
+        console.log('activeClient: ' + activeClient);
         const res = await axios.post('/api/people', formData, config);
 
         dispatch({
