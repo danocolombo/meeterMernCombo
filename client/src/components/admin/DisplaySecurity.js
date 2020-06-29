@@ -46,8 +46,15 @@ const DisplaySecurity = ({
         setExpanded(isExpanded ? panel : false);
     };
     const handleApproval = (id) => {
+        // console.log('approving: ' + approving);
+        // alert('approving: ' + id);
         approvingAct(true);
         setUserId(id);
+    };
+    const setRoleOfUser = () => {
+        // e.preventDefault();
+        console.log('Now we call api to update user record.');
+        approvingAct(false);
     };
     return loading ? (
         <Spinner />
@@ -121,8 +128,8 @@ const DisplaySecurity = ({
                         <h1>Registered Users</h1>
                     </ExpansionPanelSummary>
                     <ExpansionPanelDetails>
-                        <Modal>
-                            <UserConfirm />
+                        <Modal show={approving}>
+                            <UserConfirm handleAction={setRoleOfUser} />
                         </Modal>
                         <div className='posts'>
                             {clientUsers ? (

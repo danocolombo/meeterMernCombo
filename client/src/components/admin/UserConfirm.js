@@ -7,6 +7,11 @@ const userConfirm = (props) => {
     // presume you will get the user info from props
     //================================================
     const { name, uid } = props;
+    const handleRoleSet = (e) => {
+        // e.preventDefault();
+        // alert('setting permissions!!');
+        props.handleAction();
+    };
     return (
         <>
             <h3>Please confirm...</h3>
@@ -20,7 +25,8 @@ const userConfirm = (props) => {
                     <option>Manager</option>
                     <option>User</option>
                 </select>
-                <Button>SET</Button>
+                {/* <Button onClick={props.handleAction}>SET</Button> */}
+                <Button onClick={handleRoleSet}>SET</Button>
             </form>
         </>
     );
