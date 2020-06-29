@@ -704,9 +704,12 @@ const EditGathering = ({
                 </div>
                 {FormButtons()}
                 <hr />
-                <h2>
-                    Open-Share Groups
-                    {activeStatus === 'approved' && activeRole !== 'guest' ? (
+
+                {activeStatus === 'approved' &&
+                activeRole !== 'guest' &&
+                _id ? (
+                    <Fragment>
+                        <h2>Open-Share Groups</h2>
                         <Link to={`/EditGroup/${_id}/0`}>
                             <div class='waves-effect waves-light btn'>
                                 <i class='material-icons left green'>
@@ -718,8 +721,15 @@ const EditGathering = ({
                                 </span>
                             </div>
                         </Link>
-                    ) : null}
-                </h2>
+                    </Fragment>
+                ) : (
+                    <Fragment>
+                        <div>
+                            Open-share groups can be added after the meeting is
+                            saved.
+                        </div>
+                    </Fragment>
+                )}
             </form>
             <div>
                 {groups &&
@@ -773,12 +783,32 @@ const EditGathering = ({
     }
     function FormButtons() {
         var returnValue = [];
-        var today = new Date();
-        today.setHours(0, 0, 0, 0);
-        var mDate = new Date(meetingDate.slice(0, 10));
-        // console.log('mDate:' + mDate);
-        // console.log('today:' + today);
-        if (mDate >= today) {
+        // var today = new Date();
+        // today.setHours(0, 0, 0, 0);
+        // var mDate = new Date(meetingDate.slice(0, 10));
+        // // console.log('mDate:' + mDate);
+        // // console.log('today:' + today);
+        // need to create special date for today starting at T00:00:00.000Z
+        let tDate = new Date();
+        let numMonth = tDate.getMonth() + 1;
+        let tmpMonth = numMonth.toString();
+        let tmpDay = tDate.getDate().toString();
+        let tMonth = '';
+        let tDay = '';
+        if (tmpMonth.length < 2) {
+            tMonth = '0' + tmpMonth;
+        } else {
+            tMonth = tmpMonth;
+        }
+        if (tmpDay.length < 2) {
+            tDay = '0' + tmpDay;
+        } else {
+            tDay = tmpDay;
+        }
+        let tYear = tDate.getFullYear();
+        let target = tYear + '-' + tMonth + '-' + tDay + 'T00:00:00.000Z';
+
+        if (mDate >= target) {
             console.log('greater than or equal');
             if (activeStatus === 'approved' && activeRole !== 'guest') {
                 returnValue = [

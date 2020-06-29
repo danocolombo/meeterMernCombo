@@ -52,7 +52,10 @@ const DisplaySecurity = ({
                     Security
                 </h2>
             </div>
-            <p>This will be the security information for {activeClient}</p>
+            <p>
+                On this page you will find a variety of configurations and
+                settings to manage your application.
+            </p>
 
             <div className='medium'>
                 <ExpansionPanel

@@ -31,6 +31,7 @@ const Register = ({ setAlert, register, isAuthenticated }) => {
                 case 'cpv':
                 case 'ccc':
                 case 'vpc':
+                case 'test':
                     register({ name, email, password, defaultClient });
                     break;
                 default:
