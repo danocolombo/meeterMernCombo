@@ -789,6 +789,7 @@ const EditGathering = ({
         // // console.log('mDate:' + mDate);
         // // console.log('today:' + today);
         // need to create special date for today starting at T00:00:00.000Z
+        let mDate = new Date(meetingDate.slice(0,10));
         let tDate = new Date();
         let numMonth = tDate.getMonth() + 1;
         let tmpMonth = numMonth.toString();
