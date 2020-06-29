@@ -19,6 +19,7 @@ const GatheringItem = ({
         meetingType,
         loading,
     },
+    key,
     activeRole,
     activeStatus,
 }) => {
@@ -30,7 +31,10 @@ const GatheringItem = ({
         <Spinner />
     ) : (
         <Fragment>
-            <div className={meetingType !== 'Other' ? 'PersonBox' : 'OtherBox'}>
+            <div
+                className={meetingType !== 'Other' ? 'PersonBox' : 'OtherBox'}
+                id={key}
+            >
                 <Fragment>
                     <div className='DeleteTarget'>
                         {activeStatus === 'approved' &&

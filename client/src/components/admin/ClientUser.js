@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import {
     deleteClientUser,
-    approveClientUser,
+    // approveClientUser,
     suspendClientUser,
 } from '../../actions/admin';
 
@@ -15,7 +15,9 @@ const ClientUser = ({
     suspendClientUser,
     auth: { activeRole },
     auth,
+    key,
     user: { _id, name, role, status },
+    approveAction,
     showActions,
 }) => (
     // <div className='clientUser bg-white p-1 my-1'>
@@ -25,6 +27,7 @@ const ClientUser = ({
                 ? 'clientUser bg-light-yellow p my'
                 : 'clientUser bg-white p-1 my'
         }
+        id={_id}
     >
         <div>
             <h4>{name}</h4>
@@ -46,7 +49,7 @@ const ClientUser = ({
                 <Fragment>
                     {status !== 'approved' && (
                         <button
-                            onClick={() => approveClientUser(_id)}
+                            onClick={() => approveAction(_id)}
                             type='button'
                             className='btn btn-success'
                         >
@@ -85,7 +88,6 @@ ClientUser.propTypes = {
     user: PropTypes.object.isRequired,
     auth: PropTypes.object.isRequired,
     deleteClientUser: PropTypes.func.isRequired,
-    approveClientUser: PropTypes.func.isRequired,
     suspendClientUser: PropTypes.func.isRequired,
 };
 
@@ -96,5 +98,4 @@ const mapStateToProps = (state) => ({
 export default connect(mapStateToProps, {
     deleteClientUser,
     suspendClientUser,
-    approveClientUser,
 })(ClientUser);

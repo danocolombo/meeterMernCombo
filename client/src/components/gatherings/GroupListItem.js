@@ -12,7 +12,7 @@ const GroupListItem = ({
     group: { _id, gender, title, location, facilitator },
 }) => (
     <Fragment>
-        <div className={'GGL-Box'}>
+        <div className={'GGL-Box'} id={_id}>
             <div className='GGL-Gender my-1 pl-1 pr-1'>
                 <Link to={`/EditGroup/${mid}/${_id}`}>
                     {gender === 'f' && <div>women</div>}

@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Spinner from '../layout/Spinner';
@@ -10,7 +10,8 @@ import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 //--------------------------------------
-
+import Modal from '../layout/Modal/Modal';
+import UserConfirm from './UserConfirm';
 import DefaultGroup from './DefaultGroup';
 import ClientUser from './ClientUser';
 import DefaultGroupForm from './DefaultGroupForm';
@@ -38,9 +39,15 @@ const DisplaySecurity = ({
         }
     }, [activeClient, getClientUsers, getDefGroups, getMtgConfigs]);
     // const classes = useStyles();
+    const [approving, approvingAct] = useState(false);
+    const [userId, setUserId] = useState('');
     const [expanded, setExpanded] = React.useState(false);
     const handleChange = (panel) => (event, isExpanded) => {
         setExpanded(isExpanded ? panel : false);
+    };
+    const handleApproval = (id) => {
+        approvingAct(true);
+        setUserId(id);
     };
     return loading ? (
         <Spinner />
@@ -73,16 +80,21 @@ const DisplaySecurity = ({
                         <div className='posts'>
                             {defaultGroups ? (
                                 <table>
-                                    <tr>
-                                        <td>
-                                            {defaultGroups.map((dGroup) => (
-                                                <DefaultGroup
-                                                    key={dGroup._id}
-                                                    defGroup={dGroup}
-                                                />
-                                            ))}
-                                        </td>
-                                    </tr>
+                                    <thead>
+                                        <tr></tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                {defaultGroups.map((dGroup) => (
+                                                    <DefaultGroup
+                                                        key={dGroup._id}
+                                                        defGroup={dGroup}
+                                                    />
+                                                ))}
+                                            </td>
+                                        </tr>
+                                    </tbody>
                                 </table>
                             ) : null}
                             {/* {activeRole === 'superuser' ? (
@@ -109,19 +121,30 @@ const DisplaySecurity = ({
                         <h1>Registered Users</h1>
                     </ExpansionPanelSummary>
                     <ExpansionPanelDetails>
+                        <Modal>
+                            <UserConfirm />
+                        </Modal>
                         <div className='posts'>
                             {clientUsers ? (
                                 <table>
-                                    <tr>
-                                        <td>
-                                            {clientUsers.map((user) => (
-                                                <ClientUser
-                                                    key={user._id}
-                                                    user={user}
-                                                />
-                                            ))}
-                                        </td>
-                                    </tr>
+                                    <thead>
+                                        <tr></tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                {clientUsers.map((user) => (
+                                                    <ClientUser
+                                                        key={user._id}
+                                                        user={user}
+                                                        approveAction={
+                                                            handleApproval
+                                                        }
+                                                    />
+                                                ))}
+                                            </td>
+                                        </tr>
+                                    </tbody>
                                 </table>
                             ) : null}
                         </div>
