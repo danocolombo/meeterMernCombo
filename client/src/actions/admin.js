@@ -230,6 +230,9 @@ export const grantUserRegistration = (cid, id, role) => async (dispatch) => {
                 type: SET_CLIENT_USERS,
                 payload: res,
             });
+            //------------------------------
+            // now add the user to people
+            //------------------------------
 
             dispatch(setAlert('System Configuration Updated', 'success'));
         } catch (err) {
