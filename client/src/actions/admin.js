@@ -192,3 +192,55 @@ export const toggleConfig = (config, value, cid) => async (dispatch) => {
         });
     }
 };
+export const grantUserRegistration = (cid, id, role) => async (dispatch) => {
+    // this is called from Admin/DisplaySecurity when a user with permission has
+    // decided to add a perosn to their client.  We first add them to the client
+    // list of users, then add them to people.
+    //---------------------------------
+    // update client entry first
+    //----------------------------------
+    console.log('---- inside actions/admin ------');
+    console.log('_id: ' + id);
+    console.log('cid: ' + cid);
+    console.log('role: ' + role);
+
+    const DEBUG = true;
+    if (!DEBUG) {
+        try {
+            //-----------------------------
+            // first update the client users
+            //------------------------------
+            let updateClientUser = {};
+            updateClientUser._id = id;
+            updateClientUser.cid = cid;
+            updateClientUser.role = role;
+            updateClientUser.status = 'approved';
+            const config = {
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            };
+            const res = await axios.put(
+                '/api/client/user',
+                updateClientUser,
+                config
+            );
+
+            dispatch({
+                type: SET_CLIENT_USERS,
+                payload: res,
+            });
+
+            dispatch(setAlert('System Configuration Updated', 'success'));
+        } catch (err) {
+            console.log('actions/admin.js deleteClientUser ADMIN_ERROR');
+            dispatch({
+                type: ADMIN_ERROR,
+                payload: {
+                    msg: err.response.statusText,
+                    status: err.response.status,
+                },
+            });
+        }
+    }
+};

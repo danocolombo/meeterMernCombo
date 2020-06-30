@@ -166,32 +166,43 @@ router.get('/all', async (req, res) => {
         res.status(500).send('Server Error');
     }
 });
-//===============================================
-//   _____ ______ _______       __   _ _
-//  / ____|  ____|__   __|     / /  | | |
-// | |  __| |__     | |       / /_ _| | |
-// | | |_ |  __|    | |      / / _` | | |
-// | |__| | |____   | |     / / (_| | | | by CID
-//  \_____|______|  |_|    /_/ \__,_|_|_|
-//===============================================
-
-// @route    GET api/people/client/cid
-// @desc     Get all people for a client (cid)
+//==========================================
+//  _____   ____   _____ _______       __
+// |  __ \ / __ \ / ____|__   __|     / /
+// | |__) | |  | | (___    | |       / /
+// |  ___/| |  | |\___ \   | |      / /
+// | |    | |__| |____) |  | |     / /   validateemail
+// |_|     \____/|_____/   |_|    /_/
+//==========================================
+// @route    POST api/people/validateemail
+// @desc     check if a user is exists for client and email
 // @access   Public
-router.get('/client/:cid', async (req, res) => {
-    // need to create the tenant value
-    let client = 'people-' + req.params.cid;
-    // console.log('client: ' + client);
-    try {
-        const people = await People.find({
-            tenantId: client,
-        }).sort({ name: 1 });
-        res.json(people);
-    } catch (err) {
-        console.error(err.message);
-        res.status(500).send('Server Error');
+router.post(
+    '/validateemail',
+    [auth],
+    [
+        check('cid', 'Client indicator is required').not().isEmpty(),
+        check('email', 'Tenant code not identified').not().isEmpty(),
+    ],
+    async (req, res) => {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() });
+        }
+        const { cid, email } = req.body;
+        console.log('------ POST /api/people/validateemail');
+        console.log('cid: ' + cid);
+        console.log('email: ' + email);
+        try {
+            let person = await People.find({ tenantId: cid, email: email });
+            res.json(person);
+        } catch (err) {
+            console.error(err.message);
+            res.status(500).send('Server error');
+        }
     }
-});
+);
+
 //====================================================================
 //   _____ ______ _______       __ _     _
 //  / ____|  ____|__   __|     / /(_)   | |
@@ -207,6 +218,33 @@ router.get('/client/:cid', async (req, res) => {
 router.get('/:id', auth, async (req, res) => {
     try {
         const people = await People.findById(req.params.id);
+
+        // Check for ObjectId format and post
+        if (!req.params.id.match(/^[0-9a-fA-F]{24}$/) || !people) {
+            return res.status(404).json({ msg: 'Person not found' });
+        }
+
+        res.json(people);
+    } catch (err) {
+        console.error(err.message);
+
+        res.status(500).send('Server Error');
+    }
+});
+//====================================================================
+//   _____ ______ _______       __ _     _
+//  / ____|  ____|__   __|     / /(_)   | |
+// | |  __| |__     | |       / (_)_  __| |
+// | | |_ |  __|    | |      / /  | |/ _` |
+// | |__| | |____   | |     / /  _| | (_| |  by email
+//  \_____|______|  |_|    /_/  (_)_|\__,_|
+//====================================================================
+// @route    GET api/people/:email
+// @desc     Get people by email
+// @access   Private
+router.get('/:email', auth, async (req, res) => {
+    try {
+        const people = await People.find({ email: req.params.email });
 
         // Check for ObjectId format and post
         if (!req.params.id.match(/^[0-9a-fA-F]{24}$/) || !people) {

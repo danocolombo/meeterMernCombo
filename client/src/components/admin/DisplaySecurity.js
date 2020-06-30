@@ -22,12 +22,14 @@ import {
     getClientUsers,
     getDefGroups,
     getMtgConfigs,
+    grantUserRegistration,
 } from '../../actions/admin';
 
 const DisplaySecurity = ({
     getDefGroups,
     getMtgConfigs,
     getClientUsers,
+    grantUserRegistration,
     auth: { activeClient, activeRole, activeStatus },
     meeter: { defaultGroups, clientUsers, loading },
     historyView,
@@ -78,6 +80,7 @@ const DisplaySecurity = ({
             console.log('role: ' + r);
             console.log('Now we call api to update user record.');
             console.log('########################################');
+            grantUserRegistration(activeClient, userSelected, r);
         }
         setModal(false); // hide modal
     };
@@ -245,6 +248,7 @@ DisplaySecurity.propTypes = {
     getClientUsers: PropTypes.func.isRequired,
     getDefGroups: PropTypes.func.isRequired,
     getMtgConfigs: PropTypes.func.isRequired,
+    grantUserRegistration: PropTypes.func.isRequired,
     auth: PropTypes.object.isRequired,
 };
 const mapStateToProps = (state) => ({
@@ -255,4 +259,5 @@ export default connect(mapStateToProps, {
     getClientUsers,
     getDefGroups,
     getMtgConfigs,
+    grantUserRegistration,
 })(DisplaySecurity);
