@@ -3,6 +3,7 @@ import { Link, withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Divider } from '@material-ui/core';
+import { Button } from '@material-ui/core';
 import { createGathering, getGathering } from '../../actions/gathering';
 import { getGroups } from '../../actions/group';
 import GroupListItem from './GroupListItem';
@@ -702,7 +703,7 @@ const EditGathering = ({
                         ></textarea>
                     </div>
                 </div>
-                {FormButtons()}
+                {FormButtons(meetingDate)}
                 <hr />
 
                 {activeStatus === 'approved' &&
@@ -781,7 +782,7 @@ const EditGathering = ({
                 return 'Please provide a description of the event';
         }
     }
-    function FormButtons() {
+    function FormButtons(meetingDate) {
         var returnValue = [];
         // var today = new Date();
         // today.setHours(0, 0, 0, 0);
@@ -789,7 +790,7 @@ const EditGathering = ({
         // // console.log('mDate:' + mDate);
         // // console.log('today:' + today);
         // need to create special date for today starting at T00:00:00.000Z
-        let mDate = new Date(meetingDate.slice(0,10));
+        let mDate = new Date(meetingDate.slice(0, 10));
         let tDate = new Date();
         let numMonth = tDate.getMonth() + 1;
         let tmpMonth = numMonth.toString();
@@ -809,23 +810,29 @@ const EditGathering = ({
         let tYear = tDate.getFullYear();
         let target = tYear + '-' + tMonth + '-' + tDay + 'T00:00:00.000Z';
 
-        if (mDate >= target) {
+        if (meetingDate >= target) {
             console.log('greater than or equal');
             if (activeStatus === 'approved' && activeRole !== 'guest') {
                 returnValue = [
                     <>
                         <input type='submit' className='btn btn-primary my-1' />
-                        <Link className='btn btn-light my-1' to='/gatherings'>
+                        <Button className='btn-light' href='/gatherings'>
                             Go Back
-                        </Link>
+                        </Button>
+                        {/* <Link className='btn btn-light my-1' to='/gatherings'>
+                            Go Back
+                        </Link> */}
                     </>,
                 ];
             } else {
                 returnValue = [
                     <>
-                        <Link className='btn btn-light my-1' to='/gatherings'>
+                        <Button className='btn-light' href='/gatherings'>
                             Go Back
-                        </Link>
+                        </Button>
+                        {/* <Link className='btn btn-light my-1' to='/gatherings'>
+                            Go Back
+                        </Link> */}
                     </>,
                 ];
             }
@@ -833,12 +840,12 @@ const EditGathering = ({
             returnValue = [
                 <>
                     <input type='submit' className='btn btn-primary my-1' />
-                    <Link
-                        className='btn btn-light my-1'
-                        to='/gatherings/historyView'
+                    <Button
+                        className='btn-light'
+                        href='/gatherings/historyView'
                     >
                         Go Back
-                    </Link>
+                    </Button>
                 </>,
             ];
         }
