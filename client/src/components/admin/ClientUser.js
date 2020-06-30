@@ -49,7 +49,7 @@ const ClientUser = ({
                 <Fragment>
                     {status !== 'approved' && (
                         <button
-                            onClick={() => approveAction(_id)}
+                            onClick={() => approveAction(_id, name)}
                             type='button'
                             className='btn btn-success'
                         >

@@ -39,21 +39,38 @@ const DisplaySecurity = ({
         }
     }, [activeClient, getClientUsers, getDefGroups, getMtgConfigs]);
     // const classes = useStyles();
+    const [userSelected, setUserSelected] = useState('');
+    const [userNameSelected, setUserNameSelected] = useState('');
     const [approving, approvingAct] = useState(false);
     const [userId, setUserId] = useState('');
     const [expanded, setExpanded] = React.useState(false);
     const handleChange = (panel) => (event, isExpanded) => {
         setExpanded(isExpanded ? panel : false);
     };
-    const handleApproval = (id) => {
+    const handleApproval = (id, name) => {
+        // this is coming back from the UI showing the register request.
+        // (ClientUser)
         // console.log('approving: ' + approving);
         // alert('approving: ' + id);
+        // console.log('DisplaySecurity:handleApproval function');
+        // console.log('id: ' + id);
+        // console.log('user: ' + name);
         approvingAct(true);
         setUserId(id);
+        setUserSelected(id);
+        setUserNameSelected(name);
     };
-    const setRoleOfUser = () => {
+    const setRoleOfUser = (r) => {
         // e.preventDefault();
-        console.log('Now we call api to update user record.');
+        if (r !== 'CANCEL'){
+            console.log('########################################');
+            console.log('DisplaySecurity :: setRoleOfUser');
+            console.log('id: ' + userSelected);
+            console.log('user: ' + userNameSelected);
+            console.log('role: ' + r);
+            console.log('Now we call api to update user record.');
+            console.log('########################################');
+        }
         approvingAct(false);
     };
     return loading ? (
@@ -129,7 +146,7 @@ const DisplaySecurity = ({
                     </ExpansionPanelSummary>
                     <ExpansionPanelDetails>
                         <Modal show={approving}>
-                            <UserConfirm handleAction={setRoleOfUser} />
+                            <UserConfirm handleAction={setRoleOfUser} userName={userNameSelected} />
                         </Modal>
                         <div className='posts'>
                             {clientUsers ? (
