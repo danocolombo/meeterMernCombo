@@ -17,6 +17,7 @@ const ClientUser = ({
     auth,
     key,
     user: { _id, name, role, status },
+    deleteAction,
     approveAction,
     showActions,
 }) => (
@@ -38,10 +39,11 @@ const ClientUser = ({
             )}
             {status !== 'approved' && (
                 <p className='my-1'>
-                    Requested Role:{' '}
+                    Needs your approval...
+                    {/* Requested Role:{' '}
                     <strong>
                         <u>{role}</u>
-                    </strong>
+                    </strong> */}
                 </p>
             )}
 
@@ -56,7 +58,7 @@ const ClientUser = ({
                             <i className='fas fa-thumbs-up' />
                         </button>
                     )}
-                    {!auth.loading && role !== 'superuser' && (
+                    {/* {!auth.loading && role !== 'superuser' && (
                         <button
                             onClick={() => suspendClientUser(_id)}
                             type='button'
@@ -64,12 +66,10 @@ const ClientUser = ({
                         >
                             <i className='fas fa-ban' />
                         </button>
-                    )}
+                    )} */}
                     {!auth.loading && role !== 'superuser' && (
                         <button
-                            onClick={() =>
-                                deleteClientUser(auth.activeClient, _id)
-                            }
+                            onClick={() => deleteAction(_id, name)}
                             type='button'
                             className='btn btn-danger'
                         >

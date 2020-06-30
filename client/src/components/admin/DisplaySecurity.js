@@ -12,6 +12,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 //--------------------------------------
 import Modal from '../layout/Modal/Modal';
 import UserConfirm from './UserConfirm';
+import UserReject from './UserReject';
 import DefaultGroup from './DefaultGroup';
 import ClientUser from './ClientUser';
 import DefaultGroupForm from './DefaultGroupForm';
@@ -39,30 +40,37 @@ const DisplaySecurity = ({
         }
     }, [activeClient, getClientUsers, getDefGroups, getMtgConfigs]);
     // const classes = useStyles();
+    const [modalAction, setModalAction] = useState('');
     const [userSelected, setUserSelected] = useState('');
     const [userNameSelected, setUserNameSelected] = useState('');
-    const [approving, approvingAct] = useState(false);
-    const [userId, setUserId] = useState('');
+
+    // this initially hides the modal...
+    const [showConfirmModal, setModal] = useState(false);
+    const [showRejectModal, setRejectModal] = useState(false);
+    // const [userId, setUserId] = useState('');
     const [expanded, setExpanded] = React.useState(false);
     const handleChange = (panel) => (event, isExpanded) => {
         setExpanded(isExpanded ? panel : false);
     };
     const handleApproval = (id, name) => {
         // this is coming back from the UI showing the register request.
-        // (ClientUser)
-        // console.log('approving: ' + approving);
-        // alert('approving: ' + id);
-        // console.log('DisplaySecurity:handleApproval function');
-        // console.log('id: ' + id);
-        // console.log('user: ' + name);
-        approvingAct(true);
-        setUserId(id);
-        setUserSelected(id);
-        setUserNameSelected(name);
+        if (showRejectModal !== true) {
+            setModalAction('approveUser');
+            setModal(true); //show modal to grant access.
+            setUserSelected(id);
+            setUserNameSelected(name);
+        }
+    };
+    const handleRejection = (id, name) => {
+        // this is coming back from the UI showing the register request.
+        if (showConfirmModal !== true) {
+            setModalAction('rejectUser');
+            setRejectModal(true);
+        }
     };
     const setRoleOfUser = (r) => {
-        // e.preventDefault();
-        if (r !== 'CANCEL'){
+        // this is coming back from modal with role assigned.
+        if (r !== 'CANCEL') {
             console.log('########################################');
             console.log('DisplaySecurity :: setRoleOfUser');
             console.log('id: ' + userSelected);
@@ -71,7 +79,19 @@ const DisplaySecurity = ({
             console.log('Now we call api to update user record.');
             console.log('########################################');
         }
-        approvingAct(false);
+        setModal(false); // hide modal
+    };
+    const deleteRegistrationRequest = (r) => {
+        // this is coming back from the UI as delete request.
+        if (r !== 'CANCEL') {
+            console.log('########################################');
+            console.log('DisplaySecurity :: deleteRegistrationRequest');
+            console.log('id: ' + userSelected);
+            console.log('user: ' + userNameSelected);
+            console.log('Now we call api to delete user record.');
+            console.log('########################################');
+        }
+        setRejectModal(false);
     };
     return loading ? (
         <Spinner />
@@ -145,8 +165,17 @@ const DisplaySecurity = ({
                         <h1>Registered Users</h1>
                     </ExpansionPanelSummary>
                     <ExpansionPanelDetails>
-                        <Modal show={approving}>
-                            <UserConfirm handleAction={setRoleOfUser} userName={userNameSelected} />
+                        <Modal show={showConfirmModal}>
+                            <UserConfirm
+                                handleAction={setRoleOfUser}
+                                userName={userNameSelected}
+                            />
+                        </Modal>
+                        <Modal show={showRejectModal}>
+                            <UserReject
+                                handleAction={deleteRegistrationRequest}
+                                userName={userNameSelected}
+                            />
                         </Modal>
                         <div className='posts'>
                             {clientUsers ? (
@@ -163,6 +192,9 @@ const DisplaySecurity = ({
                                                         user={user}
                                                         approveAction={
                                                             handleApproval
+                                                        }
+                                                        deleteAction={
+                                                            handleRejection
                                                         }
                                                     />
                                                 ))}

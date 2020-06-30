@@ -52,7 +52,8 @@ const Dashboard = ({
             {/* <h1 className="large text-primary">Dashboard</h1> */}
             <img className='dashboardLogo' src={DashLogo} alt='Meeter' />
             <p className='lead'>
-                <i className='fas fa-user' /> Welcome {user && user.name}
+                <i className='fas fa-user' /> Welcome{' '}
+                {user && user.name.replace(/ .*/, '')}
             </p>
             <strong>What's happening...</strong>
             {privledgedInfo(auth)}
