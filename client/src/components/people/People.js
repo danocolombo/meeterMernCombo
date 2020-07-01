@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -6,26 +6,47 @@ import Spinner from '../layout/Spinner';
 import PeopleItem from './PeopleItem';
 import { getPeople } from '../../actions/people';
 // import auth from '../../../../middleware/auth';
+import PeopleRemoveConfirm from './PeopleRemoveConfirm';
+import Modal from '../layout/Modal/Modal';
+import { deletePerson } from '../../actions/people';
 
 const People = ({
     getPeople,
+    deletePerson,
     person: { people, loading },
     auth: { activeClient, activeRole, activeStatus },
     match,
 }) => {
     useEffect(() => {
         if (activeClient) {
-            // console.log(
-            //     'actives: ' +
-            //         activeClient +
-            //         ' ' +
-            //         activeRole +
-            //         ' ' +
-            //         activeStatus
-            // );
             getPeople(activeClient);
         }
     }, [getPeople, activeClient]);
+    const [showDeleteModal, setPeopleConfirmation] = useState(false);
+    const [deleteId, setDeleteId] = useState('');
+    const [deleteName, setDeleteName] = useState('');
+
+    const deletePeopleHandler = (userId, userName) => {
+        // this is coming back from list of people, throw modal
+        setDeleteId(userId);
+        setDeleteName(userName);
+        setPeopleConfirmation(true);
+    };
+    const deleteConfirmHandler = (a) => {
+        // this is response from confirmation 'a' is answer
+        if (a !== 'CANCEL') {
+            console.log('########################################');
+            console.log('People :: deleteConfirmationHandler');
+            console.log('id: ' + deleteId);
+            console.log('user: ' + deleteName);
+            console.log('Now we call api to remove people/user');
+            console.log('########################################');
+            deletePerson(deleteId);
+        } else {
+            console.log('CANCELING PEOPLE REMOVE');
+        }
+        setPeopleConfirmation(false); // hide modal
+    };
 
     return loading ? (
         <Spinner />
@@ -47,9 +68,19 @@ const People = ({
                     </div>
                 </Link>
             </div>
+            <Modal show={showDeleteModal}>
+                <PeopleRemoveConfirm
+                    handleAction={deleteConfirmHandler}
+                    userName={deleteName}
+                />
+            </Modal>
             <div className='posts'>
                 {people.map((person) => (
-                    <PeopleItem key={person._id} person={person} />
+                    <PeopleItem
+                        key={person._id}
+                        person={person}
+                        deleteAction={deletePeopleHandler}
+                    />
                 ))}
             </div>
         </Fragment>
@@ -58,6 +89,7 @@ const People = ({
 
 People.propTypes = {
     getPeople: PropTypes.func.isRequired,
+    deletePerson: PropTypes.func.isRequired,
     person: PropTypes.object.isRequired,
     auth: PropTypes.object.isRequired,
 };
@@ -66,4 +98,4 @@ const mapStateToProps = (state) => ({
     auth: state.auth,
 });
 
-export default connect(mapStateToProps, { getPeople })(People);
+export default connect(mapStateToProps, { getPeople, deletePerson })(People);

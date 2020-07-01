@@ -30,6 +30,7 @@ const UserConfirm = ({ userName, handleAction }) => {
     };
     const handleRoleCancel = () => {
         const cancelValue = 'CANCEL';
+        setRole('');
         handleAction(cancelValue);
     };
     return (
