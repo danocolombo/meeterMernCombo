@@ -192,9 +192,7 @@ export const toggleConfig = (config, value, cid) => async (dispatch) => {
         });
     }
 };
-export const grantUserRegistration = (cid, id, role, email) => async (
-    dispatch
-) => {
+export const grantUserRegistration = (cid, id, role, email) => async (dispatch) => {
     // this is called from Admin/DisplaySecurity when a user with permission has
     // decided to add a perosn to their client.  We first add them to the client
     // list of users, then add them to people.
@@ -213,25 +211,28 @@ export const grantUserRegistration = (cid, id, role, email) => async (
             'Content-Type': 'application/json',
         },
     };
-    let res = null;
     try {
-        // if (!DEBUG) {
-        //-----------------------------
-        // first update the client users
-        //------------------------------
-        let updateClientUser = {};
-        updateClientUser._id = id;
-        updateClientUser.cid = cid;
-        updateClientUser.role = role;
-        updateClientUser.status = 'approved';
+        if (!DEBUG) {
+            //-----------------------------
+            // first update the client users
+            //------------------------------
+            let updateClientUser = {};
+            updateClientUser._id = id;
+            updateClientUser.cid = cid;
+            updateClientUser.role = role;
+            updateClientUser.status = 'approved';
+            
+            const res = await axios.put(
+                '/api/client/user',
+                updateClientUser,
+                config
+            );
 
-        res = await axios.put('/api/client/user', updateClientUser, config);
-
-        dispatch({
-            type: SET_CLIENT_USERS,
-            payload: res,
-        });
-        // }
+            dispatch({
+                type: SET_CLIENT_USERS,
+                payload: res,
+            });
+        }
         //------------------------------------------
         // now check if the user is already on team
         //------------------------------------------
@@ -239,43 +240,29 @@ export const grantUserRegistration = (cid, id, role, email) => async (
         potentialPeep.cid = cid;
         potentialPeep.email = email;
         console.log('before validateemail call ');
-        // let res = null;
+        let res = null;
         try {
             res = await axios.post(
                 '/api/people/validateemail',
                 potentialPeep,
                 config
             );
-            //------------------------------------------------
-            // if the person is in the system it will not get
-            // an error, so we fall through. If they are not
-            // in the people collection, it will get 404 and
-            // fall into the catch below to add them.
-            //------------------------------------------------
             console.log('this one is on the team, not adding');
-        } catch (error) {
+        }catch(error){
             //no info for user, we can add them now
             //---------------------------------------
-            // vvvvvvvvv DEATH
-            //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
             console.log('not on team, add them.');
-            // need to get user info
-            const userRef = await axios.get(`/api/users/identify/${id}`);
-            // add the tenant to the userRef
-            userRef.tenantId = 'people-' + cid;
-            // then pass the user to the people table
-            const peopleRef = await axios.post('/api/people', userRef, config);
-
-            // ^^^^^^^^^ DEATH ^^^^^^^^^^^^^^^^^^^^^^^^^^
-            console.log('not on team, add them.');
-            // if (!DEBUG) {
-            dispatch({
-                type: SET_CLIENT_USERS,
-                payload: res,
-            });
-            // }
+            if(!DEBUG){
+                dispatch({
+                    type: SET_CLIENT_USERS,
+                    payload: res,
+                });
+            }
             dispatch(setAlert('System Configuration Updated', 'success'));
         }
+        
+        
+        
     } catch (err) {
         console.log('actions/admin.js grantUserRegistration ADMIN_ERROR');
         dispatch({
@@ -286,4 +273,5 @@ export const grantUserRegistration = (cid, id, role, email) => async (
             },
         });
     }
+    
 };
