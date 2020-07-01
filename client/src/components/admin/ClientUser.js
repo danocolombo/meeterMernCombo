@@ -16,7 +16,7 @@ const ClientUser = ({
     auth: { activeRole },
     auth,
     key,
-    user: { _id, name, role, status },
+    user: { _id, name, role, status, email },
     deleteAction,
     approveAction,
     showActions,
@@ -51,7 +51,7 @@ const ClientUser = ({
                 <Fragment>
                     {status !== 'approved' && (
                         <button
-                            onClick={() => approveAction(_id, name)}
+                            onClick={() => approveAction(_id, name, email)}
                             type='button'
                             className='btn btn-success'
                         >

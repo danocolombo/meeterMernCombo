@@ -45,6 +45,7 @@ const DisplaySecurity = ({
     const [modalAction, setModalAction] = useState('');
     const [userSelected, setUserSelected] = useState('');
     const [userNameSelected, setUserNameSelected] = useState('');
+    const [userEmail, setUserEmail] = useState('');
 
     // this initially hides the modal...
     const [showConfirmModal, setModal] = useState(false);
@@ -54,11 +55,12 @@ const DisplaySecurity = ({
     const handleChange = (panel) => (event, isExpanded) => {
         setExpanded(isExpanded ? panel : false);
     };
-    const handleApproval = (id, name) => {
+    const handleApproval = (id, name, email) => {
         // this is coming back from the UI showing the register request.
         if (showRejectModal !== true) {
             setModalAction('approveUser');
             setModal(true); //show modal to grant access.
+            setUserEmail(email);
             setUserSelected(id);
             setUserNameSelected(name);
         }
@@ -78,9 +80,10 @@ const DisplaySecurity = ({
             console.log('id: ' + userSelected);
             console.log('user: ' + userNameSelected);
             console.log('role: ' + r);
+            console.log('email: ' + userEmail)
             console.log('Now we call api to update user record.');
             console.log('########################################');
-            grantUserRegistration(activeClient, userSelected, r);
+            grantUserRegistration(activeClient, userSelected, r, userEmail);
         }
         setModal(false); // hide modal
     };

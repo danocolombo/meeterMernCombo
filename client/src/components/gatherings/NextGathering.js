@@ -38,7 +38,7 @@ const NextGathering = ({ gatherings }) => {
 //     return <ul>{theList}</ul>;
 // }
 function showFuture(meetings) {
-    console.log('SIZE:' + meetings.length);
+    // console.log('SIZE:' + meetings.length);
     let mDate = null;
     let mTitle = '';
     let mPeep = '';

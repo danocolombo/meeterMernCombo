@@ -166,60 +166,6 @@ router.get('/all', async (req, res) => {
         res.status(500).send('Server Error');
     }
 });
-//===============================================
-//   _____ ______ _______       __   _ _
-//  / ____|  ____|__   __|     / /  | | |
-// | |  __| |__     | |       / /_ _| | |
-// | | |_ |  __|    | |      / / _` | | |
-// | |__| | |____   | |     / / (_| | | | by CID
-//  \_____|______|  |_|    /_/ \__,_|_|_|
-//===============================================
-
-// @route    GET api/people/client/cid
-// @desc     Get all people for a client (cid)
-// @access   Public
-router.get('/client/:cid', async (req, res) => {
-    // need to create the tenant value
-    let client = 'people-' + req.params.cid;
-    // console.log('client: ' + client);
-    try {
-        const people = await People.find({
-            tenantId: client,
-        }).sort({ name: 1 });
-        res.json(people);
-    } catch (err) {
-        console.error(err.message);
-        res.status(500).send('Server Error');
-    }
-});
-//====================================================================
-//   _____ ______ _______       __ _     _
-//  / ____|  ____|__   __|     / /(_)   | |
-// | |  __| |__     | |       / (_)_  __| |
-// | | |_ |  __|    | |      / /  | |/ _` |
-// | |__| | |____   | |     / /  _| | (_| |
-//  \_____|______|  |_|    /_/  (_)_|\__,_|
-//====================================================================
-// new inline getMeeting....
-// @route    GET api/people/:id
-// @desc     Get meeting by ID
-// @access   Private
-router.get('/:id', auth, async (req, res) => {
-    try {
-        const people = await People.findById(req.params.id);
-
-        // Check for ObjectId format and post
-        if (!req.params.id.match(/^[0-9a-fA-F]{24}$/) || !people) {
-            return res.status(404).json({ msg: 'Person not found' });
-        }
-
-        res.json(people);
-    } catch (err) {
-        console.error(err.message);
-
-        res.status(500).send('Server Error');
-    }
-});
 //==========================================
 //  _____   ____   _____ _______       __
 // |  __ \ / __ \ / ____|__   __|     / /
@@ -261,6 +207,35 @@ router.post(
         }
     }
 );
+
+//====================================================================
+//   _____ ______ _______       __ _     _
+//  / ____|  ____|__   __|     / /(_)   | |
+// | |  __| |__     | |       / (_)_  __| |
+// | | |_ |  __|    | |      / /  | |/ _` |
+// | |__| | |____   | |     / /  _| | (_| |
+//  \_____|______|  |_|    /_/  (_)_|\__,_|
+//====================================================================
+// new inline getMeeting....
+// @route    GET api/people/:id
+// @desc     Get meeting by ID
+// @access   Private
+router.get('/:id', auth, async (req, res) => {
+    try {
+        const people = await People.findById(req.params.id);
+
+        // Check for ObjectId format and post
+        if (!req.params.id.match(/^[0-9a-fA-F]{24}$/) || !people) {
+            return res.status(404).json({ msg: 'Person not found' });
+        }
+
+        res.json(people);
+    } catch (err) {
+        console.error(err.message);
+
+        res.status(500).send('Server Error');
+    }
+});
 //====================================================================
 //  _____  ______ _      ______ _______ ______       __ _     _
 // |  __ \|  ____| |    |  ____|__   __|  ____|     / /(_)   | |

@@ -192,7 +192,7 @@ export const toggleConfig = (config, value, cid) => async (dispatch) => {
         });
     }
 };
-export const grantUserRegistration = (cid, id, role) => async (dispatch) => {
+export const grantUserRegistration = (cid, id, role, email) => async (dispatch) => {
     // this is called from Admin/DisplaySecurity when a user with permission has
     // decided to add a perosn to their client.  We first add them to the client
     // list of users, then add them to people.
@@ -203,10 +203,16 @@ export const grantUserRegistration = (cid, id, role) => async (dispatch) => {
     console.log('_id: ' + id);
     console.log('cid: ' + cid);
     console.log('role: ' + role);
+    console.log('email: ' + email);
 
     const DEBUG = true;
-    if (!DEBUG) {
-        try {
+    const config = {
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    };
+    try {
+        if (!DEBUG) {
             //-----------------------------
             // first update the client users
             //------------------------------
@@ -215,11 +221,7 @@ export const grantUserRegistration = (cid, id, role) => async (dispatch) => {
             updateClientUser.cid = cid;
             updateClientUser.role = role;
             updateClientUser.status = 'approved';
-            const config = {
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-            };
+            
             const res = await axios.put(
                 '/api/client/user',
                 updateClientUser,
@@ -230,20 +232,46 @@ export const grantUserRegistration = (cid, id, role) => async (dispatch) => {
                 type: SET_CLIENT_USERS,
                 payload: res,
             });
-            //------------------------------
-            // now add the user to people
-            //------------------------------
-
-            dispatch(setAlert('System Configuration Updated', 'success'));
-        } catch (err) {
-            console.log('actions/admin.js deleteClientUser ADMIN_ERROR');
-            dispatch({
-                type: ADMIN_ERROR,
-                payload: {
-                    msg: err.response.statusText,
-                    status: err.response.status,
-                },
-            });
         }
+        //------------------------------------------
+        // now check if the user is already on team
+        //------------------------------------------
+        let potentialPeep = {};
+        potentialPeep.cid = cid;
+        potentialPeep.email = email;
+        console.log('before validateemail call ');
+        let res = null;
+        try {
+            res = await axios.post(
+                '/api/people/validateemail',
+                potentialPeep,
+                config
+            );
+            console.log('this one is on the team, not adding');
+        }catch(error){
+            //no info for user, we can add them now
+            //---------------------------------------
+            console.log('not on team, add them.');
+            if(!DEBUG){
+                dispatch({
+                    type: SET_CLIENT_USERS,
+                    payload: res,
+                });
+            }
+            dispatch(setAlert('System Configuration Updated', 'success'));
+        }
+        
+        
+        
+    } catch (err) {
+        console.log('actions/admin.js grantUserRegistration ADMIN_ERROR');
+        dispatch({
+            type: ADMIN_ERROR,
+            payload: {
+                msg: err.response.statusText,
+                status: err.response.status,
+            },
+        });
     }
+    
 };
