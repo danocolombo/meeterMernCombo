@@ -23,6 +23,7 @@ import {
     getDefGroups,
     getMtgConfigs,
     grantUserRegistration,
+    rejectUserRegistration,
 } from '../../actions/admin';
 
 const DisplaySecurity = ({
@@ -30,6 +31,7 @@ const DisplaySecurity = ({
     getMtgConfigs,
     getClientUsers,
     grantUserRegistration,
+    rejectUserRegistration,
     auth: { activeClient, activeRole, activeStatus },
     meeter: { defaultGroups, clientUsers, loading },
     historyView,
@@ -66,23 +68,17 @@ const DisplaySecurity = ({
         }
     };
     const handleRejection = (id, name) => {
-        // this is coming back from the UI showing the register request.
+        // this is coming back from the UI list showing the register request.
         if (showConfirmModal !== true) {
-            setModalAction('rejectUser');
+            // setModalAction('rejectUser');
+            setUserSelected(id);
+            setUserNameSelected(name);
             setRejectModal(true);
         }
     };
     const setRoleOfUser = (r) => {
         // this is coming back from modal with role assigned.
         if (r !== 'CANCEL') {
-            console.log('########################################');
-            console.log('DisplaySecurity :: setRoleOfUser');
-            console.log('id: ' + userSelected);
-            console.log('user: ' + userNameSelected);
-            console.log('role: ' + r);
-            console.log('email: ' + userEmail)
-            console.log('Now we call api to update user record.');
-            console.log('########################################');
             grantUserRegistration(activeClient, userSelected, r, userEmail);
         }
         setModal(false); // hide modal
@@ -96,6 +92,7 @@ const DisplaySecurity = ({
             console.log('user: ' + userNameSelected);
             console.log('Now we call api to delete user record.');
             console.log('########################################');
+            rejectUserRegistration(activeClient, userSelected);
         }
         setRejectModal(false);
     };
@@ -252,6 +249,7 @@ DisplaySecurity.propTypes = {
     getDefGroups: PropTypes.func.isRequired,
     getMtgConfigs: PropTypes.func.isRequired,
     grantUserRegistration: PropTypes.func.isRequired,
+    rejectUserRegistration: PropTypes.func.isRequired,
     auth: PropTypes.object.isRequired,
 };
 const mapStateToProps = (state) => ({
@@ -263,4 +261,5 @@ export default connect(mapStateToProps, {
     getDefGroups,
     getMtgConfigs,
     grantUserRegistration,
+    rejectUserRegistration,
 })(DisplaySecurity);

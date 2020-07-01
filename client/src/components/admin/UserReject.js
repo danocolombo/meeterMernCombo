@@ -32,13 +32,17 @@ const UserReject = ({ userName, handleAction }) => {
     };
     return (
         <>
-            <p>Are you sure you want to reject the request?</p>
+            <h3>Confirm Rejection</h3>
+            <p>You are going to delete the request for</p>
             <p style={{ 'padding-left': 50 }}>
                 <strong>{userName}</strong>
             </p>
             <br />
+            <p>Please confirm</p>
 
-            <Button onClick={handleConfirm}>YES - DELETE</Button>
+            <Button className='btn btn-primary my-1' onClick={handleConfirm}>
+                CONFIRM
+            </Button>
             <Button onClick={handleCancel}>CANCEL</Button>
         </>
     );

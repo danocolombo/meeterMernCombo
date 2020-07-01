@@ -192,6 +192,30 @@ export const toggleConfig = (config, value, cid) => async (dispatch) => {
         });
     }
 };
+export const rejectUserRegistration = (cid, id) => async (dispatch) => {
+    // this is called from Admin/DisplaySecurity when a user with permission has
+    // decided to reject a registration request.  We remove the user from
+    // client collection document for the client.
+    //=============================
+    try {
+        await axios.delete(`/api/client/user/${cid}/${id}`);
+        const resz = await axios.get(`/api/client/userstatus/${cid}`);
+        dispatch({
+            type: SET_CLIENT_USERS,
+            payload: resz.data,
+        });
+    } catch (err) {
+        console.log('actions/admin.js rejectUserRegistration ADMIN_ERROR');
+        dispatch({
+            type: ADMIN_ERROR,
+            payload: {
+                msg: err.response.statusText,
+                status: err.response.status,
+            },
+        });
+    }
+};
+
 export const grantUserRegistration = (cid, id, role, email) => async (
     dispatch
 ) => {
@@ -201,13 +225,6 @@ export const grantUserRegistration = (cid, id, role, email) => async (
     //---------------------------------
     // update client entry first
     //----------------------------------
-    console.log('---- inside actions/admin ------');
-    console.log('_id: ' + id);
-    console.log('cid: ' + cid);
-    console.log('role: ' + role);
-    console.log('email: ' + email);
-
-    const DEBUG = true;
     const config = {
         headers: {
             'Content-Type': 'application/json',
@@ -215,7 +232,6 @@ export const grantUserRegistration = (cid, id, role, email) => async (
     };
     let res = null;
     try {
-        // if (!DEBUG) {
         //-----------------------------
         // first update the client users
         //------------------------------
@@ -227,11 +243,6 @@ export const grantUserRegistration = (cid, id, role, email) => async (
 
         res = await axios.put('/api/client/user', updateClientUser, config);
 
-        // dispatch({
-        //     type: SET_CLIENT_USERS,
-        //     payload: res,
-        // });
-        // }
         //------------------------------------------
         // now check if the user is already on team
         //------------------------------------------
@@ -255,19 +266,17 @@ export const grantUserRegistration = (cid, id, role, email) => async (
             console.log('this one is on the team, not adding');
         } catch (error) {
             //no info for user, we can add them now
-            //---------------------------------------
-            // vvvvvvvvv DEATH
-            //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+
             console.log('not on team, add them.');
             // need to get user info
             const userRef = await axios.get(`/api/users/identify/${id}`);
             let personInfo = {};
-            //personInfo._id = userRef.data._id;
+
             personInfo.tenantId = 'people-' + cid;
             personInfo.name = userRef.data.name;
             personInfo.email = userRef.data.email;
             personInfo.defaultClient = userRef.data.defaultClient;
-            // personInfo.tenantId = 'people-' + cid;
+
             // then pass the user to the people table
             const peopleRef = await axios.post(
                 '/api/people',
