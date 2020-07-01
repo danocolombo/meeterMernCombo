@@ -117,7 +117,15 @@ img {
 .pl-3 {
     padding-left: 3rem;
 }
-
+.pb {
+    padding-bottom: 0.5rem;
+}
+.pb-1 {
+    padding-bottom: 1 rem;
+}
+.pb-2 {
+    padding-bottom: 2 rem;
+}
 .py {
     padding: 0.5rem 0;
 }
@@ -539,6 +547,22 @@ button {
     grid-gap: 1rem;
     align-items: center;
 }
+/* ADMIN - REGISTERED USERS */
+.adminDefaultGroupContainer {
+    border: 1px solid rgb(109, 84, 84);
+    box-shadow: 0 2px 3px rgb(216, 146, 146);
+    margin-bottom: 10px;
+    /* grid: auto auto auto auto / auto auto; 4 rows of 2 */
+    grid: '. .' 'locArea locArea' 'facArea facArea' '. .';
+    display: grid;
+}
+.adminDefaultGroupLocation {
+    grid-area: locArea;
+}
+.adminDefaultGroupFacilitator {
+    grid-area: facArea;
+}
+
 .adminDefaultGroupBox {
     border: 1px solid rgb(109, 84, 84);
     box-shadow: 0 2px 3px rgb(216, 146, 146);
@@ -595,7 +619,6 @@ button {
     .hide-sm {
         display: none;
     }
-
     /* Text Styles */
     .x-large {
         font-size: 3rem;
