@@ -227,10 +227,10 @@ export const grantUserRegistration = (cid, id, role, email) => async (
 
         res = await axios.put('/api/client/user', updateClientUser, config);
 
-        dispatch({
-            type: SET_CLIENT_USERS,
-            payload: res,
-        });
+        // dispatch({
+        //     type: SET_CLIENT_USERS,
+        //     payload: res,
+        // });
         // }
         //------------------------------------------
         // now check if the user is already on team
@@ -261,23 +261,38 @@ export const grantUserRegistration = (cid, id, role, email) => async (
             console.log('not on team, add them.');
             // need to get user info
             const userRef = await axios.get(`/api/users/identify/${id}`);
-            // add the tenant to the userRef
-            userRef.tenantId = 'people-' + cid;
+            let personInfo = {};
+            //personInfo._id = userRef.data._id;
+            personInfo.tenantId = 'people-' + cid;
+            personInfo.name = userRef.data.name;
+            personInfo.email = userRef.data.email;
+            personInfo.defaultClient = userRef.data.defaultClient;
+            // personInfo.tenantId = 'people-' + cid;
             // then pass the user to the people table
-            const peopleRef = await axios.post('/api/people', userRef, config);
-
-            // ^^^^^^^^^ DEATH ^^^^^^^^^^^^^^^^^^^^^^^^^^
-            console.log('not on team, add them.');
-            // if (!DEBUG) {
-            dispatch({
-                type: SET_CLIENT_USERS,
-                payload: res,
-            });
-            // }
-            dispatch(setAlert('System Configuration Updated', 'success'));
+            const peopleRef = await axios.post(
+                '/api/people',
+                personInfo,
+                config
+            );
         }
     } catch (err) {
-        console.log('actions/admin.js grantUserRegistration ADMIN_ERROR');
+        console.log('actions/admin.js grantUserRegistration ADMIN_ERROR #1');
+        dispatch({
+            type: ADMIN_ERROR,
+            payload: {
+                msg: err.response.statusText,
+                status: err.response.status,
+            },
+        });
+    }
+    try {
+        const resz = await axios.get(`/api/client/userstatus/${cid}`);
+        dispatch({
+            type: SET_CLIENT_USERS,
+            payload: resz.data,
+        });
+    } catch (err) {
+        console.log('actions/admin.js grantUserRegistration ADMIN_ERROR #2');
         dispatch({
             type: ADMIN_ERROR,
             payload: {
