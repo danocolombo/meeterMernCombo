@@ -22,17 +22,57 @@ export const getClientInfo = (cid) => async (dispatch) => {
         });
     }
 };
-export const getClientUsers = (client) => async (dispatch) => {
-    console.log('getClientUsers(' + client + ')');
-    console.log('/api/client/userstatus/' + client);
+
+//===========================================
+//
+// default groups
+//
+//===========================================
+export const getDefGroups = (cid) => async (dispatch) => {
+    //this loads all the default groups for cid
+    //into meeter.defaultGroups
+    console.log('getDefGroups(' + cid + ')');
+    console.log('/api/client/defaultgroups/' + cid);
     try {
-        const res = await axios.get(`/api/client/userstatus/${client}`);
-        dispatch({
-            type: SET_CLIENT_USERS,
-            payload: res.data,
-        });
+        const res = await axios.get(`/api/client/defaultgroups/${cid}`);
+        if (res) {
+            dispatch({
+                type: SET_DEFAULT_GROUPS,
+                payload: res.data,
+            });
+        } else {
+            console.log('NO DEFAULT GROUPS RETURNED');
+        }
     } catch (err) {
-        console.log('actions/admin.js getClientUsers ADMIN_ERROR');
+        console.log('actions/admin.js getDefGroups ADMIN_ERROR');
+        dispatch({
+            type: ADMIN_ERROR,
+            // payload: {
+            //     msg: err.response.statusText ? err.response.statusText : '',
+            //     status: err.response.status,
+            // },
+        });
+    }
+};
+export const deleteDefaultGroup = (cid, gid) => async (dispatch) => {
+    //this removes the defGroup id from client
+    //reference in database and updates meeter.defaultGroups
+    try {
+        console.log('actions/admin :: deleteDefaultGroup ' + cid + gid);
+        await axios.delete(`/api/client/defaultgroup/${cid}/${gid}`);
+        const res = await axios.get(`/api/client/defaultgroups/${cid}`);
+        if (res) {
+            dispatch({
+                type: SET_DEFAULT_GROUPS,
+                payload: res.data,
+            });
+        } else {
+            console.log('NO DEFAULT GROUPS RETURNED');
+        }
+
+        dispatch(setAlert('Default Group Removed', 'success'));
+    } catch (err) {
+        console.log('actions/admin.js deleteClientUser ADMIN_ERROR');
         dispatch({
             type: ADMIN_ERROR,
             payload: {
@@ -42,6 +82,12 @@ export const getClientUsers = (client) => async (dispatch) => {
         });
     }
 };
+
+//===========================================
+//
+// meeting configs
+//
+//===========================================
 export const getMtgConfigs = (cid) => async (dispatch) => {
     //this loads all the default groups for cid
     //into meeter.defaultGroups
@@ -70,60 +116,7 @@ export const getMtgConfigs = (cid) => async (dispatch) => {
         });
     }
 };
-export const getDefGroups = (cid) => async (dispatch) => {
-    //this loads all the default groups for cid
-    //into meeter.defaultGroups
-    console.log('getDefGroups(' + cid + ')');
-    console.log('/api/client/defaultgroups/' + cid);
-    try {
-        const res = await axios.get(`/api/client/defaultgroups/${cid}`);
-        if (res) {
-            dispatch({
-                type: SET_DEFAULT_GROUPS,
-                payload: res.data,
-            });
-        } else {
-            console.log('NO DEFAULT GROUPS RETURNED');
-        }
-    } catch (err) {
-        console.log('actions/admin.js getDefGroups ADMIN_ERROR');
-        dispatch({
-            type: ADMIN_ERROR,
-            // payload: {
-            //     msg: err.response.statusText ? err.response.statusText : '',
-            //     status: err.response.status,
-            // },
-        });
-    }
-};
 
-export const deleteDefGroup = (id) => async (dispatch) => {
-    //this removes the defGroup id from client
-    //reference in database and updates meeter.defaultGroups
-};
-export const deleteClientUser = (cid, uid) => async (dispatch) => {
-    //this removes the user id from client users
-    // in database and removes from meeter.clientUsers
-    try {
-        await axios.delete(`/api/client/user/${cid}/${uid}`);
-
-        dispatch({
-            type: REMOVE_CLIENT_USER,
-            payload: uid,
-        });
-
-        dispatch(setAlert('Client User Removed', 'success'));
-    } catch (err) {
-        console.log('actions/admin.js deleteClientUser ADMIN_ERROR');
-        dispatch({
-            type: ADMIN_ERROR,
-            payload: {
-                msg: err.response.statusText,
-                status: err.response.status,
-            },
-        });
-    }
-};
 export const updateMeetingConfigs = (
     formData,
     history,
@@ -192,6 +185,63 @@ export const toggleConfig = (config, value, cid) => async (dispatch) => {
         });
     }
 };
+
+//===========================================
+//
+// users and registrations
+//
+//===========================================
+export const getClientUsers = (client) => async (dispatch) => {
+    console.log('getClientUsers(' + client + ')');
+    console.log('/api/client/userstatus/' + client);
+    try {
+        const res = await axios.get(`/api/client/userstatus/${client}`);
+        dispatch({
+            type: SET_CLIENT_USERS,
+            payload: res.data,
+        });
+    } catch (err) {
+        console.log('actions/admin.js getClientUsers ADMIN_ERROR');
+        dispatch({
+            type: ADMIN_ERROR,
+            payload: {
+                msg: err.response.statusText,
+                status: err.response.status,
+            },
+        });
+    }
+};
+
+export const deleteClientUser = (cid, uid, email) => async (dispatch) => {
+    //this removes the user id from client users
+    // in database and removes from meeter.clientUsers
+    //-----
+    // uid is the reference in the users array in the client document
+    // need email to delate the user from user document.
+    try {
+        // remove from client document
+        await axios.delete(`/api/client/user/${cid}/${uid}`);
+        // remove from user document
+        await axios.delete(`/api/users/email/${email}`);
+        // remove from REDUX
+        dispatch({
+            type: REMOVE_CLIENT_USER,
+            payload: uid,
+        });
+
+        dispatch(setAlert('Client User Removed', 'success'));
+    } catch (err) {
+        console.log('actions/admin.js deleteClientUser ADMIN_ERROR');
+        dispatch({
+            type: ADMIN_ERROR,
+            payload: {
+                msg: err.response.statusText,
+                status: err.response.status,
+            },
+        });
+    }
+};
+
 export const rejectUserRegistration = (cid, id) => async (dispatch) => {
     // this is called from Admin/DisplaySecurity when a user with permission has
     // decided to reject a registration request.  We remove the user from

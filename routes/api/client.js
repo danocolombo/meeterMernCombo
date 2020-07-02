@@ -377,44 +377,63 @@ router.put(
             return res.status(400).json({ errors: errors.array() });
         }
         // destructure req
-        const { cid, gender, title, location, facilitator } = req.body;
+        const { _id, cid, gender, title, location, facilitator } = req.body;
         // create a body to pass from the data received
-    
-        const newId = mongoose.Types.ObjectId();
+        let id = null;
+
         const groupInfo = {
-            _id: newId,
             gender: gender,
             title: title,
             location: location,
             facilitator: facilitator,
         };
+        if (!_id) {
+            groupInfo._id = mongoose.Types.ObjectId();
+        } else {
+            groupInfo._id = _id;
+        }
         try {
-            // const client = await Client.findOneAndUpdate(
-            //     { code: cid},
-            //     { $push: {defaultGroups: groupInfo}},
-            //     {safe: true, upsert: true, new: true},
-            //     function(err, doc){
-            //         if(err){
-            //             console.log(err);
-            //         }else{
-            //             console.log('check entry now');
-            //         }
-            //     }
-            // );
-
-
-            // console.log('NEW GROUP ENTRY');
-            // //need to add the user to the client
-            // //first thing, find the client entry to add/update user
+            // //see if default group exists for client
             const client = await Client.findOne({
                 code: cid,
+                'defaultGroups._id': groupInfo._id,
             });
-            client.defaultGroups.push(groupInfo);
-            //push the entry onto the end of users subarray
-            // newDefaultGroup.defaultGroups.push(groupInfo);
-            //save the changes
-            await client.save();
-            res.json(client);
+            if (client) {
+                //group exists, update it
+                const updateClient = await Client.findOneAndUpdate(
+                    {
+                        code: cid,
+                        'defaultGroups._id': _id,
+                    },
+                    {
+                        $set: {
+                            'defaultGroups.$.gender': gender,
+                            'defaultGroups.$.title': title,
+                            'defaultGroups.$.location': location,
+                            'defaultGroups.$.facilitator': facilitator,
+                        },
+                    },
+                    null,
+                    (err) => {
+                        if (err) {
+                            console.log('Error: ' + err);
+                        } else {
+                            console.log('Updated: ' + _id);
+                        }
+                    }
+                );
+                res.json(updateClient);
+            } else {
+                //need to add the group to the client
+                //first thing, find the client entry to add/update user
+
+                const newClientUpdate = await Client.findOne({ code: cid });
+                //push the entry onto the end of users subarray
+                newClientUpdate.defaultGroups.push(groupInfo);
+                //save the changes
+                await newClientUpdate.save();
+                res.json(newClientUpdate);
+            }
         } catch (err) {
             console.error('WOWSA: ' + err.message);
             res.status(500).send('Server Error');
@@ -605,7 +624,9 @@ router.delete('/defaultgroup/:cid/:gid', auth, async (req, res) => {
 
         // make sure group exists
         if (!grp) {
-            return res.status(404).json({ msg: 'Default group does not exist' });
+            return res
+                .status(404)
+                .json({ msg: 'Default group does not exist' });
         }
         // Get the index to remove based on user.id
         const removeIndex = clientEntry.defaultGroups
@@ -619,12 +640,7 @@ router.delete('/defaultgroup/:cid/:gid', auth, async (req, res) => {
         console.error(err.message);
         res.status(500).send('Server Error');
     }
-    
-    
-    
-    
-    
-    
+
     // try {
     //     // const { cid, gender, title, location, facilitator } = req.body;
 

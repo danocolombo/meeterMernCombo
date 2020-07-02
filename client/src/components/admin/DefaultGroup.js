@@ -14,44 +14,54 @@ const DefaultGroups = ({
 }) => {
     const handleEditRequest = () => {
         // send key of entry to edit
-        handleEdit(_id,gender,title,location,facilitator);
-    }
+        handleEdit(_id, gender, title, location, facilitator);
+    };
     const handleDeleteRequest = () => {
         // send key of entry to delete
-        handleDelete(_id);
-    }
+        handleDelete(_id, gender, title, location, facilitator);
+    };
     return (
-    <Fragment>
-        <div className={'adminDefaultGroupContainer'}>
-            <div>
-                {gender === 'f' && <div className={'pl-1 pr-1'}>Women's</div>}
-                {gender === 'm' && <div className={'pl-1 pr-1'}>Men's</div>}
-                {gender === 'x' && <div className={'pl-1 pr-1'}>{title}</div>}
-            </div>
-            <div>
-                {gender === 'f' && <div className={'pr-1'}>{title}</div>}
-                {gender === 'm' && <div className={'pr-1'}>{title}</div>}
-            </div>
-            <div className={'pl-1 pr-1 adminDefaultGroupLocation'}>
-                {location}
-            </div>
-            {/* <div>4</div> */}
-            <div className={'pl-1 pr-1 adminDefaultGroupFacilitator'}>
-                {facilitator}
-            </div>
-            <div>
-                <i className={'fas fa-pen pl-2 my'} onClick={handleEditRequest}></i>
-            </div>
-            <div>
-                <i className={'fa fa-trash my'} onClick={handleDeleteRequest}></i>
-            </div>
-            {/* <div>7</div>
+        <Fragment>
+            <div className={'adminDefaultGroupContainer'}>
+                <div>
+                    {gender === 'f' && (
+                        <div className={'pl-1 pr-1'}>Women's</div>
+                    )}
+                    {gender === 'm' && <div className={'pl-1 pr-1'}>Men's</div>}
+                    {gender === 'x' && (
+                        <div className={'pl-1 pr-1'}>{title}</div>
+                    )}
+                </div>
+                <div>
+                    {gender === 'f' && <div className={'pr-1'}>{title}</div>}
+                    {gender === 'm' && <div className={'pr-1'}>{title}</div>}
+                </div>
+                <div className={'pl-1 pr-1 adminDefaultGroupLocation'}>
+                    {location}
+                </div>
+                {/* <div>4</div> */}
+                <div className={'pl-1 pr-1 adminDefaultGroupFacilitator'}>
+                    {facilitator}
+                </div>
+                <div>
+                    <i
+                        className={'fas fa-pen pl-2 my'}
+                        onClick={handleEditRequest}
+                    ></i>
+                </div>
+                <div>
+                    <i
+                        className={'fa fa-trash my'}
+                        onClick={handleDeleteRequest}
+                    ></i>
+                </div>
+                {/* <div>7</div>
             <div>8</div> */}
-        </div>
+            </div>
 
-        {/* this was displaying fine on computer, but not phone */}
+            {/* this was displaying fine on computer, but not phone */}
 
-        {/* <div className={'adminDefaultGroupBox bg-white p my'}>
+            {/* <div className={'adminDefaultGroupBox bg-white p my'}>
             {gender === 'f' && <div>women</div>}
             {gender === 'm' && <div>men</div>}
             {gender === 'x' && <div>mixed</div>}
@@ -70,10 +80,10 @@ const DefaultGroups = ({
                 )}
             </div>
             </div> */}
-        {/* end desktop grid layout */}
-        {/* &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+            {/* end desktop grid layout */}
+            {/* &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
             &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& */}
-        {/* <table>
+            {/* <table>
                 <tr>
                     <td>{gender}</td>
                     <td>{title}</td>
@@ -92,11 +102,11 @@ const DefaultGroups = ({
                     </td>
                 </tr>
             </table> */}
-        {/* <div>Gender: {gender}</div>
+            {/* <div>Gender: {gender}</div>
             <div>Title: {title}</div>
             <div>Location: {location}</div>
             <div>Facilitator: {facilitator}</div> */}
-        {/* <div>
+            {/* <div>
                 {showActions && (
                     <Fragment>
                         {!auth.loading && (
@@ -111,7 +121,7 @@ const DefaultGroups = ({
                     </Fragment>
                 )}
             </div> */}
-    </Fragment>
+        </Fragment>
     );
     // <div className='post bg-white p-1 my-1'>
     //   <div>
@@ -175,7 +185,6 @@ DefaultGroups.propTypes = {
     // auth: PropTypes.object.isRequired,
     // deleteDefGroup: PropTypes.func.isRequired,
     // showActions: PropTypes.bool,
-
 };
 
 // const mapStateToProps = (state) => ({

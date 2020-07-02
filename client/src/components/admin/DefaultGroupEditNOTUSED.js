@@ -3,13 +3,13 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
 const EditGroup = ({
+    _id,
     genderValue,
     titleValue,
     locationValue,
     facilitatorValue,
     handleAction,
 }) => {
-   
     const [gender, setGender] = useState(genderValue);
     const [title, setTitle] = useState(titleValue);
     const [location, setLocation] = useState(locationValue);
@@ -57,12 +57,13 @@ const EditGroup = ({
     };
     return (
         <>
-            <h3>Update Group</h3>
+            {_id ? <h3>Edit Default Group</h3> : <h3>Update Group</h3>}
+
             <p>
                 Gender:
                 <select value={gender} onChange={handleSelectChange}>
                     <option value='f'>Female</option>
-                    <option value='m'>Male</option>
+                    <option value='m'>Males</option>
                     <option value='x'>Mixed</option>
                 </select>
             </p>
@@ -104,6 +105,7 @@ const EditGroup = ({
     );
 };
 UserCoEditGroupnfirm.propTypes = {
+    editOrigin: PropTypes.string.isRequired,
     genderValue: PropTypes.string.isRequired,
     titleValue: PropTypes.string.isRequired,
     locationValue: PropTypes.string.isRequired,

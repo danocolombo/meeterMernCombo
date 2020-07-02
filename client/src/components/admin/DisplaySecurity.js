@@ -14,6 +14,7 @@ import Modal from '../layout/Modal/Modal';
 import UserConfirm from './UserConfirm';
 import UserReject from './UserReject';
 import DefaultGroup from './DefaultGroup';
+import DefaultGroupDelete from './DefaultGroupDeleteConfirm';
 import ClientUser from './ClientUser';
 import DefaultGroupEdit from './DefaultGroupForm';
 import MeetingConfigForm from './MeetingConfigForm';
@@ -24,6 +25,7 @@ import {
     getMtgConfigs,
     grantUserRegistration,
     rejectUserRegistration,
+    deleteDefaultGroup,
 } from '../../actions/admin';
 import DefaultGroups from './DefaultGroup';
 
@@ -46,6 +48,8 @@ const DisplaySecurity = ({
     }, [activeClient, getClientUsers, getDefGroups, getMtgConfigs]);
     // const classes = useStyles();
     const [modalDefaultGroups, setGroupsModal] = useState(false);
+    const [confirmGroupDeleteModal, setGroupDeleteModal] = useState(false);
+    const [editGroupModal, setGroupEditModal] = useState(false);
     const [grpId, setGrpId] = useState('');
     const [grpGender, setGrpGender] = useState('');
     const [grpTitle, setGrpTitle] = useState('');
@@ -100,32 +104,56 @@ const DisplaySecurity = ({
             console.log('user: ' + userNameSelected);
             console.log('Now we call api to delete user record.');
             console.log('########################################');
-            rejectUserRegistration(activeClient, userSelected);
+            rejectUserRegistration(activeClient, userSelected, userEmail);
         }
         setRejectModal(false);
     };
     // Default Group functions
     //==========================
-    const handleGroupSelect1 = (k,g,t,l,f) => {
+    const clearGroupStates = () => {
+        setGrpId('');
+        setGrpGender('');
+        setGrpTitle('');
+        setGrpLocation('');
+        setGrpFacilitator('');
+    };
+    const handleGroupSelect1 = (k, g, t, l, f) => {
         // this is from DefaultGroup sending
         // key (k) to edit.
         setGrpId(k);
-        
-        
+
         // setGrpGender(defaultGroups[k].gender);
         // setGrpTitle(defaultGroups[k].title);
         // setGrpLocation(defaultGroups[k].location);
         // setGrpFacilitator(defaultGroups[k].facilitator);
         console.log('Going to edit ' + k);
-    }
-    const handleGroupDelete = (k) => {
+    };
+    const handleGroupDelete = (k, g, t, l, f) => {
         // this is from DefaultGroup sending
         // key (k) to delete.
 
         setGrpId(k);
-        console.log('Going to delete group: ' + k);
-    }
-    const handleGroupSelect = (k,g,t,l,f) => {
+        setGrpGender(g);
+        setGrpTitle(t);
+        setGrpLocation(l);
+        setGrpFacilitator(f);
+        console.log('Need to confirm delete: ' + k);
+        if (!showConfirmModal && !showRejectModal) {
+            setGroupDeleteModal(true);
+        }
+    };
+    const handleGroupDeleteResponse = (r) => {
+        if (r === 'DELETE') {
+            deleteDefaultGroup(activeClient, grpId);
+            console.log('DELETING ' + grpId);
+        } else {
+            console.log('No delete');
+        }
+        clearGroupStates();
+
+        setGroupDeleteModal(false);
+    };
+    const handleGroupSelect = (k, g, t, l, f) => {
         // this is coming back from list
         setGrpId(k);
         setGrpGender(g);
@@ -133,16 +161,20 @@ const DisplaySecurity = ({
         setGrpLocation(l);
         setGrpFacilitator(f);
         console.log('going to edit ' + k);
-        // setGroupsModal(true);
-    }
-    const handleGroupEdit = (a, g, t, l, f) => {
+        setGroupEditModal(true);
+    };
+    const handleGroupEdit = (r, i, g, t, l, f) => {
         //this is coming back from the edit dialog
-        if(a != 'CANCEL'){
-            console.log('save the edits')
-        }else{
+        if (r != 'CANCEL') {
+            console.log(i + ':' + g + ':' + t + ':' + l + ':' + f);
+            console.log('save the edits');
+        } else {
             console.log('no updates, cancelled');
         }
-    }
+        setGroupEditModal(false);
+        // if (!confirmGroupDeleteModal) setGroupEditModal(true);
+        // clearGroupStates();
+    };
     return loading ? (
         <Spinner />
     ) : (
@@ -170,41 +202,66 @@ const DisplaySecurity = ({
                     </ExpansionPanelSummary>
 
                     <ExpansionPanelDetails>
-                        <Modal show={showConfirmModal}>
+                        <Modal show={editGroupModal}>
                             <DefaultGroupEdit
-                                handleAction={handleGroupEdit}
+                                handleResponse={handleGroupEdit}
+                                _idValue={grpId}
                                 genderValue={grpGender}
                                 titleValue={grpTitle}
                                 locationValue={grpLocation}
                                 facilitatorValue={grpFacilitator}
                             />
                         </Modal>
+                        <Modal show={confirmGroupDeleteModal}>
+                            <DefaultGroupDelete
+                                confirmDeleteAction={handleGroupDeleteResponse}
+                                _id={grpId}
+                                genderValue={grpGender}
+                                titleValue={grpTitle}
+                                locationValue={grpLocation}
+                                facilitatorValue={grpFacilitator}
+                            />
+                        </Modal>
+
                         <div className='posts'>
                             {defaultGroups ? (
                                 <Fragment>
-                                <p>The default groups provide the ability to add common groups to meetings with a simple click of a button.</p>
-                                <table>
-                                    <thead>
-                                        <tr></tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>
-                                                {defaultGroups.map((dGroup) => (
-                                                    <>
-                                                    <p>key: {dGroup._id} </p>
-                                                    <DefaultGroup
-                                                        key={dGroup._id}
-                                                        mtgConfig={dGroup}
-                                                        handleEdit={handleGroupSelect}
-                                                        handleDelete={handleGroupDelete}
-                                                    />
-                                                    </>
-                                                ))}
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                                    <p>
+                                        The default groups provide the ability
+                                        to add common groups to meetings with a
+                                        simple click of a button.
+                                    </p>
+                                    <table>
+                                        <thead>
+                                            <tr></tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                    {defaultGroups.map(
+                                                        (dGroup) => (
+                                                            <>
+                                                                <DefaultGroup
+                                                                    key={
+                                                                        dGroup._id
+                                                                    }
+                                                                    mtgConfig={
+                                                                        dGroup
+                                                                    }
+                                                                    handleEdit={
+                                                                        handleGroupSelect
+                                                                    }
+                                                                    handleDelete={
+                                                                        handleGroupDelete
+                                                                    }
+                                                                />
+                                                            </>
+                                                        )
+                                                    )}
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
                                 </Fragment>
                             ) : null}
                             {/* {activeRole === 'superuser' ? (
@@ -313,6 +370,7 @@ DisplaySecurity.propTypes = {
     getMtgConfigs: PropTypes.func.isRequired,
     grantUserRegistration: PropTypes.func.isRequired,
     rejectUserRegistration: PropTypes.func.isRequired,
+    deleteDefaultGroup: PropTypes.func.isRequired,
     auth: PropTypes.object.isRequired,
 };
 const mapStateToProps = (state) => ({
@@ -325,4 +383,5 @@ export default connect(mapStateToProps, {
     getMtgConfigs,
     grantUserRegistration,
     rejectUserRegistration,
+    deleteDefaultGroup,
 })(DisplaySecurity);

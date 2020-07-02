@@ -138,4 +138,28 @@ router.get(
         }
     }
 );
+// @route    DELETE api/users/:id
+// @desc     Delete user by ID
+// @access   Private
+router.delete('/:id', auth, async (req, res) => {
+    try {
+        await User.findOneAndRemove({ _id: req.params.id });
+        return res.status(200).json({ msg: 'user removed' });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ msg: 'Server error' });
+    }
+});
+// @route    DELETE api/users/:email
+// @desc     Delete user by email
+// @access   Private
+router.delete('/email/:email', auth, async (req, res) => {
+    try {
+        await User.findOneAndRemove({ email: req.params.email });
+        return res.status(200).json({ msg: 'user removed' });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ msg: 'Server error' });
+    }
+});
 module.exports = router;
