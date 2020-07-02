@@ -36,6 +36,9 @@ const ClientSchema = new mongoose.Schema({
     ],
     defaultGroups: [
         {
+            _id: {
+                type: mongoose.Schema.Types.ObjectId,
+            },
             gender: {
                 type: String,
             },

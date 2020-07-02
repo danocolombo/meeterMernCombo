@@ -1,15 +1,26 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 // import Moment from 'react-moment';
-import { connect } from 'react-redux';
-import { deleteDefGroup } from '../../actions/admin';
+// import { connect } from 'react-redux';
+// import { deleteDefGroup } from '../../actions/admin';
 
 const DefaultGroups = ({
-    deleteDefGroup,
-    auth,
-    defGroup: { _id, gender, title, location, facilitator },
-    showActions,
-}) => (
+    // deleteDefGroup,
+    // auth,
+    mtgConfig: { _id, gender, title, location, facilitator },
+    handleEdit,
+    handleDelete,
+    // showActions,
+}) => {
+    const handleEditRequest = () => {
+        // send key of entry to edit
+        handleEdit(_id,gender,title,location,facilitator);
+    }
+    const handleDeleteRequest = () => {
+        // send key of entry to delete
+        handleDelete(_id);
+    }
+    return (
     <Fragment>
         <div className={'adminDefaultGroupContainer'}>
             <div>
@@ -29,10 +40,10 @@ const DefaultGroups = ({
                 {facilitator}
             </div>
             <div>
-                <i className={'fas fa-pen pl-2 my'}></i>
+                <i className={'fas fa-pen pl-2 my'} onClick={handleEditRequest}></i>
             </div>
             <div>
-                <i className={'fa fa-trash my'} onClick={deleteDefGroup}></i>
+                <i className={'fa fa-trash my'} onClick={handleDeleteRequest}></i>
             </div>
             {/* <div>7</div>
             <div>8</div> */}
@@ -101,6 +112,7 @@ const DefaultGroups = ({
                 )}
             </div> */}
     </Fragment>
+    );
     // <div className='post bg-white p-1 my-1'>
     //   <div>
     //     <Link to={`/profile/${user}`}>
@@ -150,21 +162,24 @@ const DefaultGroups = ({
     //     )}
     //   </div>
     // </div>
-);
-
-DefaultGroups.defaultProps = {
-    showActions: true,
 };
+
+// DefaultGroups.defaultProps = {
+//     showActions: true,
+// };
 
 DefaultGroups.propTypes = {
-    defGroup: PropTypes.object.isRequired,
-    auth: PropTypes.object.isRequired,
-    deleteDefGroup: PropTypes.func.isRequired,
-    showActions: PropTypes.bool,
+    mtgConfig: PropTypes.object.isRequired,
+    handleEdit: PropTypes.func.isRequired,
+    handleDelete: PropTypes.func.isRequired,
+    // auth: PropTypes.object.isRequired,
+    // deleteDefGroup: PropTypes.func.isRequired,
+    // showActions: PropTypes.bool,
+
 };
 
-const mapStateToProps = (state) => ({
-    auth: state.auth,
-});
-
-export default connect(mapStateToProps, { deleteDefGroup })(DefaultGroups);
+// const mapStateToProps = (state) => ({
+//     auth: state.auth,
+// });
+export default DefaultGroups;
+// export default connect(mapStateToProps, { deleteDefGroup })(DefaultGroups);

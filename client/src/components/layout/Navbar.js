@@ -48,7 +48,7 @@ const Navbar = ({ auth: { isAuthenticated, loading, user }, auth, logout }) => {
                     <Fragment>
                         <li>
                             <Link to='/DisplaySecurity'>
-                                <i className='fa fa-user-secret'></i>{' '}
+                                <i className='fa fa-cog'></i>{' '}
                                 <span className='hide-sm'> Admin</span>
                             </Link>
                         </li>
@@ -76,7 +76,7 @@ const Navbar = ({ auth: { isAuthenticated, loading, user }, auth, logout }) => {
                     <Fragment>
                         <li>
                             <Link to={`/UserProfile`}>
-                                <i className='fas fa fa-wrench' />{' '}
+                                <i className='fas fa fa-user' />{' '}
                                 <span className='hide-sm'>Profile</span>
                             </Link>
                         </li>

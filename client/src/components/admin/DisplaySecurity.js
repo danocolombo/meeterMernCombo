@@ -15,7 +15,7 @@ import UserConfirm from './UserConfirm';
 import UserReject from './UserReject';
 import DefaultGroup from './DefaultGroup';
 import ClientUser from './ClientUser';
-import DefaultGroupForm from './DefaultGroupForm';
+import DefaultGroupEdit from './DefaultGroupForm';
 import MeetingConfigForm from './MeetingConfigForm';
 
 import {
@@ -25,6 +25,7 @@ import {
     grantUserRegistration,
     rejectUserRegistration,
 } from '../../actions/admin';
+import DefaultGroups from './DefaultGroup';
 
 const DisplaySecurity = ({
     getDefGroups,
@@ -44,6 +45,13 @@ const DisplaySecurity = ({
         }
     }, [activeClient, getClientUsers, getDefGroups, getMtgConfigs]);
     // const classes = useStyles();
+    const [modalDefaultGroups, setGroupsModal] = useState(false);
+    const [grpId, setGrpId] = useState('');
+    const [grpGender, setGrpGender] = useState('');
+    const [grpTitle, setGrpTitle] = useState('');
+    const [grpLocation, setGrpLocation] = useState('');
+    const [grpFacilitator, setGrpFacilitator] = useState('');
+
     const [modalAction, setModalAction] = useState('');
     const [userSelected, setUserSelected] = useState('');
     const [userNameSelected, setUserNameSelected] = useState('');
@@ -96,14 +104,52 @@ const DisplaySecurity = ({
         }
         setRejectModal(false);
     };
+    // Default Group functions
+    //==========================
+    const handleGroupSelect1 = (k,g,t,l,f) => {
+        // this is from DefaultGroup sending
+        // key (k) to edit.
+        setGrpId(k);
+        
+        
+        // setGrpGender(defaultGroups[k].gender);
+        // setGrpTitle(defaultGroups[k].title);
+        // setGrpLocation(defaultGroups[k].location);
+        // setGrpFacilitator(defaultGroups[k].facilitator);
+        console.log('Going to edit ' + k);
+    }
+    const handleGroupDelete = (k) => {
+        // this is from DefaultGroup sending
+        // key (k) to delete.
+
+        setGrpId(k);
+        console.log('Going to delete group: ' + k);
+    }
+    const handleGroupSelect = (k,g,t,l,f) => {
+        // this is coming back from list
+        setGrpId(k);
+        setGrpGender(g);
+        setGrpTitle(t);
+        setGrpLocation(l);
+        setGrpFacilitator(f);
+        console.log('going to edit ' + k);
+        // setGroupsModal(true);
+    }
+    const handleGroupEdit = (a, g, t, l, f) => {
+        //this is coming back from the edit dialog
+        if(a != 'CANCEL'){
+            console.log('save the edits')
+        }else{
+            console.log('no updates, cancelled');
+        }
+    }
     return loading ? (
         <Spinner />
     ) : (
         <Fragment>
             <div>
                 <h2 className='large text-primary'>
-                    <i className='fa fa-user-secret'></i>&nbsp;&nbsp;Admin /
-                    Security
+                    <i className='fa fa-cog'></i>&nbsp;&nbsp;Configurations
                 </h2>
             </div>
             <p>
@@ -124,8 +170,19 @@ const DisplaySecurity = ({
                     </ExpansionPanelSummary>
 
                     <ExpansionPanelDetails>
+                        <Modal show={showConfirmModal}>
+                            <DefaultGroupEdit
+                                handleAction={handleGroupEdit}
+                                genderValue={grpGender}
+                                titleValue={grpTitle}
+                                locationValue={grpLocation}
+                                facilitatorValue={grpFacilitator}
+                            />
+                        </Modal>
                         <div className='posts'>
                             {defaultGroups ? (
+                                <Fragment>
+                                <p>The default groups provide the ability to add common groups to meetings with a simple click of a button.</p>
                                 <table>
                                     <thead>
                                         <tr></tr>
@@ -134,15 +191,21 @@ const DisplaySecurity = ({
                                         <tr>
                                             <td>
                                                 {defaultGroups.map((dGroup) => (
+                                                    <>
+                                                    <p>key: {dGroup._id} </p>
                                                     <DefaultGroup
                                                         key={dGroup._id}
-                                                        defGroup={dGroup}
+                                                        mtgConfig={dGroup}
+                                                        handleEdit={handleGroupSelect}
+                                                        handleDelete={handleGroupDelete}
                                                     />
+                                                    </>
                                                 ))}
                                             </td>
                                         </tr>
                                     </tbody>
                                 </table>
+                                </Fragment>
                             ) : null}
                             {/* {activeRole === 'superuser' ? (
                                 <DefaultGroupForm />

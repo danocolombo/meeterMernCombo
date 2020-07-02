@@ -16,7 +16,7 @@ const UserProfile = ({
         <Fragment>
             <Fragment>
                 <h2 className='large text-primary'>
-                    <i className='far fa fa-cogs'></i> Your profile
+                    <i className='far fa fa-user'></i> Your profile
                 </h2>
                 <p>Welcome {user && user.name}</p>
                 <p>{uid}</p>
