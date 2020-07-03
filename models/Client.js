@@ -16,6 +16,9 @@ const ClientSchema = new mongoose.Schema({
                 type: mongoose.Schema.Types.ObjectId,
                 ref: 'user',
             },
+            email: {
+                type: String,
+            },
             role: {
                 type: String,
             },

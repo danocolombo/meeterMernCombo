@@ -290,6 +290,7 @@ router.put(
     [
         check('_id', 'ID is required').not().isEmpty(),
         check('cid', 'CID is required').not().isEmpty(),
+        check('email', 'Email is required').not().isEmpty(),
         check('role', 'Role is required').not().isEmpty(),
         check('status', 'Status is required').not().isEmpty(),
     ],
@@ -300,12 +301,13 @@ router.put(
             return res.status(400).json({ errors: errors.array() });
         }
         // destructure req
-        const { _id, cid, role, status } = req.body;
+        const { _id, cid, email, role, status } = req.body;
         // create a body to pass from the data received
         // the definition _id is equvilent to _id: id
         // we don't need cid in the body to save
         const userInfo = {
             _id,
+            email,
             role,
             status,
         };
@@ -326,6 +328,7 @@ router.put(
                         $set: {
                             'users.$.role': role,
                             'users.$.status': status,
+                            'users.$.email': email,
                         },
                     },
                     null,

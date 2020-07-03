@@ -79,12 +79,12 @@ const DisplaySecurity = ({
             setUserNameSelected(name);
         }
     };
-    const handleRejection = (id, name) => {
+    const handleRejection = (id, name, email) => {
         // this is coming back from the UI list showing the register request.
         if (showConfirmModal !== true) {
-            // setModalAction('rejectUser');
             setUserSelected(id);
             setUserNameSelected(name);
+            setUserEmail(email);
             setRejectModal(true);
         }
     };
@@ -102,6 +102,7 @@ const DisplaySecurity = ({
             console.log('DisplaySecurity :: deleteRegistrationRequest');
             console.log('id: ' + userSelected);
             console.log('user: ' + userNameSelected);
+            console.log('email: ' + userEmail);
             console.log('Now we call api to delete user record.');
             console.log('########################################');
             rejectUserRegistration(activeClient, userSelected, userEmail);

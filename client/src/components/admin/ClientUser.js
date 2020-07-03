@@ -69,7 +69,7 @@ const ClientUser = ({
                     )} */}
                     {!auth.loading && role !== 'superuser' && (
                         <button
-                            onClick={() => deleteAction(_id, name)}
+                            onClick={() => deleteAction(_id, name, email)}
                             type='button'
                             className='btn btn-danger'
                         >

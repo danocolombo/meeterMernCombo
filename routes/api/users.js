@@ -66,6 +66,8 @@ router.post(
             //------ ADDING USER TO CLIENT DOC ------
             const reqUser = {};
             reqUser._id = user.id;
+            reqUser.name = user.name;
+            reqUser.email = user.email;
             reqUser.role = 'unregistered';
             reqUser.status = 'pending';
 

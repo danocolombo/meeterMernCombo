@@ -219,10 +219,14 @@ export const deleteClientUser = (cid, uid, email) => async (dispatch) => {
     // uid is the reference in the users array in the client document
     // need email to delate the user from user document.
     try {
+        console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+        console.log('actions/admin :: deleteClientUser')
         // remove from client document
         await axios.delete(`/api/client/user/${cid}/${uid}`);
+        console.log('deleted user from client doc');
         // remove from user document
         await axios.delete(`/api/users/email/${email}`);
+        console.log('deleted user from user doc');
         // remove from REDUX
         dispatch({
             type: REMOVE_CLIENT_USER,
@@ -242,18 +246,30 @@ export const deleteClientUser = (cid, uid, email) => async (dispatch) => {
     }
 };
 
-export const rejectUserRegistration = (cid, id) => async (dispatch) => {
+export const rejectUserRegistration = (cid, id, email) => async (dispatch) => {
     // this is called from Admin/DisplaySecurity when a user with permission has
     // decided to reject a registration request.  We remove the user from
     // client collection document for the client.
     //=============================
     try {
+        console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+        console.log('actions/admin :: rejectUserRegistration')
+        //delete user from client document
         await axios.delete(`/api/client/user/${cid}/${id}`);
-        const resz = await axios.get(`/api/client/userstatus/${cid}`);
+        console.log('deleted user from client doc');
+        //delete user from user document
+        console.log('email: ' + email);
+        await axios.delete(`/api/users/email/${email}`);
+        console.log('deleted user from users doc');
+        //get remaining client users
+        const res = await axios.get(`/api/client/userstatus/${cid}`);
+        console.log('got remaining users');
+        
         dispatch({
             type: SET_CLIENT_USERS,
-            payload: resz.data,
+            payload: res.data,
         });
+        dispatch(setAlert('Client User Removed', 'success'));
     } catch (err) {
         console.log('actions/admin.js rejectUserRegistration ADMIN_ERROR');
         dispatch({
@@ -288,6 +304,7 @@ export const grantUserRegistration = (cid, id, role, email) => async (
         let updateClientUser = {};
         updateClientUser._id = id;
         updateClientUser.cid = cid;
+        updateClientUser.email = email;
         updateClientUser.role = role;
         updateClientUser.status = 'approved';
 
