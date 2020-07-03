@@ -3,29 +3,28 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
 const ConfirmGroupDelete = ({
-    _id,
     genderValue,
     titleValue,
     locationValue,
     facilitatorValue,
-    confirmDeleteAction,
+    confirmDeleteResonse,
 }) => {
     const handleDeleteConfirm = () => {
-        confirmDeleteAction('DELETE');
+        confirmDeleteResonse('DELETE');
     };
 
     const handleDeleteCancel = () => {
-        confirmDeleteAction('CANCEL');
+        confirmDeleteResonse('CANCEL');
     };
     return (
         <>
             <h3>Confirm Delete</h3>
             <p>You want to delete this default group?</p>
-            <p style={{ 'padding-left': 50 }}>
+            <div style={{ 'padding-left': 50 }}>
                 {genderValue === 'f' && <div>Women's</div>}
                 {genderValue === 'm' && <div>Men's</div>}
                 {genderValue === 'x' && <div></div>}
-            </p>
+            </div>
             <p style={{ 'padding-left': 50 }}>{titleValue}</p>
             {locationValue && (
                 <p style={{ 'padding-left': 50 }}>{locationValue}</p>
@@ -55,11 +54,10 @@ const ConfirmGroupDelete = ({
     );
 };
 ConfirmGroupDelete.propTypes = {
-    _id: PropTypes.string.isRequired,
     genderValue: PropTypes.string.isRequired,
     titleValue: PropTypes.string.isRequired,
     locationValue: PropTypes.string.isRequired,
     facilitatorValue: PropTypes.string.isRequired,
-    confirmDeleteAction: PropTypes.func.isRequired,
+    confirmDeleteResonse: PropTypes.func.isRequired,
 };
 export default ConfirmGroupDelete;

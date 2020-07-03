@@ -2,12 +2,13 @@ import React, { Fragment, useState, useEffect } from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Divider } from '@material-ui/core';
+import PlaylistAddIcon from '@material-ui/icons/PlaylistAdd';
+import SettingsIcon from '@material-ui/icons/Settings';
 import { Button } from '@material-ui/core';
 import { createGathering, getGathering } from '../../actions/gathering';
 import { getGroups } from '../../actions/group';
 import GroupListItem from './GroupListItem';
-import { getMtgConfigs } from '../../actions/admin';
+import { getMtgConfigs, getDefGroups } from '../../actions/admin';
 // import ServantSelect from './ServantSelect';
 // import GroupList from './GroupList';
 import Spinner from '../layout/Spinner';
@@ -54,12 +55,13 @@ const EditGathering = ({
     gathering: { gathering, servants, loading, newGathering },
     auth: { activeClient, activeRole, activeStatus },
     group: { groups, groupLoading },
-    meeter: { mtgConfigs },
+    meeter: { mtgConfigs, defaultGroups },
     // mtgConfigs,
     createGathering,
     getGathering,
     getGroups,
     getMtgConfigs,
+    getDefGroups,
     match,
     history,
 }) => {
@@ -68,6 +70,7 @@ const EditGathering = ({
         getGroups(match.params.id);
 
         getMtgConfigs(activeClient);
+        getDefGroups(activeClient);
         // console.log('just ran getGroups');
     }, [activeClient, getGroups, getMtgConfigs, match.params.id]);
     useEffect(() => {
@@ -704,35 +707,76 @@ const EditGathering = ({
                     </div>
                 </div>
                 {FormButtons(meetingDate)}
-                <hr />
 
                 {activeStatus === 'approved' &&
                 activeRole !== 'guest' &&
                 _id ? (
                     <Fragment>
+                        <hr className='group-ruler my-1' />
                         <h2>Open-Share Groups</h2>
-                        <Link to={`/EditGroup/${_id}/0`}>
-                            <div class='waves-effect waves-light btn'>
-                                <i class='material-icons left green'>
-                                    add_circle_outline
-                                </i>
-
-                                <span className='meeterNavTextHighlight'>
-                                    {'  '}NEW
+                        <span className={'pl-2 my'}>
+                            <Button
+                                variant='contained'
+                                color='primary'
+                                size='small'
+                                // className={classes.button}
+                                startIcon={
+                                    <PlaylistAddIcon fontSize='medium' />
+                                }
+                                href={`/EditGroup/${_id}/0`}
+                            >
+                                New Group
+                            </Button>
+                        </span>
+                        <span className={'pl-2'}>
+                            {defaultGroups.length > 0 &&
+                            activeRole !== 'guest' ? (
+                                <span>
+                                    <Button
+                                        variant='contained'
+                                        color='default'
+                                        size='small'
+                                        startIcon={
+                                            <PlaylistAddIcon fontSize='medium' />
+                                        }
+                                        href={`/EditGroup/${_id}/0`}
+                                    >
+                                        DEFAULTS
+                                    </Button>
                                 </span>
-                            </div>
-                        </Link>
+                            ) : activeRole === 'owner' ||
+                              activeRole === 'superuser' ? (
+                                <span>
+                                    <Button
+                                        variant='contained'
+                                        color='secondary'
+                                        size='small'
+                                        // className={classes.button}
+                                        startIcon={<SettingsIcon />}
+                                        href='/DisplaySecurity'
+                                    >
+                                        CONFIGURE
+                                    </Button>
+                                </span>
+                            ) : null}
+                            {_id.length < 1 ? (
+                                <div>
+                                    Open-share groups can be added after the
+                                    meeting is saved.
+                                </div>
+                            ) : null}
+                        </span>
                     </Fragment>
                 ) : (
                     <Fragment>
+                        <hr className='group-ruler my-1' />
                         <div>
-                            Open-share groups can be added after the meeting is
-                            saved.
+                            <h3>Open-share Groups</h3>
                         </div>
                     </Fragment>
                 )}
             </form>
-            <div>
+            <div style={{ 'padding-top': 10 }}>
                 {groups &&
                     groups.map((group) => (
                         <GroupListItem
@@ -827,7 +871,11 @@ const EditGathering = ({
             } else {
                 returnValue = [
                     <>
-                        <Button className='btn-light' href='/gatherings'>
+                        <Button
+                            className='btn-light'
+                            href='/gatherings'
+                            variant='outlined'
+                        >
                             Go Back
                         </Button>
                         {/* <Link className='btn btn-light my-1' to='/gatherings'>
@@ -904,6 +952,7 @@ EditGathering.propTypes = {
     getGathering: PropTypes.func.isRequired,
     getGroups: PropTypes.func.isRequired,
     getMtgConfigs: PropTypes.func.isRequired,
+    getDefGroups: PropTypes.func.isRequired,
     gathering: PropTypes.object.isRequired,
     group: PropTypes.object.isRequired,
     auth: PropTypes.object.isRequired,
@@ -925,4 +974,5 @@ export default connect(mapStateToProps, {
     getGathering,
     getGroups,
     getMtgConfigs,
+    getDefGroups,
 })(withRouter(EditGathering));

@@ -58,7 +58,7 @@ const People = ({
             <p className='lead'></p>
             <div>
                 <Link to='/EditPerson/0'>
-                    <div class='waves-effect waves-light btn green'>
+                    <div className='waves-effect waves-light btn green'>
                         <i className='material-icons left green'>
                             add_circle_outline
                         </i>

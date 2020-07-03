@@ -54,6 +54,41 @@ export const getDefGroups = (cid) => async (dispatch) => {
         });
     }
 };
+
+export const removeDefGroup = (cid, gid) => async (dispatch) => {
+    //this removes the user id from client users
+    // in database and removes from meeter.clientUsers
+    //-----
+    // uid is the reference in the users array in the client document
+    // need email to delate the user from user document.
+    try {
+        console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+        console.log('copied from another function that is called');
+        console.log('actions/admin :: removeDefGroup ' + cid + gid);
+        await axios.delete(`/api/client/defaultgroup/${cid}/${gid}`);
+        const res = await axios.get(`/api/client/defaultgroups/${cid}`);
+        if (res) {
+            dispatch({
+                type: SET_DEFAULT_GROUPS,
+                payload: res.data,
+            });
+        } else {
+            console.log('NO DEFAULT GROUPS RETURNED');
+        }
+
+        dispatch(setAlert('Default Group Removed', 'success'));
+    } catch (err) {
+        console.log('actions/admin.js removeDefGroup ADMIN_ERROR');
+        dispatch({
+            type: ADMIN_ERROR,
+            payload: {
+                msg: err.response.statusText,
+                status: err.response.status,
+            },
+        });
+    }
+};
+
 export const deleteDefaultGroup = (cid, gid) => async (dispatch) => {
     //this removes the defGroup id from client
     //reference in database and updates meeter.defaultGroups
@@ -220,7 +255,7 @@ export const deleteClientUser = (cid, uid, email) => async (dispatch) => {
     // need email to delate the user from user document.
     try {
         console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
-        console.log('actions/admin :: deleteClientUser')
+        console.log('actions/admin :: deleteClientUser');
         // remove from client document
         await axios.delete(`/api/client/user/${cid}/${uid}`);
         console.log('deleted user from client doc');
@@ -253,7 +288,7 @@ export const rejectUserRegistration = (cid, id, email) => async (dispatch) => {
     //=============================
     try {
         console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
-        console.log('actions/admin :: rejectUserRegistration')
+        console.log('actions/admin :: rejectUserRegistration');
         //delete user from client document
         await axios.delete(`/api/client/user/${cid}/${id}`);
         console.log('deleted user from client doc');
@@ -264,7 +299,7 @@ export const rejectUserRegistration = (cid, id, email) => async (dispatch) => {
         //get remaining client users
         const res = await axios.get(`/api/client/userstatus/${cid}`);
         console.log('got remaining users');
-        
+
         dispatch({
             type: SET_CLIENT_USERS,
             payload: res.data,

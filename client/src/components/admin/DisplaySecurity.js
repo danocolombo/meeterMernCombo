@@ -23,6 +23,7 @@ import {
     getClientUsers,
     getDefGroups,
     getMtgConfigs,
+    removeDefGroup,
     grantUserRegistration,
     rejectUserRegistration,
     deleteDefaultGroup,
@@ -131,7 +132,7 @@ const DisplaySecurity = ({
     };
     const handleGroupDelete = (k, g, t, l, f) => {
         // this is from DefaultGroup sending
-        // key (k) to delete.
+        // key (k) to delete. Throw DeleteConfirm modal
 
         setGrpId(k);
         setGrpGender(g);
@@ -145,8 +146,15 @@ const DisplaySecurity = ({
     };
     const handleGroupDeleteResponse = (r) => {
         if (r === 'DELETE') {
-            deleteDefaultGroup(activeClient, grpId);
-            console.log('DELETING ' + grpId);
+            console.log(
+                'going to call removeDefGroup(' +
+                    activeClient +
+                    ', ' +
+                    grpId +
+                    ')'
+            );
+            removeDefGroup(activeClient, grpId);
+            console.log('DELETING?? ' + grpId);
         } else {
             console.log('No delete');
         }
@@ -215,8 +223,7 @@ const DisplaySecurity = ({
                         </Modal>
                         <Modal show={confirmGroupDeleteModal}>
                             <DefaultGroupDelete
-                                confirmDeleteAction={handleGroupDeleteResponse}
-                                _id={grpId}
+                                confirmDeleteResonse={handleGroupDeleteResponse}
                                 genderValue={grpGender}
                                 titleValue={grpTitle}
                                 locationValue={grpLocation}
@@ -369,6 +376,7 @@ DisplaySecurity.propTypes = {
     getClientUsers: PropTypes.func.isRequired,
     getDefGroups: PropTypes.func.isRequired,
     getMtgConfigs: PropTypes.func.isRequired,
+    removeDefGroup: PropTypes.func.isRequired,
     grantUserRegistration: PropTypes.func.isRequired,
     rejectUserRegistration: PropTypes.func.isRequired,
     deleteDefaultGroup: PropTypes.func.isRequired,

@@ -91,8 +91,8 @@ const Gatherings = ({
                             visible='false'
                             id='editLink'
                         >
-                            <div class='waves-effect waves-light btn'>
-                                <i class='material-icons left green'>
+                            <div className='waves-effect waves-light btn'>
+                                <i className='material-icons left green'>
                                     add_circle_outline
                                 </i>
                                 <span className='meeterNavTextHighlight'>

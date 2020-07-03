@@ -44,7 +44,6 @@ const Dashboard = ({
             getGatherings({ activeClient });
         }
     }, [getGatherings, getCurrentProfile]);
-
     return loading ? (
         <Spinner />
     ) : (
