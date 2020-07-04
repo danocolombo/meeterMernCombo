@@ -699,6 +699,32 @@ button {
 }
 /* GroupList component of gathering page */
 /* --------------------------------------*/
+/* GItem-Box { */
+    .GItem-Box {
+        border: 1px solid rgb(109, 84, 84);
+        display: grid;
+        grid-template-columns: auto 50px;
+        grid-template-rows: auto;
+        grid-template-areas:
+            "GenderTitle Button"
+            "LocationFacilitator Button";
+        grid-column-gap: 0px;
+        grid-row-gap: 0px;
+    }
+    .GItem-GenderTitle {
+        grid-area: GenderTitle;
+    }
+    .GItem-LocationFacilitator {
+        grid-area: LocationFacilitator;
+    }
+    .GItem-Button {
+        grid-area: Button;
+    }
+/*         
+    .GItem-Right { grid-area: 1 / 2 / 3 / 3; }
+    .GItem-TLeft { grid-area: 1 / 1 / 2 / 2; }
+    .GItem-BLeft { grid-area: 2 / 1 / 3 / 2; } */
+
 /* GATHERINGS Page */
 /* GATHERING - GroupListItem */
 .GGL-Box {
