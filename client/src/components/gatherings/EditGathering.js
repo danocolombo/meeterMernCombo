@@ -5,7 +5,11 @@ import { connect } from 'react-redux';
 import PlaylistAddIcon from '@material-ui/icons/PlaylistAdd';
 import SettingsIcon from '@material-ui/icons/Settings';
 import { Button } from '@material-ui/core';
-import { createGathering, getGathering } from '../../actions/gathering';
+import {
+    createGathering,
+    getGathering,
+    addDefaultGroups,
+} from '../../actions/gathering';
 import { getGroups } from '../../actions/group';
 import GroupListItem from './GroupListItem';
 import { getMtgConfigs, getDefGroups } from '../../actions/admin';
@@ -62,6 +66,7 @@ const EditGathering = ({
     getGroups,
     getMtgConfigs,
     getDefGroups,
+    addDefaultGroups,
     match,
     history,
 }) => {
@@ -147,6 +152,70 @@ const EditGathering = ({
         window.scrollTo(0, 0);
     };
 
+    const addDefaultGroupsToMeeting = () => {
+        console.log('in EditGatherings :: addDefaultGroupsToMeeting');
+        // addDefaultGroups(defaultGroups);
+        // console.log(
+        //     'defaultGroups: ' +
+        //         util.inspect(defaultGroups, { showHidden: false, depth: null })
+        // );
+        //============================================
+        // this is sample of 3 default meetings in REDUX
+        // defaultGroups: [
+        //     { _id: '5efe35a12f948b40189671a6',
+        //         gender: 'f',
+        //         title: 'A-Z',
+        //         location: 'Library',
+        //         facilitator: 'Marie'
+        //     },
+        //     { _id: '5efe3dbb22c44e40f9775e06',
+        //         gender: 'm',
+        //         title: 'chem',
+        //         location: 'Library',
+        //         facilitator: 'Dale'
+        //     },
+        //     { _id: '5efe43400e4232414c2ee7e4',
+        //         gender: 'x',
+        //         title: 'remove me',
+        //         location: 'bathroom',
+        //         facilitator: 'Waldo'
+        //     }
+        // ]
+
+        let dgroups = defaultGroups;
+        let groupsToAdd = [];
+        // let newBatch = [];
+        let result = dgroups.map((g) => {
+            let aGroup = {};
+            aGroup.mid = match.params.id;
+            aGroup.gender = g.gender;
+            aGroup.title = g.title;
+            if (g.location) aGroup.location = g.location;
+            if (g.facilitator) aGroup.facilitator = g.facilitator;
+            groupsToAdd.push(aGroup);
+        });
+        addDefaultGroups(groupsToAdd);
+        // newGroup.push({
+        //     mid: match.params.id,
+        //     gender: g.gender,
+        //     title: g.title,
+
+        //     location: g.location,
+        //     facilitator: g.facilitator,
+        // });
+        // console.log(JSON.stringify(newGroup));
+        // newBatch.push({
+        //     newGroup,
+        // });
+        //     console.log('newBatch...');
+        //     console.log(JSON.stringify(newBatch));
+        //     // console.log('id: ' + g._id);
+        //     // console.log('gender: ' + g.gender);
+        //     // console.log('title: ' + g.title);
+        //     // console.log('location: ' + g.location);
+        //     // console.log('faciliator: ' + g.facilitator);
+        // });
+    };
     // // DANO
     // console.log('donations: ' + mtgConfigs['donations']);
     // console.log('type of mtgConfigs: ' + typeof mtgConfigs);
@@ -720,9 +789,7 @@ const EditGathering = ({
                                 color='primary'
                                 size='small'
                                 // className={classes.button}
-                                startIcon={
-                                    <PlaylistAddIcon fontSize='medium' />
-                                }
+                                startIcon={<PlaylistAddIcon />}
                                 href={`/EditGroup/${_id}/0`}
                             >
                                 New Group
@@ -736,10 +803,8 @@ const EditGathering = ({
                                         variant='contained'
                                         color='default'
                                         size='small'
-                                        startIcon={
-                                            <PlaylistAddIcon fontSize='medium' />
-                                        }
-                                        href={`/EditGroup/${_id}/0`}
+                                        startIcon={<PlaylistAddIcon />}
+                                        onClick={addDefaultGroupsToMeeting}
                                     >
                                         DEFAULTS
                                     </Button>
@@ -953,6 +1018,7 @@ EditGathering.propTypes = {
     getGroups: PropTypes.func.isRequired,
     getMtgConfigs: PropTypes.func.isRequired,
     getDefGroups: PropTypes.func.isRequired,
+    addDefaultGroups: PropTypes.func.isRequired,
     gathering: PropTypes.object.isRequired,
     group: PropTypes.object.isRequired,
     auth: PropTypes.object.isRequired,
@@ -975,4 +1041,5 @@ export default connect(mapStateToProps, {
     getGroups,
     getMtgConfigs,
     getDefGroups,
+    addDefaultGroups,
 })(withRouter(EditGathering));
