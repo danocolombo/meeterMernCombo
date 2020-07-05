@@ -1,4 +1,5 @@
 import axios from 'axios';
+// const mongoose = require('mongoose');
 import { setAlert } from './alert';
 import {
     GET_GROUPS,
@@ -13,6 +14,7 @@ import {
     // CLEAR_GROUPS,
     // SET_GROUP,
 } from './types';
+import { mongo, Mongoose } from 'mongoose';
 
 // Get groups associated with meetingId
 export const getGroups = (mid) => async (dispatch) => {
@@ -216,7 +218,7 @@ export const addGroup = (formData, history, edit = false) => async (
     dispatch
 ) => {
     try {
-        if (formData._id.length < 1) {
+        if (!formData._id.length > 1) {
             //this is an add
             delete formData._id;
         }
@@ -235,11 +237,34 @@ export const addGroup = (formData, history, edit = false) => async (
         } else {
             res = await axios.post(`/api/groups/group/0`, formData, config);
         }
+        //=============================================
+        // we either added or updated. refresh redux
+        //=======================================------
+        const newGroupList = await axios.get(
+            `/api/groups/meeting/~{formData.mid}`
+        );
+
+        const rose = await axios.get(`/api/groups/meeting/${formData.mid}`);
 
         dispatch({
-            type: ADD_GROUP,
-            payload: res.data,
+            type: GET_GROUPS,
+            payload: rose.data,
         });
+
+        // await dispatch({
+        //     type: CLEAR_GROUP,
+        //     payload: 'Clear temp group info',
+        // });
+        // dispatch({
+        //     type: GET_GROUPS,
+        //     payload: res.data,
+        // });
+
+        //===========================
+        // dispatch({
+        //     type: ADD_GROUP,
+        //     payload: res.data,
+        // });
         dispatch(setAlert(edit ? 'Group Updated' : 'Group Created', 'success'));
 
         // if (!edit) {

@@ -79,6 +79,7 @@ const EditGroup = ({
 
     const onSubmit = (e) => {
         e.preventDefault();
+        formData.mid = match.params.mid;
         addGroup(formData, history, true);
         window.scrollTo(0, 0);
     };
