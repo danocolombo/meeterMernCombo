@@ -59,7 +59,11 @@ img {
     line-height: 1.2;
     margin-bottom: 1rem;
 }
-.standard-font {
+.box-font-lead {
+    font-size: 1.1rem;
+    font-weight: bold;
+}
+.box-font {
     font-size: 1rem;
 }
 .lead {
@@ -555,18 +559,25 @@ button {
     box-shadow: 0 2px 3px rgb(216, 146, 146);
     background-color: lightcyan;
     margin-bottom: 10px;
-    /* grid: auto auto auto auto / auto auto; 4 rows of 2 */
-    grid: '. .' 'locArea locArea' 'facArea facArea' '. .';
-    display: grid;
-}
-.adminDefaultGroupLocation {
-    grid-area: locArea;
-}
-.adminDefaultGroupFacilitator {
-    grid-area: facArea;
+    grid-template-areas:
+        'Line1 .'
+        'Line2 .'
+        'Btns .';
+    grid-column-gap: 0px;
+    grid-row-gap: 0px;
+    margin-bottom: 10px;
 }
 
-.adminDefaultGroupBox {
+.adminDefaultGroupLine1 {
+    grid-area: Line1;
+}
+.adminDefaultGroupLine2 {
+    grid-area: Line2;
+}
+.adminDefaultGroupButtons {
+    grid-area: Btns;
+}
+/* .adminDefaultGroupBox {
     border: 1px solid rgb(109, 84, 84);
     box-shadow: 0 2px 3px rgb(216, 146, 146);
     display: grid;
@@ -577,7 +588,7 @@ button {
 .adminDefaultGroupBox > div {
     text-align: center;
     padding: 10px;
-}
+} */
 /* Posts Page */
 .post-form .post-form-header {
     background: var(--primary-color);
@@ -630,7 +641,12 @@ button {
     .large {
         font-size: 2rem;
     }
-
+    .medium {
+        font-size: 1rem;
+    }
+    .small {
+        font-size: 0.5rem;
+    }
     .lead {
         font-size: 1rem;
     }
@@ -887,17 +903,17 @@ button {
     margin-bottom: 1rem;
 }
 /* Admin defaultGroup box */
-.AdminDefaultGroupBox {
+/* .AdminDefaultGroupBox {
     border: 1px solid rgb(109, 84, 84);
     box-shadow: 0 2px 3px rgb(216, 146, 146);
-    /* padding: 10px;
+    padding: 10px;
     margin-left: 25px;
     margin-bottom: 10px;
     margin-right: 10px;
-    max-width: 400px; */
+    max-width: 400px;
     display: grid;
     grid-template-columns: auto, auto;
-}
+} */
 
 .PersonBox {
     border: 1px solid rgb(109, 84, 84);

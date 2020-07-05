@@ -339,6 +339,16 @@ export const addDefaultGroups = (grps2add) => async (dispatch) => {
                 config
             );
         }
+
+        console.table(newGroups[0]);
+
+        // for (let i = 0; i < newGroups.length; i++) {
+        //     const axiosResponse = await axios.put(
+        //         '/api/client/defaultgroup',
+        //         newGroups[i],
+        //         config
+        //     );
+        // }
         // now get the groups for the meeting and load in REDUX
         const res = await axios.get(`/api/groups/meeting/${mid}`);
         dispatch({ type: CLEAR_GROUPS });

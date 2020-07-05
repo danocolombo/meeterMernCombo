@@ -193,6 +193,8 @@ const EditGathering = ({
         // let newBatch = [];
         let result = dgroups.map((g) => {
             let aGroup = {};
+            aGroup._id = g._id;
+            aGroup.cid = activeClient;
             aGroup.mid = match.params.id;
             aGroup.gender = g.gender;
             aGroup.title = g.title;

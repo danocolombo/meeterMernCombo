@@ -96,7 +96,59 @@ export const getDefGroups = (cid) => async (dispatch) => {
         });
     }
 };
-export const deleteDefaultGroup = (id) => async (dispatch) => {};
+export const updateDefaultGroup = (revised) => async (dispatch) => {
+    console.log('getting the work done.');
+    console.log('_id:' + revised._id);
+    console.log('client: ' + revised.cid);
+    console.log('gender: ' + revised.gender);
+    console.log('title: ' + revised.title);
+    console.log('location: ' + revised.location);
+    console.log('facilitator: ' + revised.gender);
+    try {
+        const config = {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        };
+        const res = await axios.put(
+            `/api/client/defaultgroup`,
+            revised,
+            config
+        );
+        // now get the default groups and reload Redux
+        const ress = await axios.get(
+            `/api/client/defaultgroups/${revised.cid}`
+        );
+        dispatch({
+            type: SET_DEFAULT_GROUPS,
+            payload: ress.data,
+        });
+        dispatch(setAlert('Default Group Updated.', 'success'));
+    } catch (err) {
+        console.log('actions/admin.js updateDefaultGroup ADMIN_ERROR');
+        dispatch(setAlert('Default Group Update Failed.', 'danger'));
+    }
+};
+export const deleteDefaultGroup = (cid, gid) => async (dispatch) => {
+    // need to remove the default group from the client doc using
+    // the client id (cid) and the groups indicator (gid);
+    try {
+        await axios.delete(`/api/client/defaultgroup/${cid}/${gid}`);
+        // then get the groups and reload redux
+        const res = await axios.get(`/api/client/defaultgroups/${cid}`);
+        if (res) {
+            dispatch({
+                type: SET_DEFAULT_GROUPS,
+                payload: res.data,
+            });
+        } else {
+            console.log('NO DEFAULT GROUPS RETURNED');
+        }
+        console.log('tried...');
+    } catch (error) {
+        console.log('CATCH....');
+    }
+};
 export const grantUserRegistration = (cid, id, role, email) => async (
     dispatch
 ) => {

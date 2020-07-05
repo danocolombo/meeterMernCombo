@@ -23,157 +23,66 @@ const DefaultGroups = ({
     return (
         <Fragment>
             <div className={'adminDefaultGroupContainer'}>
-                <div>
-                    {gender === 'f' && (
-                        <div className={'pl-1 pr-1'}>Women's</div>
-                    )}
-                    {gender === 'm' && <div className={'pl-1 pr-1'}>Men's</div>}
-                    {gender === 'x' && (
-                        <div className={'pl-1 pr-1'}>{title}</div>
-                    )}
+                <div className={'pl-1 box-font-lead adminDefaultGroupLine1'}>
+                    {line1(gender, title)}
                 </div>
-                <div>
-                    {gender === 'f' && <div className={'pr-1'}>{title}</div>}
-                    {gender === 'm' && <div className={'pr-1'}>{title}</div>}
+                <div className={'pl-1 box-font adminDefaultGroupLine2'}>
+                    {line2(location, facilitator)}
                 </div>
-                <div className={'pl-1 pr-1 adminDefaultGroupLocation'}>
-                    {location}
+                <div className={'adminDefaultGroupButtons'}>
+                    <span className={'pl-1'}>
+                        <i
+                            className={'fas fa-pen pl-2 my'}
+                            onClick={handleEditRequest}
+                        ></i>
+                    </span>
+                    <span className={'pl-2'}>
+                        <i
+                            className={'fa fa-trash my'}
+                            onClick={handleDeleteRequest}
+                        ></i>
+                    </span>
                 </div>
-                {/* <div>4</div> */}
-                <div className={'pl-1 pr-1 adminDefaultGroupFacilitator'}>
-                    {facilitator}
-                </div>
-                <div>
-                    <i
-                        className={'fas fa-pen pl-2 my'}
-                        onClick={handleEditRequest}
-                    ></i>
-                </div>
-                <div>
-                    <i
-                        className={'fa fa-trash my'}
-                        onClick={handleDeleteRequest}
-                    ></i>
-                </div>
-                {/* <div>7</div>
-            <div>8</div> */}
             </div>
-
-            {/* this was displaying fine on computer, but not phone */}
-
-            {/* <div className={'adminDefaultGroupBox bg-white p my'}>
-            {gender === 'f' && <div>women</div>}
-            {gender === 'm' && <div>men</div>}
-            {gender === 'x' && <div>mixed</div>}
-            <div>{title}</div>
-            <div>{location}</div>
-            <div>{facilitator}</div>
-            <div>
-                {!auth.loading && (
-                    <button
-                        onClick={() => deleteDefGroup(_id)}
-                        type='button'
-                        className='btn btn-danger'
-                    >
-                        <i className='fas fa-times' />
-                    </button>
-                )}
-            </div>
-            </div> */}
-            {/* end desktop grid layout */}
-            {/* &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
-            &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& */}
-            {/* <table>
-                <tr>
-                    <td>{gender}</td>
-                    <td>{title}</td>
-                    <td>{location}</td>
-                    <td>{facilitator}</td>
-                    <td>
-                        {!auth.loading && (
-                            <button
-                                onClick={() => deleteDefGroup(_id)}
-                                type='button'
-                                className='btn btn-danger'
-                            >
-                                <i className='fas fa-times' />
-                            </button>
-                        )}
-                    </td>
-                </tr>
-            </table> */}
-            {/* <div>Gender: {gender}</div>
-            <div>Title: {title}</div>
-            <div>Location: {location}</div>
-            <div>Facilitator: {facilitator}</div> */}
-            {/* <div>
-                {showActions && (
-                    <Fragment>
-                        {!auth.loading && (
-                            <button
-                                onClick={() => deleteDefGroup(_id)}
-                                type='button'
-                                className='btn btn-danger'
-                            >
-                                <i className='fas fa-times' />
-                            </button>
-                        )}
-                    </Fragment>
-                )}
-            </div> */}
         </Fragment>
     );
-    // <div className='post bg-white p-1 my-1'>
-    //   <div>
-    //     <Link to={`/profile/${user}`}>
-    //       <img className='round-img' src={avatar} alt='' />
-    //       <h4>{name}</h4>
-    //     </Link>
-    //   </div>
-    //   <div>
-    //     <p className='my-1'>{text}</p>
-    //     <p className='post-date'>
-    //       Posted on <Moment format='YYYY/MM/DD'>{date}</Moment>
-    //     </p>
-
-    //     {showActions && (
-    //       <Fragment>
-    //         <button
-    //           onClick={() => addLike(_id)}
-    //           type='button'
-    //           className='btn btn-light'
-    //         >
-    //           <i className='fas fa-thumbs-up' />{' '}
-    //           <span>{likes.length > 0 && <span>{likes.length}</span>}</span>
-    //         </button>
-    //         <button
-    //           onClick={() => removeLike(_id)}
-    //           type='button'
-    //           className='btn btn-light'
-    //         >
-    //           <i className='fas fa-thumbs-down' />
-    //         </button>
-    //         <Link to={`/posts/${_id}`} className='btn btn-primary'>
-    //           Discussion{' '}
-    //           {comments.length > 0 && (
-    //             <span className='comment-count'>{comments.length}</span>
-    //           )}
-    //         </Link>
-    //         {!auth.loading && user === auth.user._id && (
-    //           <button
-    //             onClick={() => deletePost(_id)}
-    //             type='button'
-    //             className='btn btn-danger'
-    //           >
-    //             <i className='fas fa-times' />
-    //           </button>
-    //         )}
-    //       </Fragment>
-    //     )}
-    //   </div>
-    // </div>
 };
+function line1(g, t) {
+    let line1 = '';
+    switch (g) {
+        case 'f':
+            line1 = "Women's - ";
+            break;
+        case 'm':
+            line1 = "Men's - ";
+        default:
+            break;
+    }
+    if (t.length > 0) {
+        line1 = line1.concat(' ', t);
+    }
+    return [<span>{line1}</span>];
+}
+function line2(l, f) {
+    console.log(l + ' ' + l.length);
+    console.log(f + ' ' + f.length);
+    let line2 = '';
+    let tmp = '';
+    if (l.length > 0) {
+        line2 = l;
+    }
 
+    if (f.length > 0) {
+        if (line2.length > 0) {
+            tmp = line2.concat(' - ', f);
+            line2 = tmp;
+        }
+    } else {
+        line2 = f;
+    }
+
+    return [<span>{line2}</span>];
+}
 // DefaultGroups.defaultProps = {
 //     showActions: true,
 // };
