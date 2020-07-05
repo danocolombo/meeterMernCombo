@@ -32,6 +32,7 @@ router.post(
         }
 
         const {
+            _id,
             name,
             tenantId,
             gender,
@@ -86,12 +87,26 @@ router.post(
             personFields.notes = '';
         }
         try {
-            let person = await People.findOneAndUpdate(
-                { name: name, tenantId: tenantId },
-                { $set: personFields },
-                { new: true, upsert: true }
-            );
-            res.json(person);
+            if (_id) {
+                // let person = await People.updateOne(
+                //     { _id: _id, tenantId: tenantId },
+                //     { $set: personFields }
+                //     { new: true, upsert: true, returnNewDocument: true }
+                // );
+                let person = await People.findByIdAndUpdate(
+                    { _id: _id },
+                    { $set: personFields }
+                    // { new: true, upsert: true, returnNewDocument: true }
+                );
+                res.json(person);
+            } else {
+                let person2 = await People.findOneAndUpdate(
+                    { tenantId: 'newEntry' },
+                    { $set: personFields },
+                    { new: true, upsert: true, returnNewDocument: true }
+                );
+                res.json(person2);
+            }
         } catch (err) {
             console.error(err.message);
             res.status(500).send('Server error');
@@ -246,12 +261,15 @@ router.post(
         const { cid, email } = req.body;
         console.log('------ POST /api/people/validateemail');
         // NOTE: tenantId is "people-" + cid
-        const tenantId = "people-" + cid;
+        const tenantId = 'people-' + cid;
         try {
-            let person = await People.find({ tenantId: tenantId, email: email });
+            let person = await People.find({
+                tenantId: tenantId,
+                email: email,
+            });
             console.log('person._id: ' + person.name);
 
-            if (perons._id === undefined ) {
+            if (perons._id === undefined) {
                 return res.status(404).json({ msg: 'User not found' });
             }
             res.json(person);

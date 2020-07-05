@@ -4,23 +4,24 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Spinner from '../layout/Spinner';
 import PeopleItem from './PeopleItem';
-import Modal from '../layout/Modal/Modal'; 
+import Modal from '../layout/Modal/Modal';
 import DeletePersonConfirm from './DeletePersonConfirm';
-import { getPeople } from '../../actions/people';
+import { getPeople, deletePerson } from '../../actions/people';
 // import auth from '../../../../middleware/auth';
 
 const People = ({
     getPeople,
+    deletePerson,
     person: { people, loading },
     auth: { activeClient, activeRole, activeStatus },
-    match
+    match,
 }) => {
     useEffect(() => {
         if (activeClient) {
             getPeople(activeClient);
         }
     }, [getPeople, activeClient]);
-    const [ deleteConfirmModal, setDeleteConfirmModal] = useState(false);
+    const [deleteConfirmModal, setDeleteConfirmModal] = useState(false);
     const [userId, setUserId] = useState(null);
     const [userName, setUserName] = useState('');
 
@@ -29,15 +30,18 @@ const People = ({
         setUserId(i);
         setUserName(n);
         setDeleteConfirmModal(true);
-
-    }
+    };
     const deleteConfirmResponse = (r) => {
         console.log('Response:' + r);
         if (r !== 'CANCEL') {
             console.log('deleteing ' + userName + ' (' + userId + ')');
+            const i = userId;
+            setUserId('');
+            setUserName('');
+            deletePerson(i);
         }
-    }
-
+        setDeleteConfirmModal(false);
+    };
 
     return loading ? (
         <Spinner />
@@ -60,16 +64,21 @@ const People = ({
                 </Link>
             </div>
             <div>
-            <Modal show={deleteConfirmModal}>
-                <DeletePersonConfirm
-                    deleteResponse={deleteConfirmResponse}
-                    userName={userName}
-                />
-            </Modal>
+                <Modal show={deleteConfirmModal}>
+                    <DeletePersonConfirm
+                        deleteResponse={deleteConfirmResponse}
+                        userName={userName}
+                    />
+                </Modal>
             </div>
             <div className='posts'>
                 {people.map((person) => (
-                    <PeopleItem key={person._id} person={person} deleteResponse={deleteRequest} deleteRequest={deleteRequest}/>
+                    <PeopleItem
+                        key={person._id}
+                        person={person}
+                        deleteResponse={deleteRequest}
+                        deleteRequest={deleteRequest}
+                    />
                 ))}
             </div>
         </Fragment>
@@ -78,6 +87,7 @@ const People = ({
 
 People.propTypes = {
     getPeople: PropTypes.func.isRequired,
+    deletePerson: PropTypes.func.isRequired,
     person: PropTypes.object.isRequired,
     auth: PropTypes.object.isRequired,
 };
@@ -86,4 +96,7 @@ const mapStateToProps = (state) => ({
     auth: state.auth,
 });
 
-export default connect(mapStateToProps, { getPeople })(People);
+export default connect(mapStateToProps, {
+    getPeople,
+    deletePerson,
+})(People);

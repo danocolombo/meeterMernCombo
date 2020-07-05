@@ -23,6 +23,7 @@ export const ADD_POST = 'ADD_POST';
 export const ADD_COMMENT = 'ADD_COMMENT';
 export const REMOVE_COMMENT = 'REMOVE_COMMENT';
 export const GET_PERSON = 'GET_PERSON';
+export const SET_PERSON = 'SET_PERSON';
 export const GET_PEOPLE = 'GET_PEOPLE';
 export const CLEAR_PEOPLE = 'CLEAR_PEOPLE';
 export const CLEAR_PERSON = 'CLEAR_PERSON';

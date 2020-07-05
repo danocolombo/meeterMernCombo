@@ -85,8 +85,8 @@ const Gatherings = ({
                     <p className='lead'>List of upcoming meetings...</p>,
                     <div>
                         <Link to='/EditGathering/0' visible='false'>
-                            <div class='waves-effect waves-light btn'>
-                                <i class='material-icons left green'>
+                            <div className='waves-effect waves-light btn'>
+                                <i className='material-icons left green'>
                                     add_circle_outline
                                 </i>
                                 <span className='meeterNavTextHighlight'>
