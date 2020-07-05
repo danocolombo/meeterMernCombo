@@ -229,7 +229,7 @@ router.get('/:id', auth, async (req, res) => {
 // |_|     \____/|_____/   |_|    /_/
 //==========================================
 // @route    POST api/people/validateemail
-// @desc     check if a user is exists for client and email
+// @desc     check if a user exists for client and email
 // @access   Public
 router.post(
     '/validateemail',
@@ -251,7 +251,7 @@ router.post(
             let person = await People.find({ tenantId: tenantId, email: email });
             console.log('person._id: ' + person.name);
 
-            if (person.length === 0 ) {
+            if (perons._id === undefined ) {
                 return res.status(404).json({ msg: 'User not found' });
             }
             res.json(person);
