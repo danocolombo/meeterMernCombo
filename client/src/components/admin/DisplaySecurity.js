@@ -18,12 +18,11 @@ import DefaultGroupDelete from './DefaultGroupDeleteConfirm';
 import ClientUser from './ClientUser';
 import DefaultGroupEdit from './DefaultGroupForm';
 import MeetingConfigForm from './MeetingConfigForm';
-
+import { removeDefGroup } from '../../actions/group';
 import {
     getClientUsers,
     getDefGroups,
     getMtgConfigs,
-    removeDefGroup,
     grantUserRegistration,
     rejectUserRegistration,
     deleteDefaultGroup,

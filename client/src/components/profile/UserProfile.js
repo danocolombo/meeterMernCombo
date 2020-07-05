@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React, { Fragment} from 'react';
 import PropTypes from 'prop-types';
 // import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
@@ -16,7 +16,7 @@ const UserProfile = ({
         <Fragment>
             <Fragment>
                 <h2 className='large text-primary'>
-                    <i className='far fa fa-user'></i> Your profile
+                    <i className='far fa fa-cogs'></i> Your profile
                 </h2>
                 <p>Welcome {user && user.name}</p>
                 <p>{uid}</p>

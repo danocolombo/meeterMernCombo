@@ -8,7 +8,7 @@ import {
     CLEAR_GROUP,
     ADD_GROUP,
     GET_GROUP,
-
+    SET_DEFAULT_GROUPS,
     // UPDATE_GROUP,
     // CLEAR_GROUPS,
     // SET_GROUP,
@@ -78,6 +78,54 @@ export const deleteGroup = (groupId, mid) => async (dispatch) => {
         console.log('DELETE /api/groups/' + groupId);
         console.log('GET /api/groups/meeting/' + mid);
         console.log('DISPATCH TO RELOAD GROUPS IN REDUX');
+        dispatch({
+            //actions:deleteGroup
+            type: GROUP_ERROR,
+            payload: {
+                msg: err.response.statusText,
+                status: err.response.status,
+            },
+        });
+    }
+};
+export const removeDefGroup = (cid, gid) => async (dispatch) => {
+    //this removes the group id from defaultGroups in
+    // client document and removes from meeter.defaultGroups
+
+    try {
+        await axios.delete(`/api/client/defaultgroup/${cid}/${gid}`);
+        //-----------------------------------
+        // instead of cleaning up redux, just
+        // flush and reload.
+        //------------------------------------
+        const res = await axios.get(`/api/client/defaultgroups/${cid}`);
+        if (res) {
+            dispatch({
+                type: SET_DEFAULT_GROUPS,
+                payload: res.data,
+            });
+        } else {
+            console.log('NO DEFAULT GROUPS RETURNED');
+        }
+
+        // await axios.delete(`/api/groups/${groupId}`);
+        // dispatch({
+        //     type: DELETE_GROUP,
+        //     payload: groupId,
+        // });
+        // // reload the groups
+        // const res = await axios.get(`/api/groups/meeting/${mid}`);
+
+        // dispatch({
+        //     type: GET_GROUPS,
+        //     payload: res.data,
+        // });
+        dispatch(setAlert('Default Group Removed', 'success'));
+    } catch (err) {
+        console.log('actions/group.js removeDefGroup');
+        console.log('DELETE /api/client/defaultgroup/' + cid + '/' + gid);
+        console.log('GET /api/client/defaultgroups/' + cid);
+        console.log('DISPATCH TO SET_DEFAULT_GROUPS IN REDUX');
         dispatch({
             //actions:deleteGroup
             type: GROUP_ERROR,

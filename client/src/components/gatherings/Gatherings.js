@@ -81,18 +81,12 @@ const Gatherings = ({
         } else {
             if (activeStatus === 'approved' && activeRole !== 'guest') {
                 return [
-                    <Link to='/gatherings/historyView' id='historyLink'>
-                        HISTORY
-                    </Link>,
+                    <Link to='/gatherings/historyView'>HISTORY</Link>,
                     <p className='lead'>List of upcoming meetings...</p>,
                     <div>
-                        <Link
-                            to='/EditGathering/0'
-                            visible='false'
-                            id='editLink'
-                        >
-                            <div className='waves-effect waves-light btn'>
-                                <i className='material-icons left green'>
+                        <Link to='/EditGathering/0' visible='false'>
+                            <div class='waves-effect waves-light btn'>
+                                <i class='material-icons left green'>
                                     add_circle_outline
                                 </i>
                                 <span className='meeterNavTextHighlight'>

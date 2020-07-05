@@ -44,6 +44,7 @@ const Dashboard = ({
             getGatherings({ activeClient });
         }
     }, [getGatherings, getCurrentProfile]);
+
     return loading ? (
         <Spinner />
     ) : (
@@ -51,8 +52,7 @@ const Dashboard = ({
             {/* <h1 className="large text-primary">Dashboard</h1> */}
             <img className='dashboardLogo' src={DashLogo} alt='Meeter' />
             <p className='lead'>
-                <i className='fas fa-user' /> Welcome{' '}
-                {user && user.name.replace(/ .*/, '')}
+                <i className='fas fa-user' /> Welcome {user && user.name}
             </p>
             <strong>What's happening...</strong>
             {privledgedInfo(auth)}

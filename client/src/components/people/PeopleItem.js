@@ -4,27 +4,17 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { deletePerson } from '../../actions/people';
 
-const PersonItem = ({
-    deletePerson,
-    deleteAction,
-    person: { _id, name, email, phone },
-}) => (
+const PersonItem = ({ deletePerson, person: { _id, name, email, phone } }) => (
     <div className='PersonBox'>
         <div className='DeleteTarget'>
-            <Fragment>
-                <i
-                    className='fa fa-trash'
-                    onClick={() => deleteAction(_id, name)}
-                ></i>
-            </Fragment>
-            {/* <a
+            <a
                 id='deletePerson'
                 title='-'
-                href='#'
-                onClick={() => deleteAction(_id, name)}
+                href='/#'
+                onClick={() => deletePerson(_id)}
             >
                 <i className='fas fa-minus-circle'></i>
-            </a> */}
+            </a>
         </div>
         <div>
             <Link to={`/EditPerson/${_id}`}>{name}</Link>
@@ -55,7 +45,6 @@ const PersonItem = ({
 PersonItem.propTypes = {
     person: PropTypes.object.isRequired,
     deletePerson: PropTypes.func.isRequired,
-    deleteAction: PropTypes.func.isRequired,
 };
 
 export default connect(null, { deletePerson })(PersonItem);

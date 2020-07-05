@@ -10,7 +10,7 @@ import {
     getGathering,
     addDefaultGroups,
 } from '../../actions/gathering';
-import { getGroups } from '../../actions/group';
+import { getGroups, deleteGroup } from '../../actions/group';
 import GroupListItem from './GroupListItem';
 import { getMtgConfigs, getDefGroups } from '../../actions/admin';
 // import ServantSelect from './ServantSelect';
@@ -150,6 +150,12 @@ const EditGathering = ({
             delete formData['supportRole'];
         createGathering(formData, history, activeClient, true);
         window.scrollTo(0, 0);
+    };
+    const handleGroupDeleteRequest = (gid) => {
+        //this is going to delete the selected request
+        //and update the groups for the meeting
+        console.log('back in EditGathering');
+        deleteGroup(gid, meetingId);
     };
 
     const addDefaultGroupsToMeeting = () => {
@@ -848,6 +854,8 @@ const EditGathering = ({
                             key={group._id}
                             mid={group.mid}
                             group={group}
+                            role={activeRole}
+                            deleteResponse={handleGroupDeleteRequest}
                         />
                     ))}
             </div>
@@ -1042,4 +1050,5 @@ export default connect(mapStateToProps, {
     getMtgConfigs,
     getDefGroups,
     addDefaultGroups,
+    deleteGroup,
 })(withRouter(EditGathering));

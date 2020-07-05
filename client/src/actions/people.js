@@ -19,7 +19,6 @@ export const getPeople = (cid) => async (dispatch) => {
             payload: res.data,
         });
     } catch (err) {
-        console.log('actions/people :: getPeople');
         dispatch({
             type: PERSON_ERROR,
             payload: {
@@ -39,7 +38,6 @@ export const getCurrentPerson = (id) => async (dispatch) => {
             payload: res.data,
         });
     } catch (err) {
-        console.log('actions/people :: getCurrentPerson');
         dispatch({
             type: PERSON_ERROR,
             payload: {
@@ -62,8 +60,7 @@ export const getPerson = (id) => async (dispatch) => {
             payload: res.data,
         });
     } catch (err) {
-        console.log('actions/people :: getPerson');
-        dispatch({            
+        dispatch({
             type: PERSON_ERROR,
             payload: {
                 msg: err.response.statusText,
@@ -107,7 +104,7 @@ export const createPerson = (
         if (errors) {
             errors.forEach((error) => dispatch(setAlert(error.msg, 'danger')));
         }
-        console.log('actions/people :: createPerson');
+
         dispatch({
             type: PERSON_ERROR,
             payload: {
@@ -128,7 +125,6 @@ export const deletePerson = (id) => async (dispatch) => {
         });
         dispatch(setAlert('Person Removed', 'success'));
     } catch (err) {
-        console.log('actions/people :: deletePerson');
         dispatch({
             type: PERSON_ERROR,
             payload: {
@@ -143,7 +139,6 @@ export const editPerson = (id) => async (dispatch) => {
         //something
         dispatch({ CLEAR_PERSON });
     } catch (err) {
-        console.log('actions/people :: editPerson');
         dispatch({
             type: PERSON_ERROR,
             payload: {

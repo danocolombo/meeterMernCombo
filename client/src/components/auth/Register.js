@@ -29,9 +29,9 @@ const Register = ({ setAlert, register, isAuthenticated }) => {
             switch (defaultClient) {
                 case 'wbc':
                 case 'cpv':
+                case 'test':
                 case 'ccc':
                 case 'vpc':
-                case 'test':
                     register({ name, email, password, defaultClient });
                     break;
                 default:
