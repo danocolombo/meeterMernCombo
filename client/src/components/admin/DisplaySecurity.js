@@ -35,6 +35,7 @@ const DisplaySecurity = ({
     getClientUsers,
     grantUserRegistration,
     rejectUserRegistration,
+    deleteDefaultGroup,
     auth: { activeClient, activeRole, activeStatus },
     meeter: { defaultGroups, clientUsers, loading },
     historyView,

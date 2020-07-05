@@ -206,7 +206,10 @@ export const rejectUserRegistration = (cid, id, email) => async (dispatch) => {
         console.log('deleted user from client doc');
         //delete user from user document
         console.log('email: ' + email);
-        await axios.delete(`/api/users/email/${email}`);
+        console.log('need to delete them from people...');
+        console.log('/api/people/byemail/' + cid + '/' + email);
+        await axios.delete(`/api/people/byemail/${cid}/${email}`);
+        // await axios.delete(`/api/users/email/${email}`);
         console.log('deleted user from users doc');
         //get remaining client users
         const res = await axios.get(`/api/client/userstatus/${cid}`);
@@ -216,7 +219,7 @@ export const rejectUserRegistration = (cid, id, email) => async (dispatch) => {
             type: SET_CLIENT_USERS,
             payload: res.data,
         });
-        dispatch(setAlert('Client User Removed', 'success'));
+        dispatch(setAlert('User Removed', 'success'));
     } catch (err) {
         console.log('actions/admin.js rejectUserRegistration ADMIN_ERROR');
         dispatch({
@@ -276,7 +279,7 @@ export const deleteClientUser = (cid, uid) => async (dispatch) => {
             payload: uid,
         });
 
-        dispatch(setAlert('Client User Removed', 'success'));
+        dispatch(setAlert('User Removed', 'success'));
     } catch (err) {
         console.log('actions/admin.js deleteClientUser ADMIN_ERROR');
         dispatch({

@@ -79,7 +79,7 @@ const EditGathering = ({
         // console.log('just ran getGroups');
     }, [activeClient, getGroups, getMtgConfigs, match.params.id]);
     useEffect(() => {
-        if (!gathering) {
+        if (!gathering && match.params.id !== '0') {
             getGathering(match.params.id);
             // getGroups(match.params.id);
         }
@@ -238,7 +238,7 @@ const EditGathering = ({
         //     console.log('inside');
         // }
         <Fragment>
-            <h1 className='large text-primary'>Your Meeting</h1>
+            <h1 className='standard-font text-primary'>Your Meeting</h1>
             {/* <p className='lead'>
                 <i className='fas fa-user' /> Have at it...
                 <br />
@@ -259,6 +259,7 @@ const EditGathering = ({
                 <h4>Facilitator</h4>
                 <input
                     type='text'
+                    class='x-large'
                     placeholder='Responsible party for meeting'
                     id='facilitator'
                     name='facilitator'

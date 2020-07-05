@@ -259,7 +259,7 @@ router.post(
             return res.status(400).json({ errors: errors.array() });
         }
         const { cid, email } = req.body;
-        console.log('------ POST /api/people/validateemail');
+        // console.log('------ POST /api/people/validateemail');
         // NOTE: tenantId is "people-" + cid
         const tenantId = 'people-' + cid;
         try {
@@ -267,9 +267,8 @@ router.post(
                 tenantId: tenantId,
                 email: email,
             });
-            console.log('person._id: ' + person.name);
 
-            if (perons._id === undefined) {
+            if (person._id === undefined) {
                 return res.status(404).json({ msg: 'User not found' });
             }
             res.json(person);
@@ -293,6 +292,24 @@ router.post(
 router.delete('/:id', auth, async (req, res) => {
     try {
         await People.findOneAndRemove({ _id: req.params.id });
+        return res.status(200).json({ msg: 'person removed' });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ msg: 'Server error' });
+    }
+});
+
+// @route    DELETE api/person/byemail/client/email
+// @desc     Delete meeting by ID
+// @access   Private
+router.delete('/byemail/:cid/:email', auth, async (req, res) => {
+    try {
+        const client = 'people-' + req.params.cid;
+
+        await People.findOneAndRemove({
+            email: req.params.email,
+            tenantId: client,
+        });
         return res.status(200).json({ msg: 'person removed' });
     } catch (error) {
         console.error(error);
