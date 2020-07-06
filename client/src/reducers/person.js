@@ -2,18 +2,19 @@ import {
     GET_PEOPLE,
     PERSON_ERROR,
     CLEAR_PERSON,
+    SET_PERSON,
     GET_PERSON,
-    DELETE_PERSON
+    DELETE_PERSON,
 } from '../actions/types';
 
 const initialState = {
     people: [],
     person: null,
     loading: true,
-    error: {}
+    error: {},
 };
 
-export default function(state = initialState, action) {
+export default function (state = initialState, action) {
     const { type, payload } = action;
 
     switch (type) {
@@ -21,30 +22,31 @@ export default function(state = initialState, action) {
             return {
                 ...state,
                 people: payload,
-                loading: false
+                loading: false,
             };
         case GET_PERSON:
+        case SET_PERSON:
             return {
                 ...state,
                 person: payload,
-                loading: false
+                loading: false,
             };
         case CLEAR_PERSON:
             return {
                 ...state,
                 person: null,
-                loading: false
+                loading: false,
             };
         case DELETE_PERSON:
             return {
                 ...state,
-                people: state.people.filter(person => person._id !== payload)
+                people: state.people.filter((person) => person._id !== payload),
             };
         case PERSON_ERROR:
             return {
                 ...state,
                 error: payload,
-                loading: false
+                loading: false,
             };
         default:
             return state;

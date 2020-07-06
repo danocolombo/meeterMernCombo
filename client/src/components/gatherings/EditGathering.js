@@ -2,11 +2,17 @@ import React, { Fragment, useState, useEffect } from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Divider } from '@material-ui/core';
-import { createGathering, getGathering } from '../../actions/gathering';
-import { getGroups } from '../../actions/group';
+import PlaylistAddIcon from '@material-ui/icons/PlaylistAdd';
+import SettingsIcon from '@material-ui/icons/Settings';
+import { Button } from '@material-ui/core';
+import {
+    createGathering,
+    getGathering,
+    addDefaultGroups,
+} from '../../actions/gathering';
+import { getGroups, deleteGroup } from '../../actions/group';
 import GroupListItem from './GroupListItem';
-import { getMtgConfigs } from '../../actions/admin';
+import { getMtgConfigs, getDefGroups } from '../../actions/admin';
 // import ServantSelect from './ServantSelect';
 // import GroupList from './GroupList';
 import Spinner from '../layout/Spinner';
@@ -53,12 +59,14 @@ const EditGathering = ({
     gathering: { gathering, servants, loading, newGathering },
     auth: { activeClient, activeRole, activeStatus },
     group: { groups, groupLoading },
-    meeter: { mtgConfigs },
+    meeter: { mtgConfigs, defaultGroups },
     // mtgConfigs,
     createGathering,
     getGathering,
     getGroups,
     getMtgConfigs,
+    getDefGroups,
+    addDefaultGroups,
     match,
     history,
 }) => {
@@ -67,10 +75,11 @@ const EditGathering = ({
         getGroups(match.params.id);
 
         getMtgConfigs(activeClient);
+        getDefGroups(activeClient);
         // console.log('just ran getGroups');
     }, [activeClient, getGroups, getMtgConfigs, match.params.id]);
     useEffect(() => {
-        if (!gathering) {
+        if (!gathering && match.params.id !== '0') {
             getGathering(match.params.id);
             // getGroups(match.params.id);
         }
@@ -142,7 +151,79 @@ const EditGathering = ({
         createGathering(formData, history, activeClient, true);
         window.scrollTo(0, 0);
     };
+    const handleGroupDeleteRequest = (gid) => {
+        //this is going to delete the selected request
+        //and update the groups for the meeting
+        console.log('back in EditGathering');
+        deleteGroup(gid, meetingId);
+    };
 
+    const addDefaultGroupsToMeeting = () => {
+        console.log('in EditGatherings :: addDefaultGroupsToMeeting');
+        // addDefaultGroups(defaultGroups);
+        // console.log(
+        //     'defaultGroups: ' +
+        //         util.inspect(defaultGroups, { showHidden: false, depth: null })
+        // );
+        //============================================
+        // this is sample of 3 default meetings in REDUX
+        // defaultGroups: [
+        //     { _id: '5efe35a12f948b40189671a6',
+        //         gender: 'f',
+        //         title: 'A-Z',
+        //         location: 'Library',
+        //         facilitator: 'Marie'
+        //     },
+        //     { _id: '5efe3dbb22c44e40f9775e06',
+        //         gender: 'm',
+        //         title: 'chem',
+        //         location: 'Library',
+        //         facilitator: 'Dale'
+        //     },
+        //     { _id: '5efe43400e4232414c2ee7e4',
+        //         gender: 'x',
+        //         title: 'remove me',
+        //         location: 'bathroom',
+        //         facilitator: 'Waldo'
+        //     }
+        // ]
+
+        let dgroups = defaultGroups;
+        let groupsToAdd = [];
+        // let newBatch = [];
+        let result = dgroups.map((g) => {
+            let aGroup = {};
+            aGroup._id = g._id;
+            aGroup.cid = activeClient;
+            aGroup.mid = match.params.id;
+            aGroup.gender = g.gender;
+            aGroup.title = g.title;
+            if (g.location) aGroup.location = g.location;
+            if (g.facilitator) aGroup.facilitator = g.facilitator;
+            groupsToAdd.push(aGroup);
+        });
+        addDefaultGroups(groupsToAdd);
+        // newGroup.push({
+        //     mid: match.params.id,
+        //     gender: g.gender,
+        //     title: g.title,
+
+        //     location: g.location,
+        //     facilitator: g.facilitator,
+        // });
+        // console.log(JSON.stringify(newGroup));
+        // newBatch.push({
+        //     newGroup,
+        // });
+        //     console.log('newBatch...');
+        //     console.log(JSON.stringify(newBatch));
+        //     // console.log('id: ' + g._id);
+        //     // console.log('gender: ' + g.gender);
+        //     // console.log('title: ' + g.title);
+        //     // console.log('location: ' + g.location);
+        //     // console.log('faciliator: ' + g.facilitator);
+        // });
+    };
     // // DANO
     // console.log('donations: ' + mtgConfigs['donations']);
     // console.log('type of mtgConfigs: ' + typeof mtgConfigs);
@@ -159,7 +240,7 @@ const EditGathering = ({
         //     console.log('inside');
         // }
         <Fragment>
-            <h1 className='large text-primary'>Your Meeting</h1>
+            <h1 className='standard-font text-primary'>Your Meeting</h1>
             {/* <p className='lead'>
                 <i className='fas fa-user' /> Have at it...
                 <br />
@@ -180,6 +261,7 @@ const EditGathering = ({
                 <h4>Facilitator</h4>
                 <input
                     type='text'
+                    class='x-large'
                     placeholder='Responsible party for meeting'
                     id='facilitator'
                     name='facilitator'
@@ -702,32 +784,81 @@ const EditGathering = ({
                         ></textarea>
                     </div>
                 </div>
-                {FormButtons()}
-                <hr />
-                <h2>
-                    Open-Share Groups
-                    {activeStatus === 'approved' && activeRole !== 'guest' ? (
-                        <Link to={`/EditGroup/${_id}/0`}>
-                            <div class='waves-effect waves-light btn'>
-                                <i class='material-icons left green'>
-                                    add_circle_outline
-                                </i>
+                {FormButtons(meetingDate)}
 
-                                <span className='meeterNavTextHighlight'>
-                                    {'  '}NEW
+                {activeStatus === 'approved' &&
+                activeRole !== 'guest' &&
+                _id ? (
+                    <Fragment>
+                        <hr className='group-ruler my-1' />
+                        <h2>Open-Share Groups</h2>
+                        <span className={'pl-2 my'}>
+                            <Button
+                                variant='contained'
+                                color='primary'
+                                size='small'
+                                // className={classes.button}
+                                startIcon={<PlaylistAddIcon />}
+                                href={`/EditGroup/${_id}/0`}
+                            >
+                                New Group
+                            </Button>
+                        </span>
+                        <span className={'pl-2'}>
+                            {defaultGroups.length > 0 &&
+                            activeRole !== 'guest' ? (
+                                <span>
+                                    <Button
+                                        variant='contained'
+                                        color='default'
+                                        size='small'
+                                        startIcon={<PlaylistAddIcon />}
+                                        onClick={addDefaultGroupsToMeeting}
+                                    >
+                                        DEFAULTS
+                                    </Button>
                                 </span>
-                            </div>
-                        </Link>
-                    ) : null}
-                </h2>
+                            ) : activeRole === 'owner' ||
+                              activeRole === 'superuser' ? (
+                                <span>
+                                    <Button
+                                        variant='contained'
+                                        color='secondary'
+                                        size='small'
+                                        // className={classes.button}
+                                        startIcon={<SettingsIcon />}
+                                        href='/DisplaySecurity'
+                                    >
+                                        CONFIGURE
+                                    </Button>
+                                </span>
+                            ) : null}
+                            {_id.length < 1 ? (
+                                <div>
+                                    Open-share groups can be added after the
+                                    meeting is saved.
+                                </div>
+                            ) : null}
+                        </span>
+                    </Fragment>
+                ) : (
+                    <Fragment>
+                        <hr className='group-ruler my-1' />
+                        <div>
+                            <h3>Open-share Groups</h3>
+                        </div>
+                    </Fragment>
+                )}
             </form>
-            <div>
+            <div style={{ 'padding-top': 10 }}>
                 {groups &&
                     groups.map((group) => (
                         <GroupListItem
                             key={group._id}
                             mid={group.mid}
                             group={group}
+                            role={activeRole}
+                            deleteResponse={handleGroupDeleteRequest}
                         />
                     ))}
             </div>
@@ -771,30 +902,61 @@ const EditGathering = ({
                 return 'Please provide a description of the event';
         }
     }
-    function FormButtons() {
+    function FormButtons(meetingDate) {
         var returnValue = [];
-        var today = new Date();
-        today.setHours(0, 0, 0, 0);
-        var mDate = new Date(meetingDate.slice(0, 10));
-        // console.log('mDate:' + mDate);
-        // console.log('today:' + today);
-        if (mDate >= today) {
+        // var today = new Date();
+        // today.setHours(0, 0, 0, 0);
+        // var mDate = new Date(meetingDate.slice(0, 10));
+        // // console.log('mDate:' + mDate);
+        // // console.log('today:' + today);
+        // need to create special date for today starting at T00:00:00.000Z
+        let mDate = new Date(meetingDate.slice(0, 10));
+        let tDate = new Date();
+        let numMonth = tDate.getMonth() + 1;
+        let tmpMonth = numMonth.toString();
+        let tmpDay = tDate.getDate().toString();
+        let tMonth = '';
+        let tDay = '';
+        if (tmpMonth.length < 2) {
+            tMonth = '0' + tmpMonth;
+        } else {
+            tMonth = tmpMonth;
+        }
+        if (tmpDay.length < 2) {
+            tDay = '0' + tmpDay;
+        } else {
+            tDay = tmpDay;
+        }
+        let tYear = tDate.getFullYear();
+        let target = tYear + '-' + tMonth + '-' + tDay + 'T00:00:00.000Z';
+
+        if (meetingDate >= target) {
             console.log('greater than or equal');
             if (activeStatus === 'approved' && activeRole !== 'guest') {
                 returnValue = [
                     <>
                         <input type='submit' className='btn btn-primary my-1' />
-                        <Link className='btn btn-light my-1' to='/gatherings'>
+                        <Button className='btn-light' href='/gatherings'>
                             Go Back
-                        </Link>
+                        </Button>
+                        {/* <Link className='btn btn-light my-1' to='/gatherings'>
+                            Go Back
+                        </Link> */}
                     </>,
                 ];
             } else {
                 returnValue = [
                     <>
-                        <Link className='btn btn-light my-1' to='/gatherings'>
+                        <Button
+                            className='btn-light'
+                            href='/gatherings'
+                            variant='outlined'
+                        >
                             Go Back
-                        </Link>
+                        </Button>
+                        {/* <Link className='btn btn-light my-1' to='/gatherings'>
+                            Go Back
+                        </Link> */}
                     </>,
                 ];
             }
@@ -802,12 +964,12 @@ const EditGathering = ({
             returnValue = [
                 <>
                     <input type='submit' className='btn btn-primary my-1' />
-                    <Link
-                        className='btn btn-light my-1'
-                        to='/gatherings/historyView'
+                    <Button
+                        className='btn-light'
+                        href='/gatherings/historyView'
                     >
                         Go Back
-                    </Link>
+                    </Button>
                 </>,
             ];
         }
@@ -866,6 +1028,8 @@ EditGathering.propTypes = {
     getGathering: PropTypes.func.isRequired,
     getGroups: PropTypes.func.isRequired,
     getMtgConfigs: PropTypes.func.isRequired,
+    getDefGroups: PropTypes.func.isRequired,
+    addDefaultGroups: PropTypes.func.isRequired,
     gathering: PropTypes.object.isRequired,
     group: PropTypes.object.isRequired,
     auth: PropTypes.object.isRequired,
@@ -887,4 +1051,7 @@ export default connect(mapStateToProps, {
     getGathering,
     getGroups,
     getMtgConfigs,
+    getDefGroups,
+    addDefaultGroups,
+    deleteGroup,
 })(withRouter(EditGathering));

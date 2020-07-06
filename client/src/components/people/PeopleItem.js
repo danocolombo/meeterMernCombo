@@ -1,20 +1,21 @@
 import React, { Fragment } from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { deletePerson } from '../../actions/people';
+// import { connect } from 'react-redux';
+// import { deletePerson } from '../../actions/people';
 
-const PersonItem = ({ deletePerson, person: { _id, name, email, phone } }) => (
+const PersonItem = ({ person: { _id, name, email, phone }, deleteResponse }) => {
+    const handleDeleteRequest = () => {
+        deleteResponse(_id, name);
+    }
+    
+    return (
     <div className='PersonBox'>
         <div className='DeleteTarget'>
-            <a
-                id='deletePerson'
-                title='-'
-                href='/#'
-                onClick={() => deletePerson(_id)}
-            >
-                <i className='fas fa-minus-circle'></i>
-            </a>
+        <i
+                        className={'fa fa-trash my'}
+                        onClick={handleDeleteRequest}
+                    ></i>
         </div>
         <div>
             <Link to={`/EditPerson/${_id}`}>{name}</Link>
@@ -40,12 +41,13 @@ const PersonItem = ({ deletePerson, person: { _id, name, email, phone } }) => (
             )}
         </div>
     </div>
-);
+    );
+};
 
 PersonItem.propTypes = {
     person: PropTypes.object.isRequired,
     deletePerson: PropTypes.func.isRequired,
 };
 
-export default connect(null, { deletePerson })(PersonItem);
+export default PersonItem;
 //post bg-white p-1 my-1

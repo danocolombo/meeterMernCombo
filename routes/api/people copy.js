@@ -32,7 +32,6 @@ router.post(
         }
 
         const {
-            _id,
             name,
             tenantId,
             gender,
@@ -87,26 +86,12 @@ router.post(
             personFields.notes = '';
         }
         try {
-            if (_id) {
-                // let person = await People.updateOne(
-                //     { _id: _id, tenantId: tenantId },
-                //     { $set: personFields }
-                //     { new: true, upsert: true, returnNewDocument: true }
-                // );
-                let person = await People.findByIdAndUpdate(
-                    { _id: _id },
-                    { $set: personFields }
-                    // { new: true, upsert: true, returnNewDocument: true }
-                );
-                res.json(person);
-            } else {
-                let person2 = await People.findOneAndUpdate(
-                    { tenantId: 'newEntry' },
-                    { $set: personFields },
-                    { new: true, upsert: true, returnNewDocument: true }
-                );
-                res.json(person2);
-            }
+            let person = await People.findOneAndUpdate(
+                { name: name, tenantId: tenantId },
+                { $set: personFields },
+                { new: true, upsert: true }
+            );
+            res.json(person);
         } catch (err) {
             console.error(err.message);
             res.status(500).send('Server error');
@@ -181,32 +166,48 @@ router.get('/all', async (req, res) => {
         res.status(500).send('Server Error');
     }
 });
-//===============================================
-//   _____ ______ _______       __   _ _
-//  / ____|  ____|__   __|     / /  | | |
-// | |  __| |__     | |       / /_ _| | |
-// | | |_ |  __|    | |      / / _` | | |
-// | |__| | |____   | |     / / (_| | | | by CID
-//  \_____|______|  |_|    /_/ \__,_|_|_|
-//===============================================
-
-// @route    GET api/people/client/cid
-// @desc     Get all people for a client (cid)
+//==========================================
+//  _____   ____   _____ _______       __
+// |  __ \ / __ \ / ____|__   __|     / /
+// | |__) | |  | | (___    | |       / /
+// |  ___/| |  | |\___ \   | |      / /
+// | |    | |__| |____) |  | |     / /   validateemail
+// |_|     \____/|_____/   |_|    /_/
+//==========================================
+// @route    POST api/people/validateemail
+// @desc     check if a user is exists for client and email
 // @access   Public
-router.get('/client/:cid', async (req, res) => {
-    // need to create the tenant value
-    let client = 'people-' + req.params.cid;
-    // console.log('client: ' + client);
-    try {
-        const people = await People.find({
-            tenantId: client,
-        }).sort({ name: 1 });
-        res.json(people);
-    } catch (err) {
-        console.error(err.message);
-        res.status(500).send('Server Error');
+router.post(
+    '/validateemail',
+    [auth],
+    [
+        check('cid', 'Client indicator is required').not().isEmpty(),
+        check('email', 'Tenant code not identified').not().isEmpty(),
+    ],
+    async (req, res) => {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() });
+        }
+        const { cid, email } = req.body;
+        console.log('------ POST /api/people/validateemail');
+        // NOTE: tenantId is "people-" + cid
+        const tenantId = "people-" + cid;
+        try {
+            let person = await People.find({ tenantId: tenantId, email: email });
+            console.log('person._id: ' + person.name);
+
+            if (person.length === 0 ) {
+                return res.status(404).json({ msg: 'User not found' });
+            }
+            res.json(person);
+        } catch (err) {
+            console.error(err.message);
+            res.status(500).send('Server error');
+        }
     }
-});
+);
+
 //====================================================================
 //   _____ ______ _______       __ _     _
 //  / ____|  ____|__   __|     / /(_)   | |
@@ -235,49 +236,6 @@ router.get('/:id', auth, async (req, res) => {
         res.status(500).send('Server Error');
     }
 });
-//==========================================
-//  _____   ____   _____ _______       __
-// |  __ \ / __ \ / ____|__   __|     / /
-// | |__) | |  | | (___    | |       / /
-// |  ___/| |  | |\___ \   | |      / /
-// | |    | |__| |____) |  | |     / /   validateemail
-// |_|     \____/|_____/   |_|    /_/
-//==========================================
-// @route    POST api/people/validateemail
-// @desc     check if a user exists for client and email
-// @access   Public
-router.post(
-    '/validateemail',
-    [auth],
-    [
-        check('cid', 'Client indicator is required').not().isEmpty(),
-        check('email', 'Tenant code not identified').not().isEmpty(),
-    ],
-    async (req, res) => {
-        const errors = validationResult(req);
-        if (!errors.isEmpty()) {
-            return res.status(400).json({ errors: errors.array() });
-        }
-        const { cid, email } = req.body;
-        // console.log('------ POST /api/people/validateemail');
-        // NOTE: tenantId is "people-" + cid
-        const tenantId = 'people-' + cid;
-        try {
-            let person = await People.find({
-                tenantId: tenantId,
-                email: email,
-            });
-
-            if (person._id === undefined) {
-                return res.status(404).json({ msg: 'User not found' });
-            }
-            res.json(person);
-        } catch (err) {
-            console.error(err.message);
-            res.status(500).send('Server error');
-        }
-    }
-);
 //====================================================================
 //  _____  ______ _      ______ _______ ______       __ _     _
 // |  __ \|  ____| |    |  ____|__   __|  ____|     / /(_)   | |
@@ -292,24 +250,6 @@ router.post(
 router.delete('/:id', auth, async (req, res) => {
     try {
         await People.findOneAndRemove({ _id: req.params.id });
-        return res.status(200).json({ msg: 'person removed' });
-    } catch (error) {
-        console.error(error);
-        return res.status(500).json({ msg: 'Server error' });
-    }
-});
-
-// @route    DELETE api/person/byemail/client/email
-// @desc     Delete meeting by ID
-// @access   Private
-router.delete('/byemail/:cid/:email', auth, async (req, res) => {
-    try {
-        const client = 'people-' + req.params.cid;
-
-        await People.findOneAndRemove({
-            email: req.params.email,
-            tenantId: client,
-        });
         return res.status(200).json({ msg: 'person removed' });
     } catch (error) {
         console.error(error);

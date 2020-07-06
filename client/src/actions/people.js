@@ -4,7 +4,7 @@ import {
     GET_PEOPLE,
     PERSON_ERROR,
     CLEAR_PERSON,
-    GET_PERSON,
+    SET_PERSON,
     DELETE_PERSON,
 } from './types';
 
@@ -34,7 +34,7 @@ export const getCurrentPerson = (id) => async (dispatch) => {
         dispatch({ CLEAR_PERSON });
         const res = await axios.get(`/api/people/${id}`);
         dispatch({
-            type: GET_PERSON,
+            type: SET_PERSON,
             payload: res.data,
         });
     } catch (err) {
@@ -55,8 +55,9 @@ export const getPerson = (id) => async (dispatch) => {
         console.log('getPerson: CLEAR_PERSON..................');
         //dispatch({ type: CLEAR_PERSON });
         const res = await axios.get(`/api/people/${id}`);
+
         dispatch({
-            type: GET_PERSON,
+            type: SET_PERSON,
             payload: res.data,
         });
     } catch (err) {
@@ -86,9 +87,20 @@ export const createPerson = (
         formData.tenantId = 'people-' + activeClient;
         const res = await axios.post('/api/people', formData, config);
 
+        // dispatch({
+        //     type: SET_PERSON,
+        //     payload: res.data,
+        // });
+        dispatch({ type: CLEAR_PERSON });
+        const ress = await axios.get(`/api/people/client/${activeClient}`);
         dispatch({
-            type: GET_PERSON,
-            payload: res.data,
+            type: GET_PEOPLE,
+            payload: ress.data,
+        });
+        const res2 = await axios.get(`/api/people/${formData._id}`);
+        dispatch({
+            type: SET_PERSON,
+            payload: res2.data,
         });
 
         dispatch(
@@ -116,7 +128,9 @@ export const createPerson = (
 };
 // Delete PERSON
 export const deletePerson = (id) => async (dispatch) => {
+    console.log('what?');
     try {
+        console.log('how come?');
         await axios.delete(`/api/people/${id}`);
 
         dispatch({
@@ -133,6 +147,9 @@ export const deletePerson = (id) => async (dispatch) => {
             },
         });
     }
+};
+export const removePerson = (id) => async (dispatch) => {
+    console.log('removing :' + id);
 };
 export const editPerson = (id) => async (dispatch) => {
     try {

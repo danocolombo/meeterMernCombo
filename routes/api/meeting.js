@@ -245,18 +245,13 @@ router.post(
                     { $set: meetingFields },
                     { new: true, upsert: true, returnNewDocument: true }
                 );
-                console.log('response');
-                console.log(JSON.stringify(meeting));
                 res.json(meeting);
             } else {
-                // we are going to do insert...
                 let meeting2 = await Meeting.findOneAndUpdate(
                     { facilitator: 'aBrandNewEntry' },
                     { $set: meetingFields },
                     { new: true, upsert: true, returnNewDocument: true }
                 );
-                console.log('response2');
-                // console.table(meeting2);
                 res.json(meeting2);
             }
         } catch (err) {

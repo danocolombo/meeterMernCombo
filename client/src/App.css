@@ -59,7 +59,13 @@ img {
     line-height: 1.2;
     margin-bottom: 1rem;
 }
-
+.box-font-lead {
+    font-size: 1.1rem;
+    font-weight: bold;
+}
+.box-font {
+    font-size: 1rem;
+}
 .lead {
     font-size: 1.5rem;
     margin-bottom: 1rem;
@@ -117,7 +123,15 @@ img {
 .pl-3 {
     padding-left: 3rem;
 }
-
+.pb {
+    padding-bottom: 0.5rem;
+}
+.pb-1 {
+    padding-bottom: 1 rem;
+}
+.pb-2 {
+    padding-bottom: 2 rem;
+}
 .py {
     padding: 0.5rem 0;
 }
@@ -539,7 +553,31 @@ button {
     grid-gap: 1rem;
     align-items: center;
 }
-.adminDefaultGroupBox {
+/* ADMIN - REGISTERED USERS */
+.adminDefaultGroupContainer {
+    border: 1px solid rgb(109, 84, 84);
+    box-shadow: 0 2px 3px rgb(216, 146, 146);
+    background-color: lightcyan;
+    margin-bottom: 10px;
+    grid-template-areas:
+        'Line1 .'
+        'Line2 .'
+        'Btns .';
+    grid-column-gap: 0px;
+    grid-row-gap: 0px;
+    margin-bottom: 10px;
+}
+
+.adminDefaultGroupLine1 {
+    grid-area: Line1;
+}
+.adminDefaultGroupLine2 {
+    grid-area: Line2;
+}
+.adminDefaultGroupButtons {
+    grid-area: Btns;
+}
+/* .adminDefaultGroupBox {
     border: 1px solid rgb(109, 84, 84);
     box-shadow: 0 2px 3px rgb(216, 146, 146);
     display: grid;
@@ -550,7 +588,7 @@ button {
 .adminDefaultGroupBox > div {
     text-align: center;
     padding: 10px;
-}
+} */
 /* Posts Page */
 .post-form .post-form-header {
     background: var(--primary-color);
@@ -595,7 +633,6 @@ button {
     .hide-sm {
         display: none;
     }
-
     /* Text Styles */
     .x-large {
         font-size: 3rem;
@@ -604,7 +641,12 @@ button {
     .large {
         font-size: 2rem;
     }
-
+    .medium {
+        font-size: 1rem;
+    }
+    .small {
+        font-size: 0.5rem;
+    }
     .lead {
         font-size: 1rem;
     }
@@ -675,6 +717,41 @@ button {
 }
 /* GroupList component of gathering page */
 /* --------------------------------------*/
+/* GItem-Box { */
+.GItem-Box {
+    border: 1px solid rgb(109, 84, 84);
+    box-shadow: 0 2px 3px rgb(216, 146, 146);
+    display: grid;
+    grid-template-columns: auto 100px;
+    grid-template-rows: auto;
+    grid-template-areas:
+        'Line1 DelBtn'
+        'Line2 nutn';
+    grid-column-gap: 0px;
+    grid-row-gap: 0px;
+    margin-bottom: 10px;
+}
+.GItem-Line1 {
+    grid-area: Line1;
+    padding-left: 10px;
+}
+.GItem-Line2 {
+    grid-area: Line2;
+    padding-left: 10px;
+}
+.GItem-Button {
+    grid-area: DelBtn;
+    text-align: right;
+    padding-right: 10px;
+}
+.GItem-Nutn {
+    grid-area: nutn;
+}
+/*         
+    .GItem-Right { grid-area: 1 / 2 / 3 / 3; }
+    .GItem-TLeft { grid-area: 1 / 1 / 2 / 2; }
+    .GItem-BLeft { grid-area: 2 / 1 / 3 / 2; } */
+
 /* GATHERINGS Page */
 /* GATHERING - GroupListItem */
 .GGL-Box {
@@ -826,17 +903,17 @@ button {
     margin-bottom: 1rem;
 }
 /* Admin defaultGroup box */
-.AdminDefaultGroupBox {
+/* .AdminDefaultGroupBox {
     border: 1px solid rgb(109, 84, 84);
     box-shadow: 0 2px 3px rgb(216, 146, 146);
-    /* padding: 10px;
+    padding: 10px;
     margin-left: 25px;
     margin-bottom: 10px;
     margin-right: 10px;
-    max-width: 400px; */
+    max-width: 400px;
     display: grid;
     grid-template-columns: auto, auto;
-}
+} */
 
 .PersonBox {
     border: 1px solid rgb(109, 84, 84);
@@ -999,4 +1076,45 @@ button {
     width: 90px;
     height: 55px;
     margin-bottom: 10px;
+}
+/* MODAL SETTINGS */
+.Modal {
+    position: fixed;
+    z-index: 500;
+    background-color: white;
+    width: 70%;
+    border: 1px solid #ccc;
+    box-shadow: 1px 1px 1px black;
+    padding: 16px;
+    left: 15%;
+    top: 30%;
+    box-sizing: border-box;
+    transition: all 0.3s ease-out;
+}
+
+@media (min-width: 600px) {
+    .Modal {
+        width: 500px;
+        left: calc(50% - 250px);
+    }
+}
+.Modal2 {
+    position: fixed;
+    z-index: 500;
+    background-color: white;
+    width: 70%;
+    border: 1px solid #ccc;
+    box-shadow: 1px 1px 1px black;
+    padding: 16px;
+    left: 15%;
+    top: 20%;
+    box-sizing: border-box;
+    transition: all 0.3s ease-out;
+}
+
+@media (min-width: 600px) {
+    .Modal2 {
+        width: 500px;
+        left: calc(50% - 250px);
+    }
 }

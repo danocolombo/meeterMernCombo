@@ -1,4 +1,5 @@
 const express = require('express');
+const mongoose = require('mongoose');
 const request = require('request');
 const config = require('config');
 const router = express.Router();
@@ -7,6 +8,7 @@ const { check, validationResult } = require('express-validator');
 
 const Client = require('../../models/Client');
 const User = require('../../models/User');
+const { isValidObjectId, Mongoose } = require('mongoose');
 
 // @route    GET api/client/
 // @desc     Get list of clients
@@ -288,6 +290,7 @@ router.put(
     [
         check('_id', 'ID is required').not().isEmpty(),
         check('cid', 'CID is required').not().isEmpty(),
+        check('email', 'Email is required').not().isEmpty(),
         check('role', 'Role is required').not().isEmpty(),
         check('status', 'Status is required').not().isEmpty(),
     ],
@@ -298,12 +301,13 @@ router.put(
             return res.status(400).json({ errors: errors.array() });
         }
         // destructure req
-        const { _id, cid, role, status } = req.body;
+        const { _id, cid, email, role, status } = req.body;
         // create a body to pass from the data received
         // the definition _id is equvilent to _id: id
         // we don't need cid in the body to save
         const userInfo = {
             _id,
+            email,
             role,
             status,
         };
@@ -324,6 +328,7 @@ router.put(
                         $set: {
                             'users.$.role': role,
                             'users.$.status': status,
+                            'users.$.email': email,
                         },
                     },
                     null,
@@ -375,26 +380,63 @@ router.put(
             return res.status(400).json({ errors: errors.array() });
         }
         // destructure req
-        const { cid, gender, title, location, facilitator } = req.body;
+        const { _id, cid, gender, title, location, facilitator } = req.body;
         // create a body to pass from the data received
+        let id = null;
+
         const groupInfo = {
             gender: gender,
             title: title,
             location: location,
             facilitator: facilitator,
         };
+        if (!_id) {
+            groupInfo._id = mongoose.Types.ObjectId();
+        } else {
+            groupInfo._id = _id;
+        }
         try {
-            console.log('NEW GROUP ENTRY');
-            //need to add the user to the client
-            //first thing, find the client entry to add/update user
-            const newDefaultGroup = await Client.findOne({
+            // //see if default group exists for client
+            const client = await Client.findOne({
                 code: cid,
+                'defaultGroups._id': groupInfo._id,
             });
-            //push the entry onto the end of users subarray
-            newDefaultGroup.defaultGroups.push(groupInfo);
-            //save the changes
-            await newDefaultGroup.save();
-            res.json(newDefaultGroup);
+            if (client) {
+                //group exists, update it
+                const updateClient = await Client.findOneAndUpdate(
+                    {
+                        code: cid,
+                        'defaultGroups._id': _id,
+                    },
+                    {
+                        $set: {
+                            'defaultGroups.$.gender': gender,
+                            'defaultGroups.$.title': title,
+                            'defaultGroups.$.location': location,
+                            'defaultGroups.$.facilitator': facilitator,
+                        },
+                    },
+                    null,
+                    (err) => {
+                        if (err) {
+                            console.log('Error: ' + err);
+                        } else {
+                            console.log('Updated: ' + _id);
+                        }
+                    }
+                );
+                res.json(updateClient);
+            } else {
+                //need to add the group to the client
+                //first thing, find the client entry to add/update user
+
+                const newClientUpdate = await Client.findOne({ code: cid });
+                //push the entry onto the end of users subarray
+                newClientUpdate.defaultGroups.push(groupInfo);
+                //save the changes
+                await newClientUpdate.save();
+                res.json(newClientUpdate);
+            }
         } catch (err) {
             console.error('WOWSA: ' + err.message);
             res.status(500).send('Server Error');
@@ -572,33 +614,62 @@ router.put('/updateconfigs/:cid', auth, async (req, res) => {
         res.status(500).send('Server Error');
     }
 });
-router.delete('/defaultgroup', auth, async (req, res) => {
+router.delete('/defaultgroup/:cid/:gid', auth, async (req, res) => {
     try {
-        const { cid, gender, title, location, facilitator } = req.body;
-
-        // Remove profile
-        //await Client.findOneAndRemove({ code: cid, 'defaultGroups.gender': gender, 'defaultGroups.title': title, 'defaultGroups.location': location, 'defaultGroups.facilitator': facilitator });
-
-        await Client.update(
-            { code: cid },
-            {
-                $pull: {
-                    defaultGroups: {
-                        gender: gender,
-                        title: title,
-                        location: location,
-                        facilitator: facilitator,
-                    },
-                },
-            }
+        // get the clent entry (by cid)
+        const clientEntry = await Client.findOne({
+            code: req.params.cid,
+        });
+        // pull out group from the client array defaultGroups
+        const grp = await clientEntry.defaultGroups.find(
+            (grp) => grp.id === req.params.gid
         );
 
-        const feedback = 'Default Group Removed';
-        res.json({ msg: feedback });
+        // make sure group exists
+        if (!grp) {
+            return res
+                .status(404)
+                .json({ msg: 'Default group does not exist' });
+        }
+        // Get the index to remove based on user.id
+        const removeIndex = clientEntry.defaultGroups
+            .map((grp) => grp.id)
+            .indexOf(req.params.gid);
+
+        clientEntry.defaultGroups.splice(removeIndex, 1);
+        await clientEntry.save();
+        res.json(clientEntry.defaultGroups);
     } catch (err) {
         console.error(err.message);
         res.status(500).send('Server Error');
     }
+
+    // try {
+    //     // const { cid, gender, title, location, facilitator } = req.body;
+
+    //     // Remove profile
+    //     //await Client.findOneAndRemove({ code: cid, 'defaultGroups.gender': gender, 'defaultGroups.title': title, 'defaultGroups.location': location, 'defaultGroups.facilitator': facilitator });
+
+    //     await Client.update(
+    //         { code: cid },
+    //         {
+    //             $pull: {
+    //                 defaultGroups: {
+    //                     gender: gender,
+    //                     title: title,
+    //                     location: location,
+    //                     facilitator: facilitator,
+    //                 },
+    //             },
+    //         }
+    //     );
+
+    //     const feedback = 'Default Group Removed';
+    //     res.json({ msg: feedback });
+    // } catch (err) {
+    //     console.error(err.message);
+    //     res.status(500).send('Server Error');
+    // }
 });
 // @route    GET api/client/defaultgroups/:code
 // @desc     get the default groups for client code

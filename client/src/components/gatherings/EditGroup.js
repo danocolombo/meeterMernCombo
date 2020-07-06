@@ -79,140 +79,124 @@ const EditGroup = ({
 
     const onSubmit = (e) => {
         e.preventDefault();
+        formData.mid = match.params.mid;
         addGroup(formData, history, true);
         window.scrollTo(0, 0);
     };
     return (
-        <Fragment>
-            <form className='form' onSubmit={(e) => onSubmit(e)}>
-                <div className='group-container'>
-                    <header className='grpHeader'>
-                        <h2>Open Share Group</h2>
-                    </header>
-                    <div className='grpTitle'>
-                        <TextField
-                            id='title'
-                            name='title'
-                            label='Group title'
-                            // variant='outlined'
-                            fullWidth
-                            value={title}
-                            onChange={(e) => onChange(e)}
-                        />
-                    </div>
-                    <div className='grpButtons'>
-                        {activeStatus == 'approved' && activeRole != 'guest' ? (
-                            <input
-                                type='submit'
-                                className='btn btn-primary my-1'
-                            />
-                        ) : null}
-                        <Link
+        <div>
+             <form className='form' onSubmit={(e) => onSubmit(e)}>
+            <header className='grpHeader'>
+                <h2>Open Share Group</h2>
+            </header>
+            <div>
+                <select
+                    key='2'
+                    // className=''
+                    name='gender'
+                    value={gender}
+                    onChange={(e) => onChange(e)}
+                >
+                    <option value='0'>** Select Gender</option>
+                    <option value='f'>Women's</option>
+                    <option value='m'>Men's</option>
+                    <option value='x'>Mixed</option>
+                </select>
+            </div>
+            <div>
+                <span>Attendance</span>
+                <span style={{ 'padding-left': 20 }}>
+                <Input
+                    // style={{ 'padding-left': 20 }}
+                    id='attendance'
+                    label='attendance'
+                    name='attendance'
+                    placeholder='0'
+                    value={attendance}
+                    type='number'
+                    size="3"
+                    maxlength='2'
+                    min='0'
+                    text-align='right'
+                    // className='attendance'
+                    onChange={(e) => onChange(e)}
+                />
+                </span>
+            </div>
+            <div className='grpTitle'>
+                <TextField
+                    id='title'
+                    name='title'
+                    label='Group title'
+                    // variant='outlined'
+                    fullWidth
+                    value={title}
+                    onChange={(e) => onChange(e)}
+                />
+            </div>
+            <div className='grpLocation'>
+                <TextField
+                    id='location'
+                    label='Location'
+                    name='location'
+                    fullWidth
+                    value={location}
+                    // variant='outlined'
+                    onChange={(e) => onChange(e)}
+                />
+            </div>
+            <div className='grpFacilitator'>
+                <TextField
+                    id='facilitator'
+                    label='Facilitator'
+                    name='facilitator'
+                    value={facilitator}
+                    fullWidth
+                    // variant='outlined'
+                    onChange={(e) => onChange(e)}
+                />
+            </div>
+            <div className='grpCoFacilitator'>
+                <TextField
+                    id='cofacilitator'
+                    name='cofacilitator'
+                    value={cofacilitator}
+                    fullWidth
+                    label='Co-Facilitator'
+                    // variant='outlined'
+                    onChange={(e) => onChange(e)}
+                />
+            </div>
+            <div className='grpNotes'>
+                <TextField
+                    id='notes'
+                    name='notes'
+                    value={notes}
+                    label='Notes'
+                    fullWidth
+                    multiline
+                    rows='4'
+                    // variant='outlined'
+                    onChange={(e) => onChange(e)}
+                />
+            </div>
+            <div className='pl-2' style={{ 'padding-top': 20 }}>
+                <input
+                    type='submit'
+                    className='btn btn-primary my-1'
+                />
+                    
+                    <span className='pl-2'>
+                    <Link
                             className='btn btn-light my-1'
                             to={`/editGathering/${match.params.mid}`}
                         >
                             Go Back
                         </Link>
-                    </div>
-                    <div className='grpAttendance'>
-                        <div className='input-field inline'>
-                            <label
-                                className='formLabellLeft'
-                                htmlFor='grpAttendance'
-                            >
-                                Attendance
-                            </label>
-                            <Input
-                                id='attendance'
-                                label='attendance'
-                                name='attendance'
-                                value={attendance}
-                                type='number'
-                                text-align='right'
-                                className='attendance'
-                                onChange={(e) => onChange(e)}
-                            />
-                        </div>
-                    </div>
-                    <div className='grpLocation'>
-                        <TextField
-                            id='location'
-                            label='Location'
-                            name='location'
-                            fullWidth
-                            value={location}
-                            // variant='outlined'
-                            onChange={(e) => onChange(e)}
-                        />
-                    </div>
-                    <div className='grpGender'>
-                        <FormLabel component='legend'>Gender</FormLabel>
-                        <RadioGroup
-                            aria-label='gender'
-                            name='gender'
-                            onChange={handleChange}
-                        >
-                            <FormControlLabel
-                                value='f'
-                                control={<Radio />}
-                                checked={gender === 'f'}
-                                label='Female'
-                                onChange={handleGenderChange}
-                            />
-                            <FormControlLabel
-                                value='m'
-                                control={<Radio />}
-                                checked={gender === 'm'}
-                                label='Male'
-                                onChange={handleGenderChange}
-                            />
-                            <FormControlLabel
-                                value='x'
-                                control={<Radio />}
-                                checked={gender === 'x'}
-                                label='Mixed'
-                                onChange={handleGenderChange}
-                            />
-                        </RadioGroup>
-                    </div>
-                    <div className='grpFacilitator'>
-                        <TextField
-                            id='facilitator'
-                            label='Facilitator'
-                            name='facilitator'
-                            value={facilitator}
-                            fullWidth
-                            // variant='outlined'
-                            onChange={(e) => onChange(e)}
-                        />
-                    </div>
-                    <div className='grpCoFacilitator'>
-                        <TextField
-                            id='cofacilitator'
-                            name='cofacilitator'
-                            value={cofacilitator}
-                            fullWidth
-                            label='Co-Facilitator'
-                            // variant='outlined'
-                            onChange={(e) => onChange(e)}
-                        />
-                    </div>
-                    <div className='grpNotes'>
-                        <TextField
-                            id='notes'
-                            name='notes'
-                            value={notes}
-                            label='Notes'
-                            fullWidth
-                            multiline
-                            rows='2'
-                            // variant='outlined'
-                            onChange={(e) => onChange(e)}
-                        />
-                    </div>
-                </div>
+                    </span>
+            </div>
             </form>
-        </Fragment>
+        </div>
     );
     function getGroups() {
         // return [<div>GROUP:{match.params.gid}</div>];
