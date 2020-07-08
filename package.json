@@ -17,6 +17,7 @@
         "url": "https://github.com/danocolombo/meeterMernCombo.git"
     },
     "dependencies": {
+        "apexcharts": "^3.19.3",
         "bcryptjs": "^2.4.3",
         "client": "file:client",
         "cls-hooked": "^4.2.2",
@@ -26,6 +27,7 @@
         "gravatar": "^1.8.0",
         "jsonwebtoken": "^8.5.1",
         "mongoose": "^5.8.10",
+        "react-apexcharts": "^1.3.7",
         "request": "^2.88.0"
     },
     "devDependencies": {

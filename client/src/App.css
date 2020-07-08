@@ -1118,3 +1118,12 @@ button {
         left: calc(50% - 250px);
     }
 }
+/* --------------------------------------------------------
+these are the settings associated with the ApexCharts
+-------------------------------------------------------- */
+.chart-container {
+    margin: 10px auto;
+    overflow: hidden;
+    width: 80%;
+    text-align: center;
+}
