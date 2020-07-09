@@ -64,7 +64,13 @@ class attenChart extends Component {
                     },
                 },
             },
-            series: [],
+            series2: [],
+            series: [
+                {
+                    name: 'Weekly Attendance',
+                    data: [7, 10, 10, 18, null, null, null, null, null, null],
+                },
+            ],
         };
     }
     onClick50 = () => {
@@ -86,33 +92,39 @@ class attenChart extends Component {
         });
     };
     loadChart = () => {
-        var url = '/api/chartdata/attendance/vpc';
+        // var url = '/api/chartdata/attendance/vpc';
 
-        axios({
-            method: 'GET',
-            url: url,
-        }).then(function (response) {
-            Chart.exec("updateSeries",[
-                {
-                    
-                    data: response.data,
-                },
-            ]);
-        });
+        // axios({
+        //     method: 'GET',
+        //     url: url,
+        // }).then(function (response) {
+        //     Chart.exec('updateSeries', [
+        //         {
+        //             data: response.data,
+        //         },
+        //     ]);
+        // });
+        const newData = [];
+        const dataPoints = [7, 10, 10, 18, null, null, null, null, null, null];
+        const plate = {};
+        plate.name = 'Weekly Attendance';
+        plate.data = [7, 10, 10, 18, null, null, null, null, null, null];
+        newData.push(plate);
+        Chart.exec('updateSeries', newData);
     };
     render() {
         return (
             <React.Fragment>
-                <div id="chart">
-                <Chart
-                    options={this.state.options}
-                    series={this.state.series}
-                    type='line'
-                    height='450'
-                    width='100%'
-                />
+                <div id='chart'>
+                    <Chart
+                        options={this.state.options}
+                        series={this.state.series}
+                        type='line'
+                        height='450'
+                        width='100%'
+                    />
                 </div>
-                <button onClick={this.onClick50}>Load Data</button>
+                <button onClick={this.loadChart}>Load Data</button>
 
                 {/* <button style={{ margin: 25 }} onClick={this.onClick20}>
                     20
