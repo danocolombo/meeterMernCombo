@@ -77,7 +77,7 @@ const People = ({
                         key={person._id}
                         person={person}
                         deleteResponse={deleteRequest}
-                        deleteRequest={deleteRequest}
+                        // deleteRequest={deleteRequest}
                     />
                 ))}
             </div>

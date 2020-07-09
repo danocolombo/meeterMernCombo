@@ -9,8 +9,6 @@ import NextGathering from '../gatherings/NextGathering';
 // import CheckPrivs from './CheckPrivs';
 // import ClientDef from './ClientDef';
 // import DashboardMeeterLogo from '../../img/DashboardMeeterLogo.png';
-import Experience from './Experience';
-import Education from './Education';
 import { getCurrentProfile, deleteAccount } from '../../actions/profile';
 import { getGatherings } from '../../actions/gathering';
 

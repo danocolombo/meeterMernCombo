@@ -7,14 +7,13 @@ import {
     DELETE_GROUP,
     DELETE_GROUPS,
     CLEAR_GROUP,
-    ADD_GROUP,
     GET_GROUP,
     SET_DEFAULT_GROUPS,
     // UPDATE_GROUP,
     // CLEAR_GROUPS,
     // SET_GROUP,
 } from './types';
-import { mongo, Mongoose } from 'mongoose';
+// import { mongo, Mongoose } from 'mongoose';
 
 // Get groups associated with meetingId
 export const getGroups = (mid) => async (dispatch) => {
@@ -240,9 +239,9 @@ export const addGroup = (formData, history, edit = false) => async (
         //=============================================
         // we either added or updated. refresh redux
         //=======================================------
-        const newGroupList = await axios.get(
-            `/api/groups/meeting/~{formData.mid}`
-        );
+        // const newGroupList = await axios.get(
+        //     `/api/groups/meeting/~{formData.mid}`
+        // );
 
         const rose = await axios.get(`/api/groups/meeting/${formData.mid}`);
 
@@ -271,7 +270,7 @@ export const addGroup = (formData, history, edit = false) => async (
         //     const target = '/editGathering/' + formData.mid;
         //     history.push(target);
         // }
-        console.log('edit: ' + edit);
+        // console.log('edit: ' + edit);
         const target = '/editGathering/' + formData.mid;
         history.push(target);
         // history.push('/gatherings');

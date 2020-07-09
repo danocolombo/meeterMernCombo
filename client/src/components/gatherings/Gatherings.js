@@ -81,7 +81,9 @@ const Gatherings = ({
         } else {
             if (activeStatus === 'approved' && activeRole !== 'guest') {
                 return [
-                    <Link to='/gatherings/historyView'>HISTORY</Link>,
+                    <Link to='/gatherings/historyView' id='hView'>
+                        HISTORY
+                    </Link>,
                     <p className='lead'>List of upcoming meetings...</p>,
                     <div>
                         <Link to='/EditGathering/0' visible='false'>

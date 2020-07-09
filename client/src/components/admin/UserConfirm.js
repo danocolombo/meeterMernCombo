@@ -5,25 +5,13 @@ import PropTypes from 'prop-types';
 const UserConfirm = ({ userName, handleAction }) => {
     // const { user, key } = props;
     const [role, setRole] = useState('');
-    const getValue = () => {
-        return this.state.role;
-    };
+    // const getValue = () => {
+    //     return this.state.role;
+    // };
     const handleSelectChange = (e) => {
-        // this.setRole({role:e.target.value});
-        // console.log('role selected: ' + e.target.value);
-        // console.log('useState role: ' + role);
         setRole(e.target.value);
-        // console.log('useState role (after setRole): ' + role);
-        // this.setRole({role:e.target.value});
     };
     const handleRoleSet = (e) => {
-        // e.preventDefault();
-        // alert('setting permissions!!');
-        // console.log('------------');
-        // console.log('UserConfirmation :: handleRoleSet');
-        // console.log('user: ' + userName);
-        // console.log('role:' + role);
-        // console.log('------------');
         if (role) {
             handleAction(role);
         }

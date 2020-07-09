@@ -133,16 +133,13 @@ const EditGathering = ({
     } = formData;
 
     const onChange = (e) => {
-        if (e.target === 'phone') {
-            console.log('phonephonephonephone');
-        }
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
     const onServantChange = (servantSelected) => {
         //we are assuming Facilitator
         setFormData({ ...formData, [facilitator]: servantSelected });
-        console.log('back from servantSelect. value: ' + servantSelected);
+        // console.log('back from servantSelect. value: ' + servantSelected);
     };
     const onSubmit = (e) => {
         e.preventDefault();
@@ -154,39 +151,12 @@ const EditGathering = ({
     const handleGroupDeleteRequest = (gid) => {
         //this is going to delete the selected request
         //and update the groups for the meeting
-        console.log('back in EditGathering');
+        // console.log('back in EditGathering');
         deleteGroup(gid, meetingId);
     };
 
     const addDefaultGroupsToMeeting = () => {
-        console.log('in EditGatherings :: addDefaultGroupsToMeeting');
-        // addDefaultGroups(defaultGroups);
-        // console.log(
-        //     'defaultGroups: ' +
-        //         util.inspect(defaultGroups, { showHidden: false, depth: null })
-        // );
-        //============================================
-        // this is sample of 3 default meetings in REDUX
-        // defaultGroups: [
-        //     { _id: '5efe35a12f948b40189671a6',
-        //         gender: 'f',
-        //         title: 'A-Z',
-        //         location: 'Library',
-        //         facilitator: 'Marie'
-        //     },
-        //     { _id: '5efe3dbb22c44e40f9775e06',
-        //         gender: 'm',
-        //         title: 'chem',
-        //         location: 'Library',
-        //         facilitator: 'Dale'
-        //     },
-        //     { _id: '5efe43400e4232414c2ee7e4',
-        //         gender: 'x',
-        //         title: 'remove me',
-        //         location: 'bathroom',
-        //         facilitator: 'Waldo'
-        //     }
-        // ]
+        // console.log('in EditGatherings :: addDefaultGroupsToMeeting');
 
         let dgroups = defaultGroups;
         let groupsToAdd = [];
@@ -203,36 +173,15 @@ const EditGathering = ({
             groupsToAdd.push(aGroup);
         });
         addDefaultGroups(groupsToAdd);
-        // newGroup.push({
-        //     mid: match.params.id,
-        //     gender: g.gender,
-        //     title: g.title,
-
-        //     location: g.location,
-        //     facilitator: g.facilitator,
-        // });
-        // console.log(JSON.stringify(newGroup));
-        // newBatch.push({
-        //     newGroup,
-        // });
-        //     console.log('newBatch...');
-        //     console.log(JSON.stringify(newBatch));
-        //     // console.log('id: ' + g._id);
-        //     // console.log('gender: ' + g.gender);
-        //     // console.log('title: ' + g.title);
-        //     // console.log('location: ' + g.location);
-        //     // console.log('faciliator: ' + g.facilitator);
-        // });
     };
-    // // DANO
-    // console.log('donations: ' + mtgConfigs['donations']);
-    // console.log('type of mtgConfigs: ' + typeof mtgConfigs);
-    // console.table(mtgConfigs);
-    const util = require('util');
-    console.log(
-        'mtgConfigs: ' +
-            util.inspect(mtgConfigs, { showHidden: false, depth: null })
-    );
+
+    //-----------------------------------------------------
+    // this next couple of lines gives the ability to see configs
+    // const util = require('util');
+    // console.log(
+    //     'mtgConfigs: ' +
+    //         util.inspect(mtgConfigs, { showHidden: false, depth: null })
+    // );
     return loading ? (
         <Spinner />
     ) : (
@@ -261,24 +210,13 @@ const EditGathering = ({
                 <h4>Facilitator</h4>
                 <input
                     type='text'
-                    class='x-large'
+                    className='x-large'
                     placeholder='Responsible party for meeting'
                     id='facilitator'
                     name='facilitator'
                     value={facilitator}
                     onChange={onChange}
                 />
-                {/* <select
-                    value={facilitator}
-                    name='facilitator'
-                    onChange={onChange}
-                >
-                    {servants.map((s) => (
-                        <option key={s.name} value={s.name}>
-                            {s.name}
-                        </option>
-                    ))}
-                </select> */}
                 <div className='form-group'>
                     <h4>Meeting Type **</h4>
                     <select
@@ -850,7 +788,7 @@ const EditGathering = ({
                     </Fragment>
                 )}
             </form>
-            <div style={{ 'padding-top': 10 }}>
+            <div style={{ paddingTop: 10 }}>
                 {groups &&
                     groups.map((group) => (
                         <GroupListItem
@@ -931,7 +869,7 @@ const EditGathering = ({
         let target = tYear + '-' + tMonth + '-' + tDay + 'T00:00:00.000Z';
 
         if (meetingDate >= target) {
-            console.log('greater than or equal');
+            // console.log('greater than or equal');
             if (activeStatus === 'approved' && activeRole !== 'guest') {
                 returnValue = [
                     <>
@@ -975,7 +913,7 @@ const EditGathering = ({
         }
         return [
             <>
-                <table>{returnValue}</table>
+                <div>{returnValue}</div>
             </>,
         ];
     }

@@ -46,8 +46,8 @@ export const getMtgConfigs = (cid) => async (dispatch) => {
     //this loads all the default groups for cid
     //into meeter.defaultGroups
     if (!cid) return;
-    console.log('getMtgConfigs(' + cid + ')');
-    console.log('/api/client/meetingConfigs/' + cid);
+    // console.log('getMtgConfigs(' + cid + ')');
+    // console.log('/api/client/meetingConfigs/' + cid);
     try {
         const res = await axios.get(`/api/client/mconfigs/${cid}`);
         // const res = await axios.get(`/api/client/meetingConfigs/${cid}`);
@@ -73,8 +73,8 @@ export const getMtgConfigs = (cid) => async (dispatch) => {
 export const getDefGroups = (cid) => async (dispatch) => {
     //this loads all the default groups for cid
     //into meeter.defaultGroups
-    console.log('getDefGroups(' + cid + ')');
-    console.log('/api/client/defaultgroups/' + cid);
+    // console.log('getDefGroups(' + cid + ')');
+    // console.log('/api/client/defaultgroups/' + cid);
     try {
         const res = await axios.get(`/api/client/defaultgroups/${cid}`);
         if (res) {
@@ -97,13 +97,13 @@ export const getDefGroups = (cid) => async (dispatch) => {
     }
 };
 export const updateDefaultGroup = (revised) => async (dispatch) => {
-    console.log('getting the work done.');
-    console.log('_id:' + revised._id);
-    console.log('client: ' + revised.cid);
-    console.log('gender: ' + revised.gender);
-    console.log('title: ' + revised.title);
-    console.log('location: ' + revised.location);
-    console.log('facilitator: ' + revised.gender);
+    // console.log('getting the work done.');
+    // console.log('_id:' + revised._id);
+    // console.log('client: ' + revised.cid);
+    // console.log('gender: ' + revised.gender);
+    // console.log('title: ' + revised.title);
+    // console.log('location: ' + revised.location);
+    // console.log('facilitator: ' + revised.gender);
     try {
         const config = {
             headers: {

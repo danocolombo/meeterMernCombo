@@ -13,11 +13,11 @@ const GroupListItem = ({
     role,
     deleteResponse,
 }) => {
-    const handleDeleteRequest = () => {
-        // send key of entry to delete
-        console.log('delete click');
-        deleteResponse(_id);
-    };
+    // const handleDeleteRequest = () => {
+    //     // send key of entry to delete
+    //     console.log('delete click');
+    //     deleteResponse(_id);
+    // };
     return (
         <Fragment>
             <div className='GItem-Box'>
@@ -51,6 +51,7 @@ function get1Line(g, t) {
             break;
         case 'm':
             line1 = "Men's - ";
+            break;
         default:
             break;
     }
@@ -60,8 +61,8 @@ function get1Line(g, t) {
     return [<span>{line1}</span>];
 }
 function get2Line(l, f) {
-    console.log(l + ' ' + l.length);
-    console.log(f + ' ' + f.length);
+    // console.log(l + ' ' + l.length);
+    // console.log(f + ' ' + f.length);
     let line2 = '';
     let tmp = '';
     if (l.length > 0) {
