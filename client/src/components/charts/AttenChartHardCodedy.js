@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import axios from 'axios';
 import Chart from 'react-apexcharts';
 
 class attenChart extends Component {
@@ -50,20 +49,13 @@ class attenChart extends Component {
                         fontSize: '25px',
                     },
                 },
-                noData: {
-                    text: 'Loading...',
-                    align: 'center',
-                    verticalAlign: 'middle',
-                    offsetX: 0,
-                    offsetY: 0,
-                    styles: {
-                        color: 'yellow',
-                        fontSize: '14px',
-                        fontFamily: 'tahoma',
-                    },
-                },
             },
-            series: [],
+            series: [
+                {
+                    name: 'Weekly Attendance',
+                    data: [7, 10, 10, 18, null, null, null, null, null, null],
+                },
+            ],
         };
     }
     onClick50 = () => {
@@ -84,21 +76,6 @@ class attenChart extends Component {
             },
         });
     };
-    loadChart = () => {
-        var url = '/api/chartdata/attendance/vpc';
-
-        axios({
-            method: 'GET',
-            url: url,
-        }).then(function (response) {
-            chart.updateSeries([
-                {
-                    name: 'Sales',
-                    data: response.data,
-                },
-            ]);
-        });
-    };
     render() {
         return (
             <React.Fragment>
@@ -109,9 +86,9 @@ class attenChart extends Component {
                     height='450'
                     width='100%'
                 />
-                <button onClick={this.onClick50}>Load Data</button>
+                {/* <button onClick={this.onClick50}>50</button>
 
-                {/* <button style={{ margin: 25 }} onClick={this.onClick20}>
+                <button style={{ margin: 25 }} onClick={this.onClick20}>
                     20
                 </button> */}
             </React.Fragment>
