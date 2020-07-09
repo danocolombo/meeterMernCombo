@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import Chart from 'react-apexcharts';
+import ApexCharts from 'apexcharts';
 
 class attenChart extends Component {
     constructor(props) {
@@ -91,9 +92,9 @@ class attenChart extends Component {
             method: 'GET',
             url: url,
         }).then(function (response) {
-            chart.updateSeries([
+            Chart.exec("updateSeries",[
                 {
-                    name: 'Sales',
+                    
                     data: response.data,
                 },
             ]);
@@ -102,6 +103,7 @@ class attenChart extends Component {
     render() {
         return (
             <React.Fragment>
+                <div id="chart">
                 <Chart
                     options={this.state.options}
                     series={this.state.series}
@@ -109,6 +111,7 @@ class attenChart extends Component {
                     height='450'
                     width='100%'
                 />
+                </div>
                 <button onClick={this.onClick50}>Load Data</button>
 
                 {/* <button style={{ margin: 25 }} onClick={this.onClick20}>
