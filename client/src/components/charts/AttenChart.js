@@ -6,21 +6,26 @@ import ApexCharts from 'apexcharts';
 class attenChart extends Component {
     constructor(props) {
         super(props);
+        this.updateCharts = this.updateCharts.bind(this);
         this.state = {
-            options: {
+            theChartOptions: {
                 chart: {
-                    background: '#f4f4f4',
-                    foreColor: '#333',
+                    id: 'basic-bar',
                     toolbar: {
                         show: false,
                     },
-                    dropShadow: {
-                        enabled: true,
-                        top: 0,
-                        left: 0,
-                        blur: 3,
-                        opacity: 0.5,
+                    zoom: {
+                        enabled: false,
                     },
+                },
+                plotOptions: {
+                    bar: {
+                        columnWidth: '50%',
+                        endingShape: 'arrow',
+                    },
+                },
+                stroke: {
+                    width: [4, 0, 0],
                 },
                 xaxis: {
                     categories: [
@@ -36,39 +41,26 @@ class attenChart extends Component {
                         '8/17',
                     ],
                 },
+                markers: {
+                    size: 6,
+                    strokeWidth: 3,
+                    fillOpacity: 0,
+                    strokeOpacity: 0,
+                    hover: {
+                        size: 8,
+                    },
+                },
                 yaxis: {
-                    show: true,
-                    max: 20,
-                    min: 0,
-                    forceNiceScale: true,
-                },
-                title: {
-                    text: 'Weekly Attendance',
-                    align: 'center',
-                    margin: 20,
-                    offsetY: 20,
-                    style: {
-                        fontSize: '25px',
-                    },
-                },
-                noData: {
-                    text: 'Loading...',
-                    align: 'center',
-                    verticalAlign: 'middle',
-                    offsetX: 0,
-                    offsetY: 0,
-                    styles: {
-                        color: 'yellow',
-                        fontSize: '14px',
-                        fontFamily: 'tahoma',
-                    },
+                    // tickAmount: 5,
+                    // min: 0,
+                    max: 35,
                 },
             },
-            series2: [],
-            series: [
+            theChartSeries: [
                 {
-                    name: 'Weekly Attendance',
-                    data: [7, 10, 10, 18, null, null, null, null, null, null],
+                    name: 'series-1',
+                    type: 'line',
+                    data: [8, 10, 10, 18, null, null, null, null, null, null],
                 },
             ],
         };
@@ -91,44 +83,70 @@ class attenChart extends Component {
             },
         });
     };
-    loadChart = () => {
-        // var url = '/api/chartdata/attendance/vpc';
 
-        // axios({
-        //     method: 'GET',
-        //     url: url,
-        // }).then(function (response) {
-        //     Chart.exec('updateSeries', [
-        //         {
-        //             data: response.data,
-        //         },
-        //     ]);
+    //theChartSeries
+    updateCharts() {
+        const newChartSeries = [];
+        const newChartOptions = [];
+
+        this.state.theChartSeries.forEach((s) => {
+            const data = [7, 10, 10, 18, 23, null, null, null, null, null];
+            newChartSeries.push({ data: data, type: s.type });
+        });
+
+        // this.state.theChartOptions.forEach((s) => {
+        //     const data = [
+        //         '6/22',
+        //         '6/29',
+        //         '7/6',
+        //         '7/13',
+        //         '7/20',
+        //         '7/27',
+        //         '8/3',
+        //         '8/10',
+        //         '8/17',
+        //         '8/24',
+        //     ];
+        //     newChartOptions.push({ 'xaxis.categories': data });
         // });
-        const newData = [];
-        const dataPoints = [7, 10, 10, 18, null, null, null, null, null, null];
-        const plate = {};
-        plate.name = 'Weekly Attendance';
-        plate.data = [7, 10, 10, 18, null, null, null, null, null, null];
-        newData.push(plate);
-        Chart.exec('updateSeries', newData);
-    };
+
+        this.setState({
+            theChartSeries: newChartSeries,
+            // theChartOptions: newChartOptions,
+        });
+        this.setState({
+            options: {
+                ...this.state.theChartOptions,
+                xaxis: {
+                    ...this.state.theChartOptions.xaxis,
+                    categories: [
+                        '6/22',
+                        '6/29',
+                        '7/6',
+                        '7/13',
+                        '7/20',
+                        '7/27',
+                        '8/3',
+                        '8/10',
+                        '8/17',
+                        '8/24',
+                    ],
+                },
+            },
+        });
+    }
     render() {
         return (
             <React.Fragment>
                 <div id='chart'>
                     <Chart
-                        options={this.state.options}
-                        series={this.state.series}
+                        options={this.state.theChartOptions}
+                        series={this.state.theChartSeries}
                         type='line'
-                        height='450'
-                        width='100%'
+                        width='500'
                     />
                 </div>
-                <button onClick={this.loadChart}>Load Data</button>
-
-                {/* <button style={{ margin: 25 }} onClick={this.onClick20}>
-                    20
-                </button> */}
+                <button onClick={this.updateCharts}>Update!</button>
             </React.Fragment>
         );
     }
