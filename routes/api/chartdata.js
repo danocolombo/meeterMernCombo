@@ -766,6 +766,88 @@ router.get('/attendance/:cid', async (req, res) => {
         // for chart data.
         //-----------------------------------------------------
         let attenData = {};
+        // let data = [];
+        let headCount = [];
+        let meetings = [];
+        let cnt = 0;
+        attendance.forEach((m) => {
+            let tmp = m.meetingType;
+            if (cnt < 10) {
+                if (tmp.trim() == 'Testimony' || tmp.trim() == 'Lesson') {
+                    // make data presentable
+                    let str = new Date(m.meetingDate);
+                    var month = str.getMonth() + 1;
+                    var day = str.getDate();
+                    pDate = month.toString() + '/' + day.toString();
+                    headCount.push(m.attendance);
+                    meetings.push(pDate);
+                    // data.push({
+                    //     x: pDate,
+                    //     y: m.attendance,
+                    // });
+                    cnt++;
+                }
+            }
+        });
+        data = {
+            meetings: meetings,
+            attendance: headCount,
+        };
+        // make sure that we have the default number of 10 data elements
+        // if (data.length < 10) {
+        //     for (let index = data.length; index < 10; index++) {
+        //         data.push({
+        //             x: '',
+        //             y: null,
+        //         });
+        //     }
+        // }
+        // attenData.data = data;
+        res.json(data);
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Server Error');
+    }
+});
+// @route    PUT api/meeting/groups
+// @desc     Get groups for a meeting
+// @access   Private
+// @route    GET api/chartdata
+// @desc     Get attendance for client
+// @access   Private
+router.get('/at10dance/:cid', async (req, res) => {
+    try {
+        let client = 'meeting-' + req.params.cid;
+        // need to create special date for today starting at T00:00:00.000Z
+        let tDate = new Date();
+        let numMonth = tDate.getMonth() + 1;
+        let tmpMonth = numMonth.toString();
+        let tmpDay = tDate.getDate().toString();
+        let tMonth = '';
+        let tDay = '';
+        if (tmpMonth.length < 2) {
+            tMonth = '0' + tmpMonth;
+        } else {
+            tMonth = tmpMonth;
+        }
+        if (tmpDay.length < 2) {
+            tDay = '0' + tmpDay;
+        } else {
+            tDay = tmpDay;
+        }
+        let tYear = tDate.getFullYear();
+        let target = tYear + '-' + tMonth + '-' + tDay + 'T00:00:00.000Z';
+
+        const attendance = await Meeting.find({
+            meetingDate: { $lte: target },
+            tenantId: client,
+        }).sort({ meetingDate: 0 });
+
+        //-----------------------------------------------------
+        // now loop through resonse data and give the last 10
+        // for chart data.
+        //-----------------------------------------------------
+        let attenData = {};
         let data = [];
         let cnt = 0;
         attendance.forEach((m) => {

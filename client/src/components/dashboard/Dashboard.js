@@ -5,7 +5,7 @@ import Spinner from '../layout/Spinner';
 
 import DashLogo from '../../img/MMeeterLogo.png';
 import AttenChart from '../charts/AttenChart';
-import {Really} from '../charts/really';
+import { Really } from '../charts/really';
 import NextGathering from '../gatherings/NextGathering';
 // import CheckPrivs from './CheckPrivs';
 // import ClientDef from './ClientDef';
@@ -13,7 +13,6 @@ import NextGathering from '../gatherings/NextGathering';
 import { getCurrentProfile, deleteAccount } from '../../actions/profile';
 import { getGatherings } from '../../actions/gathering';
 import { getDashboardAttendData } from '../../actions/charts';
-
 
 const Dashboard = ({
     getGatherings,
@@ -38,9 +37,25 @@ const Dashboard = ({
 
             getCurrentProfile();
         }
-        setAttenData(getDashboardAttendData({activeClient}));
+        let latest = {};
+        latest = getDashboardAttendData({ activeClient });
+        const util = require('util');
+        console.log(
+            'dashboard.latest: ' +
+                util.inspect(latest, { showHidden: false, depth: null })
+        );
+        // if (latest.length < 1) {
+        //     latest = {
+        //         meetings: [],
+        //         attenance: [],
+        //     };
+        // }
+        setAttenData(getDashboardAttendData({ activeClient }));
+        setAttenData(latest);
+
         // console.log('++++++++++++++++++++++++');
-        // console.log('attenData: ' + attenData);
+        console.log('latest type: ' + typeof latest);
+
         // console.log('++++++++++++++++++++++++');
         if (gatherings.length === 0) {
             getGatherings({ activeClient });
@@ -67,7 +82,7 @@ const Dashboard = ({
             <div className='chart-container'>
                 {/* <ANewAttenChart cid={activeClient} aData={attenData} /> */}
                 {/* <AttenChart cid={activeClient} aData={attenData} /> */}
-                <Really cid={activeClient} aData={attenData}/>
+                <Really cid={activeClient} aData={attenData} />
             </div>
         </Fragment>
     );
