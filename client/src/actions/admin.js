@@ -10,7 +10,10 @@ import {
 } from './types';
 
 // GET CLIENT INFO
-
+export function testMe (cid) {
+    console.log('@@@@@@@@@@@@@@@@@@@@@@@@@');
+    console.log('actions/admin :: testMe (' + cid + ')');
+};
 export const getClientInfo = (cid) => async (dispatch) => {
     try {
         console.log('@@@@@@@@@@@@@@@@@@@@@@@@@');
