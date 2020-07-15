@@ -98,8 +98,9 @@ export const getDashboardAttendData = (cid) => (dispatch) => {
     }
 };
 export const aTest = (cid) => {
-    // const chartSeries = theChartSeries;
-    // const chartOptions = theChartOptions;
+    const chartSeries = {}
+    chartSeries
+    const chartOptions = theChartOptions;
 
     const util = require('util');
     console.log(
