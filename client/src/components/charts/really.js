@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Chart from 'react-apexcharts';
-// import { getDashboardAttendData } from '../../actions/charts';
+import { aTest } from '../../actions/charts';
 export const Really = ({ cid, aData }) => {
     const [theChartOptions, setChartOptions] = useState({
         chart: {
@@ -129,6 +129,8 @@ export const Really = ({ cid, aData }) => {
                 newState = theChartSeries;
                 newState[0].data = json.attendance;
                 setChartSeries(newState);
+
+                aTest(cid);
                 // const util = require('util');
                 // console.log(
                 //     'newState: ' +

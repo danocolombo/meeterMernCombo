@@ -1,8 +1,67 @@
 import axios from 'axios';
 import { setAlert } from './alert';
 import { ADMIN_ERROR } from './types';
+// import { chartOptions, chartSeries } from './chartlibs';
 
-// GET CLIENT INFO
+//apexcharts needs two configurations options and series...
+const theChartOptions = {
+    chart: {
+        id: 'basic-bar',
+        toolbar: {
+            show: false,
+        },
+        zoom: {
+            enabled: false,
+        },
+    },
+    plotOptions: {
+        bar: {
+            columnWidth: '50%',
+            endingShape: 'arrow',
+        },
+    },
+    stroke: {
+        width: [4, 0, 0],
+    },
+    xaxis: {
+        categories: [
+            '6/15',
+            '6/22',
+            '6/29',
+            '7/6',
+            '7/13',
+            '7/20',
+            '7/27',
+            '8/3',
+            '8/10',
+            '8/17',
+        ],
+    },
+    markers: {
+        size: 6,
+        strokeWidth: 3,
+        fillOpacity: 0,
+        strokeOpacity: 0,
+        hover: {
+            size: 8,
+        },
+    },
+    yaxis: {
+        // tickAmount: 5,
+        // min: 0,
+        max: 35,
+    },
+}
+const theChartSeries = [
+    {
+        name: 'series-1',
+        type: 'line',
+        data: [0, null, null, null, null, null, null, null, null, null],
+    },
+]
+
+
+
 
 export const getDashboardAttendData = (cid) => (dispatch) => {
     try {
@@ -38,3 +97,17 @@ export const getDashboardAttendData = (cid) => (dispatch) => {
         });
     }
 };
+export const aTest = (cid) => {
+    // const chartSeries = theChartSeries;
+    // const chartOptions = theChartOptions;
+
+    const util = require('util');
+    console.log(
+        'theChartSeries: ' +
+            util.inspect(theChartSeries, { showHidden: false, depth: null })
+    );
+    console.log(
+        'theChartOptions: ' +
+            util.inspect(theChartOptions, { showHidden: false, depth: null })
+    );  
+}
