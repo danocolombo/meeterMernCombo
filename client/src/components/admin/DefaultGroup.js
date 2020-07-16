@@ -55,7 +55,6 @@ function line1(g, t) {
             break;
         case 'm':
             line1 = "Men's - ";
-            break;
         default:
             break;
     }

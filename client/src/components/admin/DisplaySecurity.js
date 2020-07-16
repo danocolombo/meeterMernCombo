@@ -2,6 +2,7 @@ import React, { Fragment, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Spinner from '../layout/Spinner';
+import { Button } from '@material-ui/core';
 //--------------------------------------
 //these are for expansion panels
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
@@ -17,6 +18,7 @@ import DefaultGroup from './DefaultGroup';
 import DefaultGroupDelete from './DefaultGroupDeleteConfirm';
 import ClientUser from './ClientUser';
 import DefaultGroupEdit from './DefaultGroupForm';
+import DefaultGroupAdd from './DefaultGroupAdd';
 import MeetingConfigForm from './MeetingConfigForm';
 import {
     getClientUsers,
@@ -28,6 +30,7 @@ import {
     updateDefaultGroup,
 } from '../../actions/admin';
 import DefaultGroups from './DefaultGroup';
+import { set } from 'mongoose';
 
 const DisplaySecurity = ({
     getDefGroups,
@@ -52,6 +55,7 @@ const DisplaySecurity = ({
     const [modalDefaultGroups, setGroupsModal] = useState(false);
     const [confirmGroupDeleteModal, setGroupDeleteModal] = useState(false);
     const [editGroupModal, setGroupEditModal] = useState(false);
+    const [addGroupModal, setAddGroupModal] = useState(false);
     const [grpId, setGrpId] = useState('');
     const [grpGender, setGrpGender] = useState('');
     const [grpTitle, setGrpTitle] = useState('');
@@ -196,6 +200,25 @@ const DisplaySecurity = ({
         // if (!confirmGroupDeleteModal) setGroupEditModal(true);
         // clearGroupStates();
     };
+    const handleGroupAddRequest = () => {
+        // this is coming back from list
+        clearGroupStates();
+        setAddGroupModal(true);
+    };
+    const handleGroupAddResponse = (r, g, t, l, f) => {
+        //the resonse will either be SAVE or CANCEL
+        if (r !== 'CANCEL') {
+            //add the meeting
+            const newGroup = {};
+            newGroup.cid = activeClient;
+            newGroup.gender = g;
+            newGroup.title = t;
+            l ? (newGroup.location = l) : (newGroup.location = '');
+            f ? (newGroup.facilitator = f) : (newGroup.facilitator = '');
+            updateDefaultGroup(newGroup);
+        }
+        setAddGroupModal(false);
+    };
     return loading ? (
         <Spinner />
     ) : (
@@ -242,7 +265,11 @@ const DisplaySecurity = ({
                                 facilitatorValue={grpFacilitator}
                             />
                         </Modal>
-
+                        <Modal show={addGroupModal}>
+                            <DefaultGroupAdd
+                                handleGroupAdd={handleGroupAddResponse}
+                            />
+                        </Modal>
                         <div className='posts'>
                             {defaultGroups ? (
                                 <Fragment>
@@ -262,7 +289,16 @@ const DisplaySecurity = ({
                                             />
                                         </>
                                     ))}
-                                    <h3>New Default Group</h3>
+                                    <div>
+                                        <Button
+                                            variant='contained'
+                                            color='primary'
+                                            size='small'
+                                            onClick={handleGroupAddRequest}
+                                        >
+                                            New Default Group
+                                        </Button>
+                                    </div>
                                 </Fragment>
                             ) : null}
                         </div>

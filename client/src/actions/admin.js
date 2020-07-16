@@ -10,10 +10,10 @@ import {
 } from './types';
 
 // GET CLIENT INFO
-export function testMe (cid) {
+export function testMe(cid) {
     console.log('@@@@@@@@@@@@@@@@@@@@@@@@@');
     console.log('actions/admin :: testMe (' + cid + ')');
-};
+}
 export const getClientInfo = (cid) => async (dispatch) => {
     try {
         console.log('@@@@@@@@@@@@@@@@@@@@@@@@@');
@@ -285,6 +285,9 @@ export const rejectUserRegistration = (cid, id, email) => async (dispatch) => {
             },
         });
     }
+};
+export const addNewDefaultGroup = (c, g, t, l, f) => async (dispatch) => {
+    // this adds the group as a default for the client
 };
 export const removeDefGroup = (cid, gid) => async (dispatch) => {
     //this removes the user id from client users
