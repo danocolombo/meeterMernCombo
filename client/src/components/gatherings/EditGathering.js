@@ -208,9 +208,10 @@ const EditGathering = ({
                     />
                 </div>
                 <h4>Facilitator</h4>
+                <span className='medium-text'>medium text</span>
                 <input
                     type='text'
-                    className='x-large'
+                    className='medium-text'
                     placeholder='Responsible party for meeting'
                     id='facilitator'
                     name='facilitator'
@@ -240,6 +241,7 @@ const EditGathering = ({
                     {displayTitle()}
                     <input
                         type='text'
+                        className='standard-text'
                         placeholder={diplayTitleHint()}
                         id='title'
                         name='title'

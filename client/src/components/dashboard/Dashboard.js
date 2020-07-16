@@ -12,7 +12,7 @@ import NextGathering from '../gatherings/NextGathering';
 // import DashboardMeeterLogo from '../../img/DashboardMeeterLogo.png';
 import { getCurrentProfile, deleteAccount } from '../../actions/profile';
 import { getGatherings } from '../../actions/gathering';
-import { getDashboardAttendData } from '../../actions/charts';
+import { getDashboardAttendData, aTest } from '../../actions/charts';
 
 const Dashboard = ({
     getGatherings,
@@ -26,9 +26,7 @@ const Dashboard = ({
 }) => {
     const [attenData, setAttenData] = useState({});
     useEffect(() => {
-        console.log('(1)');
         //check for activeClient, get it if needed
-        console.log('activeClient: ' + activeClient);
         if (!activeClient) {
             // when first logging in, sometimes the delay
             // in processing might get us to dashboard
@@ -37,26 +35,32 @@ const Dashboard = ({
 
             getCurrentProfile();
         }
-        let latest = {};
-        latest = getDashboardAttendData({ activeClient });
-        const util = require('util');
-        console.log(
-            'dashboard.latest: ' +
-                util.inspect(latest, { showHidden: false, depth: null })
-        );
-        // if (latest.length < 1) {
-        //     latest = {
-        //         meetings: [],
-        //         attenance: [],
-        //     };
-        // }
-        setAttenData(getDashboardAttendData({ activeClient }));
-        setAttenData(latest);
+        if (activeClient) {
+            let chartInfo = {};
+            // latest = getDashboardAttendData({ activeClient });
+            chartInfo = aTest(activeClient);
+            let DEBUG = false;
+            if (DEBUG) {
+                const util = require('util');
+                console.log(
+                    'chartInfo: ' +
+                        util.inspect(chartInfo, {
+                            showHidden: false,
+                            depth: null,
+                        })
+                );
+                // if (latest.length < 1) {
+                //     latest = {
+                //         meetings: [],
+                //         attenance: [],
+                //     };
+                // }
+                // setAttenData(getDashboardAttendData({ activeClient }));
+                setAttenData(chartInfo);
 
-        // console.log('++++++++++++++++++++++++');
-        console.log('latest type: ' + typeof latest);
-
-        // console.log('++++++++++++++++++++++++');
+                // console.log('++++++++++++++++++++++++');
+            }
+        }
         if (gatherings.length === 0) {
             getGatherings({ activeClient });
         }
@@ -82,7 +86,7 @@ const Dashboard = ({
             <div className='chart-container'>
                 {/* <ANewAttenChart cid={activeClient} aData={attenData} /> */}
                 {/* <AttenChart cid={activeClient} aData={attenData} /> */}
-                <Really cid={activeClient} aData={attenData} />
+                {/* (attenData && <Really cid={activeClient} aData={attenData} />) */}
             </div>
         </Fragment>
     );

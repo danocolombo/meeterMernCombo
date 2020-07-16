@@ -59,6 +59,15 @@ img {
     line-height: 1.2;
     margin-bottom: 1rem;
 }
+.standard-text {
+    font-size: 1rem;
+    line-height: 1;
+    margin-bottom: 1rem;
+}
+#medium-text[type='text'] {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 10px;
+}
 .box-font-lead {
     font-size: 1.1rem;
     font-weight: bold;
@@ -322,7 +331,7 @@ img {
     color: blueviolet;
     width: 100%;
     padding: 0.4rem;
-    font-size: 1.2rem;
+    font-size: 1rem;
     border: 1px solid #ccc;
 }
 .form input[name='person-form-birthday'] {
@@ -339,7 +348,7 @@ img {
     width: 75%;
     color: blueviolet;
     padding: 0.4rem;
-    font-size: 1.5rem;
+    font-size: 1rem;
     border: 1px solid #ccc;
 }
 

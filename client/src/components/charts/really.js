@@ -111,40 +111,42 @@ export const Really = ({ cid, aData }) => {
     //         // console.log('attenance: ' + aData.attendance);
     //     }
     // }, [aData]);
-    useEffect(() => {
-        async function fetchData() {
-            try {
-                const response = await fetch(
-                    `/api/chartdata/attendance/${cid}`
-                );
-                const json = await response.json();
-                console.log({ json });
-                console.log('meetingsssss: ' + json.meetings.toString());
-                console.log('attendance: ' + json.attendance.toString());
-                // copy state, update and update state
-                let newState = theChartOptions;
-                newState.xaxis.categories = json.meetings;
-                setChartOptions(newState);
+    //{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}
+    // useEffect(() => {
+    //     async function fetchData() {
+    //         try {
+    //             const response = await fetch(
+    //                 `/api/chartdata/attendance/${cid}`
+    //             );
+    //             const json = await response.json();
+    //             console.log({ json });
+    //             console.log('meetingsssss: ' + json.meetings.toString());
+    //             console.log('attendance: ' + json.attendance.toString());
+    //             // copy state, update and update state
+    //             let newState = theChartOptions;
+    //             newState.xaxis.categories = json.meetings;
+    //             setChartOptions(newState);
 
-                newState = theChartSeries;
-                newState[0].data = json.attendance;
-                setChartSeries(newState);
+    //             newState = theChartSeries;
+    //             newState[0].data = json.attendance;
+    //             setChartSeries(newState);
 
-                aTest(cid);
-                // const util = require('util');
-                // console.log(
-                //     'newState: ' +
-                //         util.inspect(newState, {
-                //             showHidden: false,
-                //             depth: null,
-                //         })
-                // );
-            } catch (error) {}
-        }
-        if (cid != -'') {
-            fetchData();
-        }
-    }, [theChartOptions, theChartSeries]);
+    //             aTest(cid);
+    //             // const util = require('util');
+    //             // console.log(
+    //             //     'newState: ' +
+    //             //         util.inspect(newState, {
+    //             //             showHidden: false,
+    //             //             depth: null,
+    //             //         })
+    //             // );
+    //         } catch (error) {}
+    //     }
+    //     if (cid != -'') {
+    //         fetchData();
+    //     }
+    // }, [theChartOptions, theChartSeries]);
+    //{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}
     return (
         <div>
             <div>really client: {cid}</div>
@@ -153,11 +155,17 @@ export const Really = ({ cid, aData }) => {
                 <br />
             </div>
             <Chart
+                options={aData.Options}
+                series={aData.Series}
+                type='line'
+                width='500'
+            />
+            {/* <Chart
                 options={theChartOptions}
                 series={theChartSeries}
                 type='line'
                 width='500'
-            />
+            /> */}
         </div>
     );
 };

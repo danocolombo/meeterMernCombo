@@ -51,17 +51,14 @@ const theChartOptions = {
         // min: 0,
         max: 35,
     },
-}
+};
 const theChartSeries = [
     {
         name: 'series-1',
         type: 'line',
         data: [0, null, null, null, null, null, null, null, null, null],
     },
-]
-
-
-
+];
 
 export const getDashboardAttendData = (cid) => (dispatch) => {
     try {
@@ -98,17 +95,51 @@ export const getDashboardAttendData = (cid) => (dispatch) => {
     }
 };
 export const aTest = (cid) => {
-    const chartSeries = {}
-    chartSeries
-    const chartOptions = theChartOptions;
+    let chartSeries = {};
+    chartSeries = theChartSeries;
+    let chartOptions = theChartOptions;
+    //===============================
+    // now update with latest info
+    //===============================
+    let tOptions = {
+        ...chartOptions,
+        yaxis: { ...chartOptions.yaxis, max: 25 },
+        xaxis: {
+            ...chartOptions.xaxis,
+            categories: [
+                '6/15',
+                '6/22',
+                '6/29',
+                '7/6',
+                '7/13',
+                '7/20',
+                '7/27',
+                '8/3',
+                '8/11',
+                '8/17',
+            ],
+        },
+        // chart: { ...chartOptions.chart, id: 'DANO' },
+    };
+    chartOptions = tOptions;
 
-    const util = require('util');
-    console.log(
-        'theChartSeries: ' +
-            util.inspect(theChartSeries, { showHidden: false, depth: null })
-    );
-    console.log(
-        'theChartOptions: ' +
-            util.inspect(theChartOptions, { showHidden: false, depth: null })
-    );  
-}
+    // let tSeries = {
+    //     ...chartSeries,
+    //     name: 'series-X',
+    // };
+    // chartSeries = tSeries;
+
+    // const util = require('util');
+    // console.log(
+    //     'chartSeries: ' +
+    //         util.inspect(chartSeries, { showHidden: false, depth: null })
+    // );
+    // console.log(
+    //     'chartOptions: ' +
+    //         util.inspect(chartOptions, { showHidden: false, depth: null })
+    // );
+    let cData = {};
+    cData.Series = chartSeries;
+    cData.Options = chartOptions;
+    return cData;
+};
