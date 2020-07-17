@@ -12,18 +12,19 @@ import NextGathering from '../gatherings/NextGathering';
 // import DashboardMeeterLogo from '../../img/DashboardMeeterLogo.png';
 import { getCurrentProfile, deleteAccount } from '../../actions/profile';
 import { getGatherings } from '../../actions/gathering';
-import { getDashboardAttendData, aTest } from '../../actions/charts';
+import { dashAttenChart } from '../../actions/charts';
 
 const Dashboard = ({
     getGatherings,
     getCurrentProfile,
-    getDashboardAttendData,
+    // dashAttenChart,
     deleteAccount,
     auth: { user, activeClient },
     gathering: { gatherings },
     auth,
     profile: { profile, loading },
 }) => {
+    const [chartReady, setChartReady] = useState(false);
     const [attenData, setAttenData] = useState({});
     useEffect(() => {
         //check for activeClient, get it if needed
@@ -35,11 +36,18 @@ const Dashboard = ({
 
             getCurrentProfile();
         }
+    }, [activeClient]);
+    useEffect(() => {
+        getCurrentProfile();
+        if (activeClient) {
+            getGatherings({ activeClient });
+        }
+    }, [getGatherings, getCurrentProfile]);
+    useEffect(() => {
         if (activeClient) {
             let chartInfo = {};
-            // latest = getDashboardAttendData({ activeClient });
-            chartInfo = aTest(activeClient);
-            let DEBUG = false;
+            chartInfo = dashAttenChart(activeClient);
+            let DEBUG = true;
             if (DEBUG) {
                 const util = require('util');
                 console.log(
@@ -49,29 +57,16 @@ const Dashboard = ({
                             depth: null,
                         })
                 );
-                // if (latest.length < 1) {
-                //     latest = {
-                //         meetings: [],
-                //         attenance: [],
-                //     };
-                // }
-                // setAttenData(getDashboardAttendData({ activeClient }));
-                setAttenData(chartInfo);
 
-                // console.log('++++++++++++++++++++++++');
+                setAttenData(chartInfo);
+                if (chartInfo) setChartReady(true);
+                if (!chartInfo) console.log('no data');
             }
         }
         if (gatherings.length === 0) {
             getGatherings({ activeClient });
         }
-    }, [activeClient]);
-    useEffect(() => {
-        getCurrentProfile();
-        if (activeClient) {
-            getGatherings({ activeClient });
-        }
-    }, [getGatherings, getCurrentProfile]);
-
+    }, [attenData]);
     return loading ? (
         <Spinner />
     ) : (
@@ -84,9 +79,11 @@ const Dashboard = ({
             {/* <strong>What's happening...</strong>
             {privledgedInfo(auth)} */}
             <div className='chart-container'>
-                {/* <ANewAttenChart cid={activeClient} aData={attenData} /> */}
-                {/* <AttenChart cid={activeClient} aData={attenData} /> */}
-                {/* (attenData && <Really cid={activeClient} aData={attenData} />) */}
+                {chartReady ? (
+                    <Really cid={activeClient} aData={attenData} />
+                ) : (
+                    <div>NOT-READY</div>
+                )}
             </div>
         </Fragment>
     );
@@ -120,7 +117,6 @@ Dashboard.propTypes = {
     auth: PropTypes.object.isRequired,
     profile: PropTypes.object.isRequired,
     gathering: PropTypes.object.isRequired,
-    getDashboardAttendData: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -133,5 +129,4 @@ export default connect(mapStateToProps, {
     getGatherings,
     getCurrentProfile,
     deleteAccount,
-    getDashboardAttendData,
 })(Dashboard);
