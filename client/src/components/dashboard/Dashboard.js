@@ -4,12 +4,8 @@ import { connect } from 'react-redux';
 import Spinner from '../layout/Spinner';
 
 import DashLogo from '../../img/MMeeterLogo.png';
-import AttenChart from '../charts/AttenChart';
 import { Really } from '../charts/really';
-import NextGathering from '../gatherings/NextGathering';
-// import CheckPrivs from './CheckPrivs';
-// import ClientDef from './ClientDef';
-// import DashboardMeeterLogo from '../../img/DashboardMeeterLogo.png';
+
 import { getCurrentProfile, deleteAccount } from '../../actions/profile';
 import { getGatherings } from '../../actions/gathering';
 import { dashAttenChart } from '../../actions/charts';
@@ -36,7 +32,7 @@ const Dashboard = ({
 
             getCurrentProfile();
         }
-    }, [activeClient]);
+    }, [activeClient, getCurrentProfile]);
     useEffect(() => {
         getCurrentProfile();
         if (activeClient) {
@@ -66,7 +62,7 @@ const Dashboard = ({
         if (gatherings.length === 0) {
             getGatherings({ activeClient });
         }
-    }, [attenData]);
+    }, []);
     return loading ? (
         <Spinner />
     ) : (
@@ -76,8 +72,6 @@ const Dashboard = ({
             <p className='lead'>
                 <i className='fas fa-user' /> Welcome {user && user.name}
             </p>
-            {/* <strong>What's happening...</strong>
-            {privledgedInfo(auth)} */}
             <div className='chart-container'>
                 {chartReady ? (
                     <Really cid={activeClient} aData={attenData} />
@@ -87,27 +81,6 @@ const Dashboard = ({
             </div>
         </Fragment>
     );
-    function privledgedInfo(auth) {
-        if (auth.activeStatus === 'approved') {
-            return [
-                <Fragment>
-                    {/* <div>
-                        <u>
-                            <strong>What's happening...</strong>
-                        </u>
-                    </div> */}
-                    <NextGathering gatherings={gatherings} />
-                </Fragment>,
-            ];
-        } else {
-            return [
-                <div>
-                    Please check with your system contact to get approved for
-                    use.
-                </div>,
-            ];
-        }
-    }
 };
 
 Dashboard.propTypes = {

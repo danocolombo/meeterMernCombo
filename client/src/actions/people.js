@@ -86,7 +86,7 @@ export const createPerson = (
         //need to add tentantId to formData
         formData.tenantId = 'people-' + activeClient;
         const res = await axios.post('/api/people', formData, config);
-
+        if (!res) console.log('no response back from /api/people');
         // dispatch({
         //     type: SET_PERSON,
         //     payload: res.data,

@@ -55,13 +55,15 @@ function line1(g, t) {
             break;
         case 'm':
             line1 = "Men's - ";
+            break;
         default:
             break;
     }
     if (t.length > 0) {
         line1 = line1.concat(' ', t);
     }
-    return [<span id={line1}>{line1}</span>];
+    const rnum = Math.random();
+    return [<span id={rnum}>{line1}</span>];
 }
 function line2(l, f) {
     // console.log(l + ' ' + l.length);

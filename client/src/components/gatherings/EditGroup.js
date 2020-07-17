@@ -105,9 +105,9 @@ const EditGroup = ({
                 </div>
                 <div>
                     <span>Attendance</span>
-                    <span style={{ 'padding-left': 20 }}>
+                    <span style={{ paddingLeft: 20 }}>
                         <Input
-                            // style={{ 'padding-left': 20 }}
+                            // style={{ 'paddingLeft': 20 }}
                             id='attendance'
                             label='attendance'
                             name='attendance'
@@ -180,7 +180,7 @@ const EditGroup = ({
                         onChange={(e) => onChange(e)}
                     />
                 </div>
-                <div className='pl-2' style={{ 'padding-top': 20 }}>
+                <div className='pl-2' style={{ paddingTop: 20 }}>
                     <input type='submit' className='btn btn-primary my-1' />
 
                     <span className='pl-2'>

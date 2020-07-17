@@ -116,26 +116,6 @@ export const dashAttenChart = (cid) => {
                 cData.Options = chartOptions;
                 return cData;
             });
-        console.log('we got data back...');
-
-        // copy state, update and update state
-        // let newState = theChartOptions;
-        // newState.xaxis.categories = json.meetings;
-        // setChartOptions(newState);
-
-        // newState = theChartSeries;
-        // newState[0].data = json.attendance;
-        // setChartSeries(newState);
-
-        // aTest(cid);
-        // const util = require('util');
-        // console.log(
-        //     'newState: ' +
-        //         util.inspect(newState, {
-        //             showHidden: false,
-        //             depth: null,
-        //         })
-        // );
     } catch (error) {
         console.log('error getting dashattendata');
     }

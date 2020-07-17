@@ -7,6 +7,7 @@ import {
     REMOVE_CLIENT_USER,
     SET_MTG_CONFIGS,
     TOGGLE_CONFIG,
+    POST_ERROR,
 } from './types';
 
 // GET CLIENT INFO
@@ -118,6 +119,7 @@ export const updateDefaultGroup = (revised) => async (dispatch) => {
             revised,
             config
         );
+        if (!res) console.log('no response');
         // now get the default groups and reload Redux
         const ress = await axios.get(
             `/api/client/defaultgroups/${revised.cid}`
@@ -220,6 +222,7 @@ export const grantUserRegistration = (cid, id, role, email) => async (
                 personInfo,
                 config
             );
+            if (!peopleRef) console.log('no resonse from /api/people post');
         }
     } catch (err) {
         console.log('actions/admin.js grantUserRegistration ADMIN_ERROR #1');
