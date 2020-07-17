@@ -82,7 +82,7 @@ const Dashboard = ({
                 {chartReady ? (
                     <Really cid={activeClient} aData={attenData} />
                 ) : (
-                    <div>NOT-READY</div>
+                    <div>Enjoy your day!</div>
                 )}
             </div>
         </Fragment>
