@@ -84,9 +84,9 @@ const Gatherings = ({
                     <Link to='/gatherings/historyView' id='hView'>
                         HISTORY
                     </Link>,
-                    <p className='lead'>List of upcoming meetings...</p>,
+                    <p id='upcomingLabel' className='lead'>List of upcoming meetings...</p>,
                     <div>
-                        <Link to='/EditGathering/0' visible='false'>
+                        <Link id='newMeetingBtns' to='/EditGathering/0' visible='false'>
                             <div className='waves-effect waves-light btn'>
                                 <i className='material-icons left green'>
                                     add_circle_outline
@@ -101,7 +101,7 @@ const Gatherings = ({
                 ];
             } else {
                 return [
-                    <Link to='/gatherings/historyView'>HISTORY</Link>,
+                    <Link id='historyLink' to='/gatherings/historyView'>HISTORY</Link>,
                     <p className='lead'>List of upcoming meetings...</p>,
                 ];
             }

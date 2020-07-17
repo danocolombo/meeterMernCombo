@@ -26,8 +26,8 @@ export const getClientInfo = (cid) => async (dispatch) => {
     }
 };
 export const getClientUsers = (client) => async (dispatch) => {
-    console.log('getClientUsers(' + client + ')');
-    console.log('/api/client/userstatus/' + client);
+    // console.log('getClientUsers(' + client + ')');
+    // console.log('/api/client/userstatus/' + client);
     try {
         const res = await axios.get(`/api/client/userstatus/${client}`);
         dispatch({

@@ -396,7 +396,7 @@ DisplaySecurity.propTypes = {
     getClientUsers: PropTypes.func.isRequired,
     getDefGroups: PropTypes.func.isRequired,
     getMtgConfigs: PropTypes.func.isRequired,
-    removeDefGroup: PropTypes.func.isRequired,
+    // removeDefGroup: PropTypes.func.isRequired,
     grantUserRegistration: PropTypes.func.isRequired,
     rejectUserRegistration: PropTypes.func.isRequired,
     updateDefaultGroup: PropTypes.func.isRequired,

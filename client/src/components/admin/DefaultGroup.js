@@ -61,11 +61,11 @@ function line1(g, t) {
     if (t.length > 0) {
         line1 = line1.concat(' ', t);
     }
-    return [<span>{line1}</span>];
+    return [<span id={line1}>{line1}</span>];
 }
 function line2(l, f) {
-    console.log(l + ' ' + l.length);
-    console.log(f + ' ' + f.length);
+    // console.log(l + ' ' + l.length);
+    // console.log(f + ' ' + f.length);
     let line2 = '';
     let tmp = '';
     if (l.length > 0) {
