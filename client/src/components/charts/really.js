@@ -1,65 +1,78 @@
 import React, { useState, useEffect } from 'react';
 import Chart from 'react-apexcharts';
-import { aTest } from '../../actions/charts';
+// import { aTest } from '../../actions/charts';
 export const Really = ({ cid, aData }) => {
-    // const [theChartOptions, setChartOptions] = useState({
-    //     chart: {
-    //         id: 'basic-bar',
-    //         toolbar: {
-    //             show: false,
-    //         },
-    //         zoom: {
-    //             enabled: false,
-    //         },
-    //     },
-    //     plotOptions: {
-    //         bar: {
-    //             columnWidth: '50%',
-    //             endingShape: 'arrow',
-    //         },
-    //     },
-    //     stroke: {
-    //         width: [4, 0, 0],
-    //     },
-    //     xaxis: {
-    //         categories: [
-    //             '6/15',
-    //             '6/22',
-    //             '6/29',
-    //             '7/6',
-    //             '7/13',
-    //             '7/20',
-    //             '7/27',
-    //             '8/3',
-    //             '8/10',
-    //             '8/17',
-    //         ],
-    //     },
-    //     markers: {
-    //         size: 6,
-    //         strokeWidth: 3,
-    //         fillOpacity: 0,
-    //         strokeOpacity: 0,
-    //         hover: {
-    //             size: 8,
-    //         },
-    //     },
-    //     yaxis: {
-    //         // tickAmount: 5,
-    //         // min: 0,
-    //         max: 35,
-    //     },
-    // });
+    console.log('=========== in really.js ================');
+    console.log('aData.Series:');
+    console.log(aData.Series);
+    console.log('aData.Options:');
+    console.log(aData.Options);
+    const util = require('util');
+    console.log(
+        'really.js : aData ' +
+            util.inspect(aData, {
+                showHidden: false,
+                depth: null,
+            })
+    );
+    const [theChartOptions, setChartOptions] = useState({
+        chart: {
+            id: 'basic-bar',
+            toolbar: {
+                show: false,
+            },
+            zoom: {
+                enabled: false,
+            },
+        },
+        plotOptions: {
+            bar: {
+                columnWidth: '50%',
+                endingShape: 'arrow',
+            },
+        },
+        stroke: {
+            width: [4, 0, 0],
+        },
+        xaxis: {
+            categories: [
+                '6/15',
+                '6/22',
+                '6/29',
+                '7/6',
+                '7/13',
+                '7/20',
+                '7/27',
+                '8/3',
+                '8/10',
+                '8/17',
+            ],
+        },
+        markers: {
+            size: 6,
+            strokeWidth: 3,
+            fillOpacity: 0,
+            strokeOpacity: 0,
+            hover: {
+                size: 8,
+            },
+        },
+        yaxis: {
+            // tickAmount: 5,
+            // min: 0,
+            max: 35,
+        },
+    });
 
-    // const [theChartSeries, setChartSeries] = useState([
-    //     {
-    //         name: 'attendance',
-    //         type: 'line',
-    //         // data: dashData.attendance,
-    //         // data: newData,
-    //         data: [0, null, null, null, null, null, null, null, null, null],
-    //     },
-    // ]);
+    const [theChartSeries, setChartSeries] = useState([
+        {
+            name: 'attendance',
+            type: 'line',
+            // data: dashData.attendance,
+            // data: newData,
+            data: [0, null, null, null, null, null, null, null, null, null],
+        },
+    ]);
 
     //=============================
     //=============================
@@ -158,18 +171,18 @@ export const Really = ({ cid, aData }) => {
                 AttenData from Dashboard
                 <br />
             </div>
-            <Chart
+            {/* <Chart
                 options={aData.Options}
                 series={aData.Series}
                 type='line'
                 width='500'
-            />
-            {/* <Chart
+            /> */}
+            <Chart
                 options={theChartOptions}
                 series={theChartSeries}
                 type='line'
                 width='500'
-            /> */}
+            />
         </div>
     );
 };

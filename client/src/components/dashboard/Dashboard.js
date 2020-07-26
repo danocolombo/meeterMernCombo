@@ -8,7 +8,7 @@ import { Really } from '../charts/really';
 
 import { getCurrentProfile, deleteAccount } from '../../actions/profile';
 import { getGatherings } from '../../actions/gathering';
-import { dashAttenChart } from '../../actions/charts';
+import { dashAttenChart } from '../../actions/chart';
 
 const Dashboard = ({
     getGatherings,
@@ -32,6 +32,33 @@ const Dashboard = ({
 
             getCurrentProfile();
         }
+        console.log('chartReady: ' + chartReady);
+
+        if (activeClient) {
+            async function getChartData() {
+                let chartInfo = {};
+                chartInfo = dashAttenChart(activeClient);
+                const util = require('util');
+                if (chartInfo) {
+                    console.log(
+                        'chartInfo: ' +
+                            util.inspect(chartInfo, {
+                                showHidden: false,
+                                depth: null,
+                            })
+                    );
+                }
+                setAttenData(chartInfo);
+                console.log('Dashboardjs : chartInfo:');
+                console.log(chartInfo.Meetings);
+                if (chartInfo) setChartReady(true);
+                if (!chartInfo) console.log('no data');
+            }
+            //execute the async function
+            getChartData();
+            console.log('done getting getChartData in useEffect');
+        }
+        console.log('chartReady: ' + chartReady);
     }, [activeClient, getCurrentProfile]);
     useEffect(() => {
         getCurrentProfile();
@@ -39,30 +66,53 @@ const Dashboard = ({
             getGatherings({ activeClient });
         }
     }, [getGatherings, getCurrentProfile]);
-    useEffect(() => {
-        if (activeClient) {
-            let chartInfo = {};
-            chartInfo = dashAttenChart(activeClient);
-            let DEBUG = true;
-            if (DEBUG) {
-                const util = require('util');
-                console.log(
-                    'chartInfo: ' +
-                        util.inspect(chartInfo, {
-                            showHidden: false,
-                            depth: null,
-                        })
-                );
+    // useEffect(() => {
+    //     //scoped function to get data
+    //     if (activeClient) {
+    //         async function getChartData() {
+    //             let chartInfo = {};
+    //             chartInfo = dashAttenChart(activeClient);
+    //             const util = require('util');
+    //             console.log(
+    //                 'chartInfo: ' +
+    //                     util.inspect(chartInfo, {
+    //                         showHidden: false,
+    //                         depth: null,
+    //                     })
+    //             );
+    //             setAttenData(chartInfo);
+    //             if (chartInfo) setChartReady(true);
+    //             if (!chartInfo) console.log('no data');
+    //         }
+    //         //execute the async function
+    //         getChartData();
+    //         console.log('done getting getChartData in useEffect');
+    //     }
+    // }, [activeClient]);
 
-                setAttenData(chartInfo);
-                if (chartInfo) setChartReady(true);
-                if (!chartInfo) console.log('no data');
-            }
-        }
-        if (gatherings.length === 0) {
-            getGatherings({ activeClient });
-        }
-    }, []);
+    // useEffect(() => {
+    //     if (activeClient) {
+    //         let chartInfo = {};
+
+    //         chartInfo = dashAttenChart(activeClient);
+
+    //         const util = require('util');
+    //         console.log(
+    //             'chartInfo: ' +
+    //                 util.inspect(chartInfo, {
+    //                     showHidden: false,
+    //                     depth: null,
+    //                 })
+    //         );
+
+    //         setAttenData(chartInfo);
+    //         if (chartInfo) setChartReady(true);
+    //         if (!chartInfo) console.log('no data');
+    //     }
+    //     if (gatherings.length === 0) {
+    //         getGatherings({ activeClient });
+    //     }
+    // }, []);
     return loading ? (
         <Spinner />
     ) : (

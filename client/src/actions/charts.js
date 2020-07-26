@@ -65,57 +65,60 @@ export const dashAttenChart = (cid) => {
     try {
         console.log('#### dashAttenChart starts here....');
         console.log('client: ' + cid);
-        const response = axios
-            .get(`/api/chartdata/attendance/${cid}`)
-            .then(function (response) {
-                //now we have data...
 
-                console.log('MAYBE');
-                const util = require('util');
-                console.log(
-                    'response returned: ' +
-                        util.inspect(response, {
-                            showHidden: false,
-                            depth: null,
-                        })
-                );
-                const json = response.data;
-                console.log({ json });
-                console.log('meetingsssss: ' + json.meetings.toString());
-                console.log('attendance: ' + json.attendance.toString());
-                let chartSeries = {};
-                chartSeries = theChartSeries;
-                let chartOptions = theChartOptions;
-                //===============================
-                // now update with latest info
-                //===============================
-                let tOptions = {
-                    ...chartOptions,
-                    yaxis: { ...chartOptions.yaxis, max: 25 },
-                    xaxis: {
-                        ...chartOptions.xaxis,
-                        categories: [
-                            '6/15',
-                            '6/22',
-                            '6/29',
-                            '7/6',
-                            '7/13',
-                            '7/20',
-                            '7/27',
-                            '8/3',
-                            '8/10',
-                            '8/17',
-                        ],
-                    },
-                    // chart: { ...chartOptions.chart, id: 'DANO' },
-                };
-                chartOptions = tOptions;
-                console.log('WE ARE DONE....');
-                let cData = {};
-                cData.Series = chartSeries;
-                cData.Options = chartOptions;
-                return cData;
-            });
+        // const response = axios
+        //     .get(`/api/chartdata/attendance/${cid}`)
+        //     .then(function (response) {
+        //now we have data...
+        const DEBUG = true;
+        if (DEBUG) {
+            const response = axios.get(`/api/chartdata/attendance/${cid}`);
+            console.log('MAYBE');
+            const util = require('util');
+            console.log(
+                'response returned: ' +
+                    util.inspect(response, {
+                        showHidden: false,
+                        depth: null,
+                    })
+            );
+            const json = response.data;
+            console.log({ json });
+            console.log('meetingsssss: ' + json.meetings.toString());
+            console.log('attendance: ' + json.attendance.toString());
+            let chartSeries = {};
+            chartSeries = theChartSeries;
+            let chartOptions = theChartOptions;
+            //===============================
+            // now update with latest info
+            //===============================
+            let tOptions = {
+                ...chartOptions,
+                yaxis: { ...chartOptions.yaxis, max: 25 },
+                xaxis: {
+                    ...chartOptions.xaxis,
+                    categories: [
+                        '6/15',
+                        '6/22',
+                        '6/29',
+                        '7/6',
+                        '7/13',
+                        '7/20',
+                        '7/27',
+                        '8/3',
+                        '8/10',
+                        '8/17',
+                    ],
+                },
+                // chart: { ...chartOptions.chart, id: 'DANO' },
+            };
+            chartOptions = tOptions;
+            console.log('CHARTS.JS - WE ARE DONE....');
+            let cData = {};
+            cData.Series = chartSeries;
+            cData.Options = chartOptions;
+            return cData;
+        }
     } catch (error) {
         console.log('error getting dashattendata');
     }
