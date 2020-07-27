@@ -1,20 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import Chart from 'react-apexcharts';
-// import { aTest } from '../../actions/charts';
+
 export const Really = ({ cid, aData }) => {
     console.log('=========== in really.js ================');
-    console.log('aData.Series:');
-    console.log(aData.Series);
-    console.log('aData.Options:');
-    console.log(aData.Options);
-    const util = require('util');
-    console.log(
-        'really.js : aData ' +
-            util.inspect(aData, {
-                showHidden: false,
-                depth: null,
-            })
-    );
+    // console.log('aData.Series:');
+    // console.log(aData.Series);
+    // console.log('aData.Options:');
+    // console.log(aData.Options);
+    // const util = require('util');
+    // console.log(
+    //     'really.js : aData ' +
+    //         util.inspect(aData, {
+    //             showHidden: false,
+    //             depth: null,
+    //         })
+    // );
     const [theChartOptions, setChartOptions] = useState({
         chart: {
             id: 'basic-bar',
@@ -35,18 +35,7 @@ export const Really = ({ cid, aData }) => {
             width: [4, 0, 0],
         },
         xaxis: {
-            categories: [
-                '6/15',
-                '6/22',
-                '6/29',
-                '7/6',
-                '7/13',
-                '7/20',
-                '7/27',
-                '8/3',
-                '8/10',
-                '8/17',
-            ],
+            categories: aData.dates,
         },
         markers: {
             size: 6,
@@ -63,17 +52,18 @@ export const Really = ({ cid, aData }) => {
             max: 35,
         },
     });
-
+    const newData = [10, null, null, null, null, null, null, null, null, null];
     const [theChartSeries, setChartSeries] = useState([
         {
             name: 'attendance',
             type: 'line',
             // data: dashData.attendance,
             // data: newData,
-            data: [0, null, null, null, null, null, null, null, null, null],
+            data: aData.categories,
         },
     ]);
-
+    
+    // setChartSeries(...theChartSeries, newData);
     //=============================
     //=============================
 
@@ -177,6 +167,7 @@ export const Really = ({ cid, aData }) => {
                 type='line'
                 width='500'
             /> */}
+            
             <Chart
                 options={theChartOptions}
                 series={theChartSeries}

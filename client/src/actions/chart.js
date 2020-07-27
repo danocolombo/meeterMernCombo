@@ -74,13 +74,14 @@ const theChartSeries = [
     },
 ];
 export const dashAttenChart = (cid) => async (dispatch) => {
-    console.log('CHART :: dashAttenChart');
-    console.log('++++++++++++++++++++++++++++');
+    
     try {
         if (!cid) {
             return;
         }
         const response = await axios.get(`/api/chartdata/attendance/${cid}`);
+        console.log('CHART :: dashAttenChart');
+        console.log('++++++++++++++++++++++++++++');
         console.log('MAYBE');
         const util = require('util');
         console.log(
@@ -98,7 +99,7 @@ export const dashAttenChart = (cid) => async (dispatch) => {
             testMe = { msg: 'no data' };
         }
         const json = response.data;
-        console.log({ json });
+        // console.log({ json });
         //=========================================
         // if we don't have data, we need to abort
         //=========================================

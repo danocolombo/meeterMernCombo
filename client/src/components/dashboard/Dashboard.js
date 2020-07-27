@@ -22,6 +22,21 @@ const Dashboard = ({
 }) => {
     const [chartReady, setChartReady] = useState(false);
     const [attenData, setAttenData] = useState({});
+    // const [chartPoints, setChartPoints] = useState([]);
+    // const [chartDates, setChartDates] = useState([])
+    // setChartPoints([8, 5, 15, null, null, null, null, null, null, null]);
+    // setChartDates([
+    //     '6/15',
+    //     '6/22',
+    //     '6/29',
+    //     '7/6',
+    //     '7/13',
+    //     '7/20',
+    //     '7/27',
+    //     '8/3',
+    //     '8/10',
+    //     '8/17',
+    // ]);
     useEffect(() => {
         //check for activeClient, get it if needed
         if (!activeClient) {
@@ -41,7 +56,7 @@ const Dashboard = ({
                 const util = require('util');
                 if (chartInfo) {
                     console.log(
-                        'chartInfo: ' +
+                        'use-this_chartInfo: ' +
                             util.inspect(chartInfo, {
                                 showHidden: false,
                                 depth: null,
@@ -113,6 +128,20 @@ const Dashboard = ({
     //         getGatherings({ activeClient });
     //     }
     // }, []);
+    const fakeCount = [8, 5, 15, null, null, null, null, null, null, null];
+    const fakeDates = [
+        '6/15',
+        '6/22',
+        '6/29',
+        '7/6',
+        '7/13',
+        '7/20',
+        '7/27',
+        '8/3',
+        '8/10',
+        '8/17',
+    ];
+    let chartData = { dates: fakeDates, categories: fakeCount};
     return loading ? (
         <Spinner />
     ) : (
@@ -124,7 +153,9 @@ const Dashboard = ({
             </p>
             <div className='chart-container'>
                 {chartReady ? (
-                    <Really cid={activeClient} aData={attenData} />
+                    console.log('attenData.meetings: ' + attenData.meetings),
+                    console.log('attenData.attendance: ' + attenData.attendance),
+                    <Really cid={activeClient} aData={chartData} />
                 ) : (
                     <div>Enjoy your day!</div>
                 )}

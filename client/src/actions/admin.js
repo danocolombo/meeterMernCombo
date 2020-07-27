@@ -7,7 +7,6 @@ import {
     REMOVE_CLIENT_USER,
     SET_MTG_CONFIGS,
     TOGGLE_CONFIG,
-    POST_ERROR,
 } from './types';
 
 // GET CLIENT INFO
