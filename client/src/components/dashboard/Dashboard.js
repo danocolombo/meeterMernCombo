@@ -4,7 +4,8 @@ import { connect } from 'react-redux';
 import Spinner from '../layout/Spinner';
 
 import DashLogo from '../../img/MMeeterLogo.png';
-import AttenChart from '../charts/AttenChart';
+// import AttenChart from '../charts/AttenChart';
+import AChart from '../charts/AttendanceChart';
 import NextGathering from '../gatherings/NextGathering';
 // import CheckPrivs from './CheckPrivs';
 // import ClientDef from './ClientDef';
@@ -58,7 +59,8 @@ const Dashboard = ({
             {/* <strong>What's happening...</strong>
             {privledgedInfo(auth)} */}
             <div className='chart-container'>
-                <AttenChart />
+                {/* <AttenChart /> */}
+                <AChart />
             </div>
         </Fragment>
     );
