@@ -5,6 +5,7 @@ import Spinner from '../layout/Spinner';
 
 import DashLogo from '../../img/MMeeterLogo.png';
 import AttenChart from '../charts/AttenChart';
+import ChartAttenance from '../charts/chartAttendance';
 import NextGathering from '../gatherings/NextGathering';
 // import CheckPrivs from './CheckPrivs';
 // import ClientDef from './ClientDef';
@@ -58,7 +59,8 @@ const Dashboard = ({
             {/* <strong>What's happening...</strong>
             {privledgedInfo(auth)} */}
             <div className='chart-container'>
-                <AttenChart />
+                {/* <AttenChart /> */}
+                <ChartAttenance />
             </div>
         </Fragment>
     );
